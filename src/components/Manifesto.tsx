@@ -37,7 +37,7 @@ const Manifesto = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="text-muted-foreground text-base md:text-lg leading-relaxed font-body"
         >
-          Seu restaurante tem 40 anos de tradição? Vamos fazer o site honrar isso. Sua loja é o coração do bairro? 
+          Seu restaurante tem anos de tradição? Vamos fazer o site honrar isso. Sua loja é o coração do bairro? 
           Seu site será também. Tecnologia não deve apagar identidade —{" "}
           <span className="text-foreground font-medium">deve ampliá-la</span>.
         </motion.p>
