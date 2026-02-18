@@ -141,7 +141,7 @@ const Contact = () => {
           className="text-center mt-6"
         >
           <a
-            href="https://wa.me/5511999999999?text=Olá! Gostaria de saber mais sobre os serviços da LIPE Technology."
+            href="https://wa.me/5511940575960?text=Olá! Gostaria de saber mais sobre os serviços da LIPE Technology."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium hover:bg-secondary/90 transition-colors"
