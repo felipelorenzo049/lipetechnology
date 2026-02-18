@@ -1,0 +1,114 @@
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { Star } from "lucide-react";
+
+const techs = [
+  "React", "Next.js", "TypeScript", "Supabase", "Firebase", "Node.js",
+  "Three.js", "Framer Motion", "Tailwind CSS", "Figma",
+  "OpenAI", "Gemini", "Stripe", "Shopify", "WhatsApp API",
+];
+
+const comparison = [
+  { criteria: "Personalização", diy: 1, agency: 3, lipe: 5 },
+  { criteria: "Velocidade", diy: 4, agency: 2, lipe: 4 },
+  { criteria: "Custo", diy: 4, agency: 1, lipe: 3 },
+  { criteria: "Qualidade Técnica", diy: 2, agency: 4, lipe: 5 },
+  { criteria: "Storytelling", diy: 1, agency: 3, lipe: 5 },
+  { criteria: "Suporte Contínuo", diy: 1, agency: 3, lipe: 5 },
+];
+
+const Stars = ({ count }: { count: number }) => (
+  <div className="flex gap-0.5">
+    {Array.from({ length: 5 }).map((_, i) => (
+      <Star key={i} size={14} className={i < count ? "fill-accent text-accent" : "text-muted-foreground/30"} />
+    ))}
+  </div>
+);
+
+const TechStack = () => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <section className="py-24 md:py-32">
+      <div ref={ref} className="container mx-auto px-6">
+        {/* Tech badges */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          className="text-center mb-12"
+        >
+          <span className="font-mono text-sm text-secondary tracking-wider uppercase">Tecnologias</span>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold mt-3">
+            Stack de{" "}
+            <span className="gradient-text">ponta</span>
+          </h2>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.2 }}
+          className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto mb-24"
+        >
+          {techs.map((t, i) => (
+            <motion.span
+              key={t}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={inView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ delay: 0.3 + i * 0.04 }}
+              className="px-4 py-2 rounded-full glass text-sm font-mono text-foreground/80 hover:glow-primary hover:text-foreground transition-all cursor-default"
+            >
+              {t}
+            </motion.span>
+          ))}
+        </motion.div>
+
+        {/* Comparison */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.3 }}
+          className="text-center mb-12"
+        >
+          <h2 className="font-headline text-2xl md:text-3xl font-bold">
+            Por que empresas locais nos{" "}
+            <span className="gradient-text">escolhem</span>
+          </h2>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.4 }}
+          className="max-w-4xl mx-auto overflow-x-auto"
+        >
+          <table className="w-full min-w-[500px]">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left py-4 px-4 font-body text-sm text-muted-foreground font-medium">Critério</th>
+                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">DIY Builders</th>
+                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">Agência Trad.</th>
+                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">
+                  <span className="gradient-text font-bold">LIPE</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparison.map((row) => (
+                <tr key={row.criteria} className="border-b border-border/50">
+                  <td className="py-3 px-4 text-sm font-body font-medium">{row.criteria}</td>
+                  <td className="py-3 px-4 text-center"><div className="flex justify-center"><Stars count={row.diy} /></div></td>
+                  <td className="py-3 px-4 text-center"><div className="flex justify-center"><Stars count={row.agency} /></div></td>
+                  <td className="py-3 px-4 text-center"><div className="flex justify-center"><Stars count={row.lipe} /></div></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default TechStack;
