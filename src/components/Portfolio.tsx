@@ -63,11 +63,11 @@ const projects: Project[] = [
   },
   {
     title: "Milan",
-    tagline: "Projeto empresarial sob medida",
+    tagline: "Sistema de liquidação de carros para leiloeiro",
     description:
-      "Solução digital personalizada desenvolvida para a Milan. Detalhes completos em breve.",
-    outcome: "Projeto em desenvolvimento",
-    metrics: ["Em breve"],
+      "Sistema secundário de liquidação de veículos desenvolvido para a Milan, empresa leiloeira. Plataforma que agiliza o processo de venda e liquidação de carros, com gestão de lotes, catálogo online e acompanhamento em tempo real.",
+    outcome: "Processo de liquidação digitalizado com gestão completa de lotes",
+    metrics: ["Liquidação", "Gestão de lotes", "Tempo real"],
     tech: ["React", "TypeScript", "Tailwind CSS"],
     color: "secondary",
     type: "cliente",
