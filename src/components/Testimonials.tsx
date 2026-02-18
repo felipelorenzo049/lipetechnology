@@ -4,7 +4,7 @@ import { Quote } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "A LIPE não só fez nosso site — eles contaram nossa história de 40 anos de forma que nunca conseguimos antes.",
+    quote: "A LIPE não só fez nosso site — eles contaram nossa história de forma que nunca conseguimos antes.",
     author: "Maria S.",
     role: "Proprietária, Restaurante Sabor & Tradição",
   },
