@@ -23,7 +23,7 @@ const projects: Project[] = [
     description:
       "Plataforma e-commerce com homepage 3D interativa, calculadora AI de pedestais, dashboard admin com CRM e integração WhatsApp checkout.",
     outcome: "100% plataforma independente com qualificação de leads por AI",
-    metrics: ["28 anos", "35K clientes", "R$0,99/dia"],
+    metrics: ["28 anos", "35K clientes"],
     tech: ["React 18", "TypeScript", "Three.js", "Supabase", "Framer Motion"],
     color: "primary",
     type: "cliente",
@@ -34,7 +34,7 @@ const projects: Project[] = [
     description:
       "Menu digital com fotos e descrições dos pratos, sistema de reservas online com confirmação automática, pedidos online com gestão de delivery e takeaway, e integração WhatsApp para contato direto e encomendas.",
     outcome: "Restaurantes com presença digital completa e aumento de pedidos",
-    metrics: ["Menu digital", "Reservas online", "Delivery", "WhatsApp"],
+    metrics: ["Menu digital", "Reservas online", "Take away", "WhatsApp"],
     tech: ["React", "Contentful CMS", "Stripe", "SEO local"],
     color: "secondary",
     type: "produto",
