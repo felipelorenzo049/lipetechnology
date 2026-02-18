@@ -1,38 +1,64 @@
 
 
-# LIPE Technology — Website Implementation Plan
+# Portfolio Restructuring -- LIPE Timeline
 
-## Phase 1: Foundation & Design System
-Set up the LIPE brand design system — custom color palette (#3B7DE8 blue, #2BB8A0 teal, #0A0F18 dark, #FF6B35 accent), typography (Syne for headlines, DM Sans for body, JetBrains Mono for code/tech), and reusable UI primitives (gradient mesh backgrounds, glass-morphism cards, circuit-inspired decorative elements).
+## What Changes
 
-## Phase 2: Navigation & Layout Shell
-Build the responsive navbar with the LIPE logo, smooth-scroll navigation links (Serviços, Portfólio, Processo, Contato), hamburger menu on mobile, and a sticky footer with social links, service tags, and copyright. All navigation uses smooth scrolling on the single-page home layout.
+Replace the current portfolio grid with a **timeline-style layout** showing LIPE's evolution through its products and client projects.
 
-## Phase 3: Hero Section
-Animated hero with gradient mesh background (blue → teal), floating abstract shapes, and grid overlay. Portuguese headline "Tecnologia que amplifica quem você é", subheadline, and two CTAs — "Ver nossos projetos" (scrolls to portfolio) and "Fale conosco" (scrolls to contact/opens WhatsApp). Staggered fade-in entrance animations.
+### Updated Project Data
 
-## Phase 4: Manifesto Section
-Clean, typography-focused section with LIPE's philosophy about building technology that tells stories and amplifies identity. Elegant layout with subtle accent lines and scroll-triggered fade-up animation.
+1. **EasyLine Platform** -- stays as-is (client project, e-commerce for queue management leader)
 
-## Phase 5: Services Bento Grid
-Asymmetric bento grid displaying the 5 core services (Sites Personalizáveis, Chatbots Consultivos, SaaS/Plataformas, Estratégia de Marketing Digital, Manutenção & Suporte). Each card features a custom Lucide icon, service name, short description, and "Saiba mais" expandable details. Hover effects with lift and gradient glow.
+2. **Plate Boutique by LIPE** -- replaces "Historia no Prato"
+   - LIPE's own restaurant website program
+   - Serves local restaurants across all of Portugal
+   - Tagline: "Programa de sites para restaurantes locais em todo Portugal"
+   - Features: sites personalizados que contam a historia de cada restaurante, menu online, sistema de reservas, integracoes locais
+   - Metrics updated to reflect program scale (e.g. "Todo Portugal", "Restaurantes locais", "Identidade unica")
 
-## Phase 6: Featured Work / Portfolio
-Full-width portfolio section with 4 case study cards (EasyLine, Restaurant, Local Shop, Service Business). Each card shows a placeholder hero image, client name + tagline, key outcome metrics, tech stack tags, and a brief description. Alternating left-right layout for visual rhythm with project-specific color accents.
+3. **De Bairro para o Mundo** -- repositioned as a **result/product born from Plate Boutique by LIPE**
+   - Tagline updated: "Resultado do Plate Boutique by LIPE"
+   - Shows how a local restaurant/shop expanded online through LIPE's program
+   - Keeps the expansion narrative (12 cities, local identity)
 
-## Phase 7: How We Work (Process Timeline)
-Vertical timeline with 4 steps (Descoberta → Estratégia → Construção → Crescimento), each with an icon, title, and description. Steps expand on click for more detail. Scroll-triggered reveal animations with connecting lines.
+4. **Agendamento Inteligente** -- repositioned as a LIPE product/solution
+   - Presented as a LIPE-built scheduling platform
+   - Keeps AI scheduling, reminders, payment integration
 
-## Phase 8: Tech Stack & Comparison
-- **Tech badge cloud**: Animated floating badges for React, TypeScript, Supabase, Three.js, Tailwind, OpenAI, Stripe, etc. with subtle glow effects.
-- **Comparison table**: 3-column table (DIY Builders vs Traditional Agency vs LIPE Technology) across 6 criteria with star ratings highlighting LIPE's advantages.
+5. **Milan** -- added as a new client project
+   - Client company project
+   - Will have placeholder content (title, brief tagline, basic description, tech stack) since no details were provided yet
 
-## Phase 9: Testimonials & Pricing
-- **Testimonial carousel**: Rotating cards with client quotes, names, and placeholder photos. Smooth fade transitions.
-- **Pricing section**: 3 tiers (Essencial R$8-12k, Profissional R$15-25k, Enterprise sob consulta) with feature lists and a note about custom scoping.
+### Layout Change
 
-## Phase 10: Contact Section & Final Polish
-- **Contact form** with validated fields (Nome, Email, Telefone/WhatsApp, Empresa, Mensagem, Orçamento dropdown). Form submission shows a success toast (no backend yet — can integrate EmailJS or Supabase later).
-- **WhatsApp CTA button** linking to WhatsApp with pre-filled message.
-- Final polish pass on micro-interactions, scroll animations, responsive behavior across all breakpoints, and overall visual consistency.
+Transform from alternating left-right cards to a **vertical timeline** layout:
+- A connecting vertical line runs down the center (desktop) or left side (mobile)
+- Each project is a node on the timeline with a date/phase marker
+- Projects labeled as either "Produto LIPE" (Plate Boutique, Agendamento) or "Cliente" (EasyLine, Milan)
+- "De Bairro para o Mundo" labeled as "by Plate Boutique"
+- Alternating left-right positioning on desktop
+- Cards keep existing content structure (title, tagline, description, metrics, tech, outcome)
+
+### Section Header
+
+Updated to: "Nossa Jornada" or "Timeline LIPE" with subtitle reflecting the evolution narrative.
+
+---
+
+## Technical Details
+
+### Files Modified
+
+- **`src/components/Portfolio.tsx`** -- Complete rewrite:
+  - New `projects` array with 5 entries (EasyLine, Plate Boutique, De Bairro para o Mundo, Agendamento Inteligente, Milan)
+  - Each project gets a `type` field: `"produto"` or `"cliente"` and optional `parent` field (e.g. De Bairro -> parent: "Plate Boutique")
+  - New timeline layout with vertical connecting line using CSS pseudo-elements
+  - Timeline node markers (circles/dots) at each project
+  - Badge showing "Produto LIPE" or "Projeto Cliente" on each card
+  - "by Plate Boutique" sub-badge for De Bairro para o Mundo
+  - Scroll-triggered animations remain (framer-motion useInView)
+  - Mobile: timeline line moves to left side, all cards align right
+
+### No other files need changes -- the Portfolio component is self-contained and already imported in Index.tsx.
 
