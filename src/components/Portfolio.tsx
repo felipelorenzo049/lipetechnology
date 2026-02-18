@@ -29,12 +29,12 @@ const projects: Project[] = [
   },
   {
     title: "Plate Boutique by LIPE",
-    tagline: "Programa de sites para restaurantes locais em todo Portugal",
+    tagline: "Plataforma completa para restaurantes: do menu ao delivery",
     description:
-      "Sites personalizados que contam a história de cada restaurante, menu online com origem dos pratos, sistema de reservas e integrações locais. Cada site é único como o restaurante que representa.",
-    outcome: "Programa escalável servindo restaurantes locais em todo Portugal",
-    metrics: ["Todo Portugal", "Restaurantes locais", "Identidade única"],
-    tech: ["React", "Contentful CMS", "Animações custom", "SEO local"],
+      "Menu digital com fotos e descrições dos pratos, sistema de reservas online com confirmação automática, pedidos online com gestão de delivery e takeaway, e integração WhatsApp para contato direto e encomendas.",
+    outcome: "Restaurantes com presença digital completa e aumento de pedidos",
+    metrics: ["Menu digital", "Reservas online", "Delivery", "WhatsApp"],
+    tech: ["React", "Contentful CMS", "Stripe", "SEO local"],
     color: "secondary",
     type: "produto",
   },
