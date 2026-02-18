@@ -17,7 +17,7 @@ const Index = () => {
       className="min-h-screen text-foreground overflow-x-hidden"
       animationDuration={12}
       overlay
-      overlayOpacity={0.85}
+      overlayOpacity={0.75}
     >
       <Navbar />
       <Hero />

@@ -13,11 +13,11 @@ type GradientBackgroundProps = React.ComponentProps<'div'> & {
 };
 
 const Default_Gradients = [
-	"linear-gradient(135deg, hsl(216 33% 7%) 0%, hsl(220 78% 25%) 50%, hsl(168 55% 20%) 100%)",
-	"linear-gradient(135deg, hsl(220 78% 20%) 0%, hsl(216 33% 7%) 50%, hsl(20 100% 20%) 100%)",
-	"linear-gradient(135deg, hsl(168 55% 15%) 0%, hsl(220 78% 22%) 50%, hsl(216 33% 7%) 100%)",
-	"linear-gradient(135deg, hsl(216 33% 7%) 0%, hsl(20 60% 18%) 50%, hsl(220 78% 20%) 100%)",
-	"linear-gradient(135deg, hsl(220 78% 18%) 0%, hsl(168 55% 18%) 50%, hsl(216 33% 7%) 100%)",
+	"linear-gradient(135deg, hsl(216 33% 10%) 0%, hsl(220 78% 35%) 50%, hsl(168 55% 30%) 100%)",
+	"linear-gradient(135deg, hsl(220 78% 30%) 0%, hsl(216 33% 10%) 50%, hsl(20 100% 30%) 100%)",
+	"linear-gradient(135deg, hsl(168 55% 25%) 0%, hsl(220 78% 32%) 50%, hsl(216 33% 10%) 100%)",
+	"linear-gradient(135deg, hsl(216 33% 10%) 0%, hsl(20 80% 28%) 50%, hsl(220 78% 30%) 100%)",
+	"linear-gradient(135deg, hsl(220 78% 28%) 0%, hsl(168 55% 28%) 50%, hsl(216 33% 10%) 100%)",
 ];
 
 export function GradientBackground({
