@@ -25,7 +25,7 @@ export const MenuItem = ({
     <div onMouseEnter={() => setActive(item)} className="relative">
       <motion.p
         transition={{ duration: 0.3 }}
-        className="cursor-pointer text-foreground hover:text-primary transition-colors font-body text-sm"
+        className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors font-body text-sm tracking-wide uppercase"
       >
         {item}
       </motion.p>
@@ -36,11 +36,11 @@ export const MenuItem = ({
           transition={transition}
         >
           {active === item && (
-            <div className="absolute top-[calc(100%_+_1rem)] left-1/2 transform -translate-x-1/2">
+            <div className="absolute top-[calc(100%_+_1.2rem)] left-1/2 transform -translate-x-1/2 z-50">
               <motion.div
                 transition={transition}
                 layoutId="active"
-                className="bg-card backdrop-blur-sm rounded-xl overflow-hidden border border-border shadow-xl"
+                className="bg-card/95 backdrop-blur-xl rounded-xl overflow-hidden border border-border/60 shadow-[0_8px_32px_-8px_hsl(220_78%_57%/0.2)]"
               >
                 <motion.div layout className="w-max h-full p-4">
                   {children}
@@ -64,7 +64,7 @@ export const Menu = ({
   return (
     <nav
       onMouseLeave={() => setActive(null)}
-      className="relative rounded-full border border-border bg-card/80 backdrop-blur-md shadow-lg flex justify-center space-x-4 px-8 py-4"
+      className="relative rounded-full border border-border/40 bg-background/70 backdrop-blur-xl shadow-[0_4px_24px_-4px_hsl(220_78%_57%/0.15)] flex items-center justify-center space-x-6 px-8 py-3"
     >
       {children}
     </nav>
@@ -83,19 +83,19 @@ export const ProductItem = ({
   src: string;
 }) => {
   return (
-    <a href={href} className="flex space-x-2 group">
+    <a href={href} className="flex space-x-3 group p-2 rounded-lg hover:bg-muted/50 transition-colors">
       <img
         src={src}
         width={140}
         height={70}
         alt={title}
-        className="shrink-0 rounded-md shadow-2xl object-cover w-[140px] h-[70px]"
+        className="shrink-0 rounded-lg object-cover w-[120px] h-[60px] border border-border/30"
       />
-      <div>
-        <h4 className="text-sm font-bold mb-1 text-foreground group-hover:text-primary transition-colors">
+      <div className="flex flex-col justify-center">
+        <h4 className="text-sm font-headline font-semibold mb-0.5 text-foreground group-hover:text-primary transition-colors">
           {title}
         </h4>
-        <p className="text-muted-foreground text-xs max-w-[10rem]">
+        <p className="text-muted-foreground text-xs max-w-[10rem] leading-relaxed">
           {description}
         </p>
       </div>
@@ -112,7 +112,7 @@ export const HoveredLink = ({
     <a
       href={href}
       {...rest}
-      className="text-muted-foreground hover:text-foreground transition-colors text-sm"
+      className="text-muted-foreground hover:text-primary transition-colors text-sm font-body py-1 block"
     >
       {children}
     </a>

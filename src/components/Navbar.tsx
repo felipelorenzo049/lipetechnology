@@ -34,7 +34,7 @@ const Navbar = () => {
           <a
             href="#"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="font-headline text-xl font-bold gradient-text mr-6 flex items-center"
+            className="font-headline text-lg font-bold gradient-text mr-8 flex items-center tracking-widest"
           >
             LIPE
           </a>
@@ -101,7 +101,7 @@ const Navbar = () => {
 
           <button
             onClick={() => scrollTo("#contato")}
-            className="ml-4 px-5 py-1.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+            className="ml-6 px-5 py-1.5 rounded-full bg-accent text-accent-foreground text-sm font-semibold font-body hover:bg-accent/90 transition-all hover:shadow-[0_0_20px_-4px_hsl(20_100%_53%/0.4)] uppercase tracking-wide"
           >
             Fale Conosco
           </button>
