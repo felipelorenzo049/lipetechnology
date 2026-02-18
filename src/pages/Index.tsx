@@ -9,10 +9,16 @@ import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import { GradientBackground } from "@/components/ui/gradient-background";
 
 const Index = () => {
   return (
-    <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <GradientBackground
+      className="min-h-screen text-foreground overflow-x-hidden"
+      animationDuration={12}
+      overlay
+      overlayOpacity={0.85}
+    >
       <Navbar />
       <Hero />
       <Manifesto />
@@ -24,7 +30,7 @@ const Index = () => {
       <Pricing />
       <Contact />
       <Footer />
-    </main>
+    </GradientBackground>
   );
 };
 
