@@ -1,16 +1,25 @@
 
 
-## Remover "De Bairro para o Mundo" do Portfólio
+## Atualizar descrição do Plate Boutique no Portfólio
 
 ### O que muda
 
-1. **Remover o projeto "De Bairro para o Mundo"** do array `projects` em `src/components/Portfolio.tsx` -- ele deixa de aparecer na timeline.
+A entrada do **Plate Boutique by LIPE** na timeline do portfólio será reescrita para destacar as funcionalidades concretas que geram valor para os restaurantes:
+
+- **Menu digital com fotos** dos pratos e descrições
+- **Sistema de reservas** online com confirmação automática
+- **Pedidos online / delivery** com gestão de entregas e takeaway
+- **Integração WhatsApp** para contato direto e pedidos
 
 ### Detalhe técnico
 
-- Remover o terceiro item do array `projects` (o objeto com `title: "De Bairro para o Mundo"`).
-- A timeline continuará com 4 projetos: EasyLine, Plate Boutique, Agendamento Inteligente e Milan.
-- Nenhuma outra alteração necessária -- a alternância esquerda/direita se ajusta automaticamente pelo índice.
+Alteração apenas no objeto do Plate Boutique dentro do array `projects` em `src/components/Portfolio.tsx`:
 
-> **Nota:** A frase "De Bairro para o Mundo" como bordão da empresa pode ser integrada em outro local (Hero, Manifesto, Footer) num próximo passo, se desejado.
+- **tagline**: Reformulada para destacar o valor entregue (ex: "Plataforma completa para restaurantes: do menu ao delivery")
+- **description**: Reescrita listando as 4 funcionalidades principais e como cada uma gera valor para o restaurante
+- **outcome**: Atualizado para refletir resultados concretos (ex: "Restaurantes com presença digital completa e aumento de pedidos")
+- **metrics**: Atualizadas para refletir as funcionalidades (ex: "Menu digital", "Reservas online", "Delivery", "WhatsApp")
+- **tech**: Mantida ou levemente ajustada conforme necessário
+
+Nenhum outro ficheiro ou componente precisa ser alterado.
 
