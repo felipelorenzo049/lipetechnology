@@ -39,18 +39,6 @@ const projects: Project[] = [
     type: "produto",
   },
   {
-    title: "De Bairro para o Mundo",
-    tagline: "Resultado do Plate Boutique by LIPE",
-    description:
-      "Um restaurante local que, através do programa Plate Boutique, expandiu sua presença online com catálogo, mapa de entrega, integração WhatsApp e histórias de clientes.",
-    outcome: "Alcançou clientes em 12 novas cidades mantendo identidade local",
-    metrics: ["12 cidades", "Identidade local", "WhatsApp"],
-    tech: ["Next.js", "Shopify API", "Google Maps"],
-    color: "accent",
-    type: "produto",
-    parent: "Plate Boutique",
-  },
-  {
     title: "Agendamento Inteligente",
     tagline: "Plataforma de agendamento com AI by LIPE",
     description:
