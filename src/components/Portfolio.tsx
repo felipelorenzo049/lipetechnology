@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { ExternalLink, Briefcase, Rocket } from "lucide-react";
+import { SparklesCore } from "@/components/ui/sparkles";
 import { Badge } from "@/components/ui/badge";
 
 type Project = {
@@ -106,6 +107,19 @@ const Portfolio = () => {
 
         {/* Timeline */}
         <div className="relative max-w-5xl mx-auto">
+          {/* Sparkles background */}
+          <div className="absolute inset-0 -mx-8 -my-8">
+            <SparklesCore
+              background="transparent"
+              minSize={0.4}
+              maxSize={1.4}
+              particleDensity={40}
+              className="w-full h-full"
+              particleColor="hsl(var(--primary))"
+              speed={1.5}
+            />
+          </div>
+
           {/* Vertical line */}
           <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/60 via-secondary/40 to-accent/60 md:-translate-x-px" />
 
