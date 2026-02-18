@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Menu as NavMenu,
+  MenuItem,
+  ProductItem,
+  HoveredLink,
+} from "@/components/ui/navbar-menu";
 
 const navLinks = [
   { label: "Serviços", href: "#servicos" },
@@ -10,78 +16,140 @@ const navLinks = [
 ];
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
 
   const scrollTo = (href: string) => {
-    setIsOpen(false);
+    setMobileOpen(false);
     const el = document.querySelector(href);
     el?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass">
-      <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        {/* Logo */}
-        <a href="#" className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-          <span className="font-headline text-2xl font-bold gradient-text">LIPE</span>
-          <span className="hidden sm:inline text-sm font-body text-muted-foreground">Technology</span>
-        </a>
+    <header className="fixed top-0 left-0 right-0 z-50">
+      {/* Desktop */}
+      <div className="hidden md:flex justify-center pt-4">
+        <NavMenu setActive={setActive}>
+          {/* Logo */}
+          <a
+            href="#"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="font-headline text-xl font-bold gradient-text mr-6 flex items-center"
+          >
+            LIPE
+          </a>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => scrollTo(link.href)}
-              className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {link.label}
-            </button>
-          ))}
+          <MenuItem setActive={setActive} active={active} item="Serviços">
+            <div className="flex flex-col space-y-3 text-sm">
+              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
+                Sites Personalizáveis
+              </HoveredLink>
+              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
+                Chatbots Consultivos
+              </HoveredLink>
+              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
+                SaaS / Plataformas
+              </HoveredLink>
+              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
+                Marketing Digital
+              </HoveredLink>
+            </div>
+          </MenuItem>
+
+          <MenuItem setActive={setActive} active={active} item="Portfólio">
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <ProductItem
+                title="E-commerce Premium"
+                description="Loja online completa com design exclusivo"
+                href="#portfolio"
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=140&h=70&fit=crop"
+              />
+              <ProductItem
+                title="App SaaS"
+                description="Plataforma de gestão sob medida"
+                href="#portfolio"
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=140&h=70&fit=crop"
+              />
+              <ProductItem
+                title="Landing Page"
+                description="Página de alta conversão"
+                href="#portfolio"
+                src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=140&h=70&fit=crop"
+              />
+              <ProductItem
+                title="Chatbot IA"
+                description="Assistente virtual inteligente"
+                href="#portfolio"
+                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=140&h=70&fit=crop"
+              />
+            </div>
+          </MenuItem>
+
+          <MenuItem setActive={setActive} active={active} item="Planos">
+            <div className="flex flex-col space-y-3 text-sm">
+              <HoveredLink href="#contato" onClick={() => scrollTo("#contato")}>
+                Starter
+              </HoveredLink>
+              <HoveredLink href="#contato" onClick={() => scrollTo("#contato")}>
+                Profissional
+              </HoveredLink>
+              <HoveredLink href="#contato" onClick={() => scrollTo("#contato")}>
+                Enterprise
+              </HoveredLink>
+            </div>
+          </MenuItem>
+
           <button
             onClick={() => scrollTo("#contato")}
-            className="px-5 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+            className="ml-4 px-5 py-1.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
           >
             Fale Conosco
           </button>
-        </div>
-
-        {/* Mobile toggle */}
-        <button className="md:hidden text-foreground" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        </NavMenu>
       </div>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass border-t border-border"
-          >
-            <div className="flex flex-col gap-4 px-6 py-6">
-              {navLinks.map((link) => (
+      {/* Mobile */}
+      <div className="md:hidden glass">
+        <div className="container mx-auto flex items-center justify-between px-6 py-4">
+          <a href="#" className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            <span className="font-headline text-2xl font-bold gradient-text">LIPE</span>
+            <span className="text-sm font-body text-muted-foreground">Technology</span>
+          </a>
+          <button className="text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="glass border-t border-border"
+            >
+              <div className="flex flex-col gap-4 px-6 py-6">
+                {navLinks.map((link) => (
+                  <button
+                    key={link.href}
+                    onClick={() => scrollTo(link.href)}
+                    className="text-left text-foreground font-body hover:text-primary transition-colors"
+                  >
+                    {link.label}
+                  </button>
+                ))}
                 <button
-                  key={link.href}
-                  onClick={() => scrollTo(link.href)}
-                  className="text-left text-foreground font-body hover:text-primary transition-colors"
+                  onClick={() => scrollTo("#contato")}
+                  className="mt-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium"
                 >
-                  {link.label}
+                  Fale Conosco
                 </button>
-              ))}
-              <button
-                onClick={() => scrollTo("#contato")}
-                className="mt-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium"
-              >
-                Fale Conosco
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </header>
   );
 };
 
