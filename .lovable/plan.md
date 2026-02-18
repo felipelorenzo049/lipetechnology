@@ -1,23 +1,16 @@
 
 
-# Atualizar Projeto Milan no Portfolio
+## Remover "De Bairro para o Mundo" do Portfólio
 
-## O que muda
+### O que muda
 
-Substituir o placeholder do Milan com os dados reais:
+1. **Remover o projeto "De Bairro para o Mundo"** do array `projects` em `src/components/Portfolio.tsx` -- ele deixa de aparecer na timeline.
 
-- **Title**: Milan (mantém)
-- **Tagline**: "Sistema de liquidação de carros para leiloeiro"
-- **Description**: "Sistema secundário de liquidação de veículos desenvolvido para a Milan, empresa leiloeira. Plataforma que agiliza o processo de venda e liquidação de carros, com gestão de lotes, catálogo online e acompanhamento em tempo real."
-- **Outcome**: "Processo de liquidação digitalizado com gestão completa de lotes"
-- **Metrics**: Atualizados para refletir o sistema (ex: "Liquidação", "Gestão de lotes", "Tempo real")
-- **Tech**: Mantém React, TypeScript, Tailwind CSS (pode ajustar se houver mais detalhes)
+### Detalhe técnico
 
-## Detalhe técnico
+- Remover o terceiro item do array `projects` (o objeto com `title: "De Bairro para o Mundo"`).
+- A timeline continuará com 4 projetos: EasyLine, Plate Boutique, Agendamento Inteligente e Milan.
+- Nenhuma outra alteração necessária -- a alternância esquerda/direita se ajusta automaticamente pelo índice.
 
-### Arquivo modificado
-
-- **`src/components/Portfolio.tsx`** -- Atualizar apenas o objeto Milan no array `projects` (linhas 64-74), substituindo tagline, description, outcome e metrics com os dados reais do sistema de liquidação de carros.
-
-Nenhum outro arquivo precisa ser alterado.
+> **Nota:** A frase "De Bairro para o Mundo" como bordão da empresa pode ser integrada em outro local (Hero, Manifesto, Footer) num próximo passo, se desejado.
 
