@@ -95,7 +95,7 @@ const Navbar = () => {
 
           <button
             onClick={() => scrollTo("#contato")}
-            className="ml-4 px-5 py-1.5 rounded-full bg-accent text-accent-foreground text-sm font-semibold font-body hover:bg-accent/90 transition-all hover:shadow-[0_0_20px_-4px_hsl(20_100%_53%/0.4)] uppercase tracking-wide"
+            className="ml-4 px-5 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm font-semibold font-body hover:bg-secondary/90 transition-all hover:shadow-[0_0_20px_-4px_hsl(168_55%_44%/0.4)] uppercase tracking-wide"
           >
             {t("nav.talkToUs")}
           </button>
