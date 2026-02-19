@@ -1,27 +1,25 @@
 
+## Transicao suave entre Hero e Manifesto
 
-## Corrigir Sparkles no Hero
-
-### Problema identificado
-
-O componente `SparklesCore` recebe `particleColor="hsl(var(--primary))"`, mas a biblioteca tsparticles nao consegue resolver variaveis CSS (`var(--primary)`). Ela espera um valor de cor concreto (hex, rgb, etc). Como resultado, as particulas sao renderizadas com cor invalida e ficam invisiveis.
-
-A mesma situacao pode estar a acontecer no Portfolio, que tambem usa o SparklesCore.
+### Problema atual
+Na imagem, ve-se um corte abrupto entre o fundo do Hero (com sparkles e gradient mesh) e a secao do Manifesto ("A nossa filosofia"). Nao ha transicao visual, o que quebra a fluidez do design.
 
 ### Solucao
 
-Substituir `hsl(var(--primary))` por um valor de cor concreto baseado na variavel `--primary: 220 78% 57%`, que corresponde a `#2563EB` (azul).
+Adicionar um elemento de fade-out na parte inferior do Hero e um fade-in sutil no topo do Manifesto, criando uma transicao continua entre as duas secoes.
 
 ### Ficheiros a modificar
 
-**`src/components/Hero.tsx`** (linha 26):
-- De: `particleColor="hsl(var(--primary))"`
-- Para: `particleColor="#4B83F0"` (azul primario da marca)
+**`src/components/Hero.tsx`**
+- Adicionar uma div com gradiente na parte inferior da secao Hero:
+  - `absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-background z-[2]`
+  - Isto cria um fade suave do conteudo do Hero para a cor de fundo do site
 
-**`src/components/Portfolio.tsx`** (se tambem usar `hsl(var(--primary))`):
-- Aplicar a mesma correcao
+**`src/components/Manifesto.tsx`**
+- Adicionar uma div com gradiente no topo da secao Manifesto:
+  - `absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background/50 to-transparent`
+  - Reforca a transicao suave vinda do Hero
+- Adicionar um separador decorativo sutil (linha horizontal com gradiente) entre as duas secoes para dar mais elegancia
 
 ### Resultado esperado
-
-Particulas brilhantes azuis visiveis sobre o fundo gradient do Hero, criando o efeito sparkles desejado.
-
+Uma transicao fluida onde o fundo escuro com sparkles do Hero se dissolve suavemente para a secao do Manifesto, sem cortes visuais abruptos.
