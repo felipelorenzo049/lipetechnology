@@ -1,5 +1,6 @@
 import { Linkedin, Instagram, Github } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import logoLipe from "@/assets/logo-lipe.png";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="text-center md:text-left">
-            <span className="font-headline text-xl font-bold gradient-text">LIPE</span>
+            <img src={logoLipe} alt="LIPE Technology" className="h-6" />
             <span className="text-sm text-muted-foreground ml-2 font-body">Technology</span>
             <p className="text-xs text-muted-foreground font-body mt-2">
               {t("footer.tagline")}
