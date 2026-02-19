@@ -1,25 +1,52 @@
 
 
-## Atualizar descrição do Plate Boutique no Portfólio
+## Plano de Alteracoes
 
-### O que muda
+### 1. Padronizar titulos entre idiomas
 
-A entrada do **Plate Boutique by LIPE** na timeline do portfólio será reescrita para destacar as funcionalidades concretas que geram valor para os restaurantes:
+O problema e que alguns titulos em portugues ficam com 3 linhas enquanto em ingles ficam com 2. Vou encurtar os textos traduzidos para manter o mesmo layout visual em todas as linguas.
 
-- **Menu digital com fotos** dos pratos e descrições
-- **Sistema de reservas** online com confirmação automática
-- **Pedidos online / delivery** com gestão de entregas e takeaway
-- **Integração WhatsApp** para contato direto e pedidos
+Secoes afetadas:
+- **Hero**: "Tecnologia que amplifica quem voce e" vs "Technology that amplifies who you are"
+- **Services**: "Tudo o que precisa para crescer digital" (mais longo)
+- **Manifesto**, **Process**, **Portfolio** - revisar todos os titulos
 
-### Detalhe técnico
+Abordagem: encurtar as traducoes PT/ES/IT para que o numero de linhas seja consistente com o ingles.
 
-Alteração apenas no objeto do Plate Boutique dentro do array `projects` em `src/components/Portfolio.tsx`:
+### 2. Remover secao de Pricing (Planos)
 
-- **tagline**: Reformulada para destacar o valor entregue (ex: "Plataforma completa para restaurantes: do menu ao delivery")
-- **description**: Reescrita listando as 4 funcionalidades principais e como cada uma gera valor para o restaurante
-- **outcome**: Atualizado para refletir resultados concretos (ex: "Restaurantes com presença digital completa e aumento de pedidos")
-- **metrics**: Atualizadas para refletir as funcionalidades (ex: "Menu digital", "Reservas online", "Delivery", "WhatsApp")
-- **tech**: Mantida ou levemente ajustada conforme necessário
+Como tem mais de um produto, os planos fixos nao fazem sentido. Vou:
+- Remover o componente `Pricing` da pagina principal (`Index.tsx`)
+- Remover o link "Plans" do menu de navegacao (`Navbar.tsx`)
+- Remover as chaves `pricing` e `nav.plans/starter/professional/enterprise` dos 4 ficheiros de traducao
+- Remover o ficheiro `src/components/Pricing.tsx`
 
-Nenhum outro ficheiro ou componente precisa ser alterado.
+### 3. Criar pagina dedicada ao Portfolio
+
+Vou criar uma rota `/portfolio` com uma pagina completa:
+- **Nova pagina** `src/pages/PortfolioPage.tsx` com Navbar, conteudo do portfolio expandido e Footer
+- **Nova rota** em `App.tsx`: `/portfolio`
+- Na pagina principal, o portfolio fica como um resumo/preview com um botao "Ver todos os projetos" que leva a `/portfolio`
+- O componente `Portfolio.tsx` existente sera adaptado para a pagina dedicada, com mais espaco e detalhes
+- A pagina principal tera uma versao resumida com 2 projetos e um CTA
+
+---
+
+### Detalhes tecnicos
+
+**Ficheiros a criar:**
+- `src/pages/PortfolioPage.tsx` - pagina dedicada com layout completo
+
+**Ficheiros a modificar:**
+- `src/App.tsx` - adicionar rota `/portfolio`
+- `src/pages/Index.tsx` - remover `Pricing`, manter `Portfolio` como preview
+- `src/components/Portfolio.tsx` - adaptar para aceitar prop `preview` (mostra 2 items) vs completo
+- `src/components/Navbar.tsx` - remover menu "Plans", atualizar link Portfolio para `/portfolio`
+- `src/i18n/locales/en.json` - remover pricing, adicionar chave "viewAll", encurtar titulos
+- `src/i18n/locales/pt.json` - idem + padronizar comprimento dos titulos
+- `src/i18n/locales/es.json` - idem
+- `src/i18n/locales/it.json` - idem
+
+**Ficheiros a remover:**
+- `src/components/Pricing.tsx`
 
