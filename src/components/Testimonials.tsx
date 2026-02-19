@@ -10,10 +10,13 @@ const Testimonials = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
+  const [paused, setPaused] = useState(false);
+
   useEffect(() => {
+    if (paused) return;
     const timer = setInterval(() => setCurrent((c) => (c + 1) % quotes.length), 5000);
     return () => clearInterval(timer);
-  }, [quotes.length]);
+  }, [quotes.length, paused]);
 
   const item = quotes[current];
 
@@ -32,7 +35,11 @@ const Testimonials = () => {
           </h2>
         </motion.div>
 
-        <div className="relative glass rounded-2xl p-8 md:p-12 text-center min-h-[250px] flex flex-col items-center justify-center">
+        <div
+          className="relative glass rounded-2xl p-8 md:p-12 text-center min-h-[250px] flex flex-col items-center justify-center"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
           <Quote size={32} className="text-primary/30 mb-6" />
 
           <motion.p
@@ -55,7 +62,7 @@ const Testimonials = () => {
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                className={`w-2 h-2 rounded-full transition-all ${i === current ? "bg-primary w-6" : "bg-muted-foreground/30"}`}
+                className={`w-2 h-2 rounded-full transition-all p-0 min-w-[32px] min-h-[32px] flex items-center justify-center ${i === current ? "bg-primary w-6" : "bg-muted-foreground/30"}`}
               />
             ))}
           </div>

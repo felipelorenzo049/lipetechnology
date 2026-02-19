@@ -1,13 +1,23 @@
 import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
-const WHATSAPP_URL =
-  "https://wa.me/5511940575960?text=Hello! I'd like to know more about LIPE Technology services.";
+const whatsappMessages: Record<string, string> = {
+  en: "Hello! I'd like to know more about LIPE Technology services.",
+  pt: "Olá! Gostaria de saber mais sobre os serviços da LIPE Technology.",
+  es: "¡Hola! Me gustaría saber más sobre los servicios de LIPE Technology.",
+  it: "Ciao! Vorrei sapere di più sui servizi di LIPE Technology.",
+};
 
 const WhatsAppButton = () => {
+  const { i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage || "en";
+  const message = whatsappMessages[lang] || whatsappMessages.en;
+  const url = `https://wa.me/5511940575960?text=${encodeURIComponent(message)}`;
+
   return (
     <motion.a
-      href={WHATSAPP_URL}
+      href={url}
       target="_blank"
       rel="noopener noreferrer"
       initial={{ scale: 0, opacity: 0 }}

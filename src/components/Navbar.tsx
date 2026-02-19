@@ -90,6 +90,12 @@ const Navbar = () => {
             </div>
           </MenuItem>
 
+          <button
+            onClick={() => scrollTo("#processo")}
+            className="text-sm font-body text-foreground/80 hover:text-foreground transition-colors"
+          >
+            {t("nav.process")}
+          </button>
 
           <LanguageSwitcher />
 

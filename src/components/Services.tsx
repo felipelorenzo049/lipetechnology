@@ -39,7 +39,10 @@ const ServiceCard = ({ service, index }: { service: typeof serviceKeys[0]; index
           <service.icon size={24} />
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
-          <span className="text-xs font-body hidden sm:inline opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span className="text-xs font-body hidden sm:inline opacity-0 group-hover:opacity-100 transition-opacity duration-300 md:block">
+            {t("services.viewDetails")}
+          </span>
+          <span className="text-xs font-body sm:hidden text-muted-foreground/60">
             {t("services.viewDetails")}
           </span>
           <ChevronDown
@@ -66,7 +69,7 @@ const ServiceCard = ({ service, index }: { service: typeof serviceKeys[0]; index
             ))}
           </ul>
           <a
-            href="#contacto"
+            href="#contato"
             onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary/80 transition-colors font-body group/cta"
           >
