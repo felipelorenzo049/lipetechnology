@@ -1,52 +1,27 @@
 
 
-## Plano de Alteracoes
+## Corrigir Sparkles no Hero
 
-### 1. Padronizar titulos entre idiomas
+### Problema identificado
 
-O problema e que alguns titulos em portugues ficam com 3 linhas enquanto em ingles ficam com 2. Vou encurtar os textos traduzidos para manter o mesmo layout visual em todas as linguas.
+O componente `SparklesCore` recebe `particleColor="hsl(var(--primary))"`, mas a biblioteca tsparticles nao consegue resolver variaveis CSS (`var(--primary)`). Ela espera um valor de cor concreto (hex, rgb, etc). Como resultado, as particulas sao renderizadas com cor invalida e ficam invisiveis.
 
-Secoes afetadas:
-- **Hero**: "Tecnologia que amplifica quem voce e" vs "Technology that amplifies who you are"
-- **Services**: "Tudo o que precisa para crescer digital" (mais longo)
-- **Manifesto**, **Process**, **Portfolio** - revisar todos os titulos
+A mesma situacao pode estar a acontecer no Portfolio, que tambem usa o SparklesCore.
 
-Abordagem: encurtar as traducoes PT/ES/IT para que o numero de linhas seja consistente com o ingles.
+### Solucao
 
-### 2. Remover secao de Pricing (Planos)
+Substituir `hsl(var(--primary))` por um valor de cor concreto baseado na variavel `--primary: 220 78% 57%`, que corresponde a `#2563EB` (azul).
 
-Como tem mais de um produto, os planos fixos nao fazem sentido. Vou:
-- Remover o componente `Pricing` da pagina principal (`Index.tsx`)
-- Remover o link "Plans" do menu de navegacao (`Navbar.tsx`)
-- Remover as chaves `pricing` e `nav.plans/starter/professional/enterprise` dos 4 ficheiros de traducao
-- Remover o ficheiro `src/components/Pricing.tsx`
+### Ficheiros a modificar
 
-### 3. Criar pagina dedicada ao Portfolio
+**`src/components/Hero.tsx`** (linha 26):
+- De: `particleColor="hsl(var(--primary))"`
+- Para: `particleColor="#4B83F0"` (azul primario da marca)
 
-Vou criar uma rota `/portfolio` com uma pagina completa:
-- **Nova pagina** `src/pages/PortfolioPage.tsx` com Navbar, conteudo do portfolio expandido e Footer
-- **Nova rota** em `App.tsx`: `/portfolio`
-- Na pagina principal, o portfolio fica como um resumo/preview com um botao "Ver todos os projetos" que leva a `/portfolio`
-- O componente `Portfolio.tsx` existente sera adaptado para a pagina dedicada, com mais espaco e detalhes
-- A pagina principal tera uma versao resumida com 2 projetos e um CTA
+**`src/components/Portfolio.tsx`** (se tambem usar `hsl(var(--primary))`):
+- Aplicar a mesma correcao
 
----
+### Resultado esperado
 
-### Detalhes tecnicos
-
-**Ficheiros a criar:**
-- `src/pages/PortfolioPage.tsx` - pagina dedicada com layout completo
-
-**Ficheiros a modificar:**
-- `src/App.tsx` - adicionar rota `/portfolio`
-- `src/pages/Index.tsx` - remover `Pricing`, manter `Portfolio` como preview
-- `src/components/Portfolio.tsx` - adaptar para aceitar prop `preview` (mostra 2 items) vs completo
-- `src/components/Navbar.tsx` - remover menu "Plans", atualizar link Portfolio para `/portfolio`
-- `src/i18n/locales/en.json` - remover pricing, adicionar chave "viewAll", encurtar titulos
-- `src/i18n/locales/pt.json` - idem + padronizar comprimento dos titulos
-- `src/i18n/locales/es.json` - idem
-- `src/i18n/locales/it.json` - idem
-
-**Ficheiros a remover:**
-- `src/components/Pricing.tsx`
+Particulas brilhantes azuis visiveis sobre o fundo gradient do Hero, criando o efeito sparkles desejado.
 
