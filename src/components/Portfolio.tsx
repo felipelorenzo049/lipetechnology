@@ -108,7 +108,7 @@ const Portfolio = ({ preview = false }: PortfolioProps) => {
               maxSize={1.4}
               particleDensity={40}
               className="w-full h-full"
-              particleColor="hsl(var(--primary))"
+              particleColor="#4B83F0"
               speed={1.5}
             />
           </div>

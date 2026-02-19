@@ -23,7 +23,7 @@ const Hero = () => {
           maxSize={1.4}
           particleDensity={60}
           className="w-full h-full"
-          particleColor="hsl(var(--primary))"
+          particleColor="#4B83F0"
           speed={1.5}
         />
       </div>
