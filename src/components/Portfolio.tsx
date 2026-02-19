@@ -3,12 +3,11 @@ import { useRef } from "react";
 import { ExternalLink, Briefcase, Rocket } from "lucide-react";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 type Project = {
   title: string;
-  tagline: string;
-  description: string;
-  outcome: string;
+  i18nKey: string;
   metrics: string[];
   tech: string[];
   color: "primary" | "secondary" | "accent";
@@ -19,10 +18,7 @@ type Project = {
 const projects: Project[] = [
   {
     title: "EasyLine Platform",
-    tagline: "E-commerce completo para líder em gestão de filas",
-    description:
-      "Plataforma e-commerce com homepage 3D interativa, calculadora AI de pedestais, dashboard admin com CRM e integração WhatsApp checkout.",
-    outcome: "100% plataforma independente com qualificação de leads por AI",
+    i18nKey: "easyline",
     metrics: ["28 anos", "35K clientes"],
     tech: ["React 18", "TypeScript", "Three.js", "Supabase", "Framer Motion"],
     color: "primary",
@@ -30,10 +26,7 @@ const projects: Project[] = [
   },
   {
     title: "Plate Boutique by LIPE",
-    tagline: "Plataforma completa para restaurantes: do menu ao take away",
-    description:
-      "Menu digital com fotos e descrições dos pratos, sistema de reservas online com confirmação automática, pedidos online com gestão de delivery e takeaway, e integração WhatsApp para contato direto e encomendas.",
-    outcome: "Restaurantes com presença digital completa e aumento de pedidos",
+    i18nKey: "plate",
     metrics: ["Menu digital", "Reservas online", "Take away", "WhatsApp"],
     tech: ["React", "Contentful CMS", "Stripe", "SEO local"],
     color: "secondary",
@@ -41,10 +34,7 @@ const projects: Project[] = [
   },
   {
     title: "Agendamento Inteligente",
-    tagline: "Plataforma de agendamento com AI by LIPE",
-    description:
-      "Sistema de agendamento com AI, lembretes automáticos, portal do cliente, integração de pagamento e dashboard de analytics.",
-    outcome: "60% redução em conflitos de agenda, 2h/dia economizadas",
+    i18nKey: "agendamento",
     metrics: ["-60% conflitos", "2h/dia", "AI-powered"],
     tech: ["React", "Node.js", "Stripe", "Twilio"],
     color: "primary",
@@ -52,10 +42,7 @@ const projects: Project[] = [
   },
   {
     title: "Milan",
-    tagline: "Sistema de liquidação de carros para leiloeiro",
-    description:
-      "Sistema secundário de liquidação de veículos desenvolvido para a Milan, empresa leiloeira. Plataforma que agiliza o processo de venda e liquidação de carros, com gestão de lotes, catálogo online e acompanhamento em tempo real.",
-    outcome: "Processo de liquidação digitalizado com gestão completa de lotes",
+    i18nKey: "milan",
     metrics: ["Liquidação", "Gestão de lotes", "Tempo real"],
     tech: ["React", "TypeScript", "Tailwind CSS"],
     color: "secondary",
@@ -82,6 +69,7 @@ const dotColorMap: Record<string, string> = {
 };
 
 const Portfolio = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -94,20 +82,18 @@ const Portfolio = () => {
           className="text-center mb-20"
         >
           <span className="font-mono text-sm text-secondary tracking-wider uppercase">
-            Nossa Jornada
+            {t("portfolio.label")}
           </span>
           <h2 className="font-headline text-3xl md:text-4xl font-bold mt-3">
-            A evolução da{" "}
-            <span className="gradient-text">LIPE Technology</span>
+            {t("portfolio.title")}{" "}
+            <span className="gradient-text">{t("portfolio.titleHighlight")}</span>
           </h2>
           <p className="text-muted-foreground font-body mt-3 max-w-xl mx-auto text-sm">
-            Produtos próprios e projetos de clientes que mostram como construímos tecnologia com identidade.
+            {t("portfolio.subtitle")}
           </p>
         </motion.div>
 
-        {/* Timeline */}
         <div className="relative max-w-5xl mx-auto">
-          {/* Sparkles background */}
           <div className="absolute inset-0 -mx-8 -my-8">
             <SparklesCore
               background="transparent"
@@ -120,7 +106,6 @@ const Portfolio = () => {
             />
           </div>
 
-          {/* Vertical line */}
           <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/60 via-secondary/40 to-accent/60 md:-translate-x-px" />
 
           <div className="space-y-16 md:space-y-20">
@@ -135,6 +120,7 @@ const Portfolio = () => {
 };
 
 const TimelineNode = ({ project, index }: { project: Project; index: number }) => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
   const isLeft = index % 2 === 0;
@@ -147,12 +133,10 @@ const TimelineNode = ({ project, index }: { project: Project; index: number }) =
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="relative flex items-start"
     >
-      {/* Dot on the line */}
       <div
         className={`absolute left-4 md:left-1/2 w-4 h-4 rounded-full ${dotColorMap[project.color]} -translate-x-1/2 mt-6 z-10 ring-4 ring-background`}
       />
 
-      {/* Card — mobile always right, desktop alternates */}
       <div
         className={`ml-12 md:ml-0 md:w-[calc(50%-2rem)] ${
           isLeft ? "md:mr-auto md:pr-4" : "md:ml-auto md:pl-4"
@@ -161,20 +145,14 @@ const TimelineNode = ({ project, index }: { project: Project; index: number }) =
         <div
           className={`rounded-2xl border ${colorMap[project.color]} glass p-6 space-y-4`}
         >
-          {/* Type badges */}
           <div className="flex flex-wrap gap-2">
             {project.type === "produto" ? (
               <Badge variant="secondary" className="gap-1 text-[10px] font-mono">
-                <Rocket size={10} /> Produto LIPE
+                <Rocket size={10} /> {t("portfolio.productBadge")}
               </Badge>
             ) : (
               <Badge variant="outline" className="gap-1 text-[10px] font-mono">
-                <Briefcase size={10} /> Projeto Cliente
-              </Badge>
-            )}
-            {project.parent && (
-              <Badge className="text-[10px] font-mono bg-accent/15 text-accent border-accent/30">
-                by {project.parent}
+                <Briefcase size={10} /> {t("portfolio.clientBadge")}
               </Badge>
             )}
           </div>
@@ -182,15 +160,14 @@ const TimelineNode = ({ project, index }: { project: Project; index: number }) =
           <div>
             <h3 className="font-headline text-xl font-bold">{project.title}</h3>
             <p className="text-muted-foreground text-sm font-body mt-1">
-              {project.tagline}
+              {t(`portfolio.${project.i18nKey}.tagline`)}
             </p>
           </div>
 
           <p className="text-foreground/80 text-sm font-body leading-relaxed">
-            {project.description}
+            {t(`portfolio.${project.i18nKey}.description`)}
           </p>
 
-          {/* Metrics */}
           <div className="flex flex-wrap gap-2">
             {project.metrics.map((m) => (
               <span
@@ -202,25 +179,23 @@ const TimelineNode = ({ project, index }: { project: Project; index: number }) =
             ))}
           </div>
 
-          {/* Outcome */}
           <p className="text-sm font-body text-secondary font-medium">
-            → {project.outcome}
+            → {t(`portfolio.${project.i18nKey}.outcome`)}
           </p>
 
-          {/* Tech */}
           <div className="flex flex-wrap gap-2">
-            {project.tech.map((t) => (
+            {project.tech.map((tech) => (
               <span
-                key={t}
+                key={tech}
                 className="px-2.5 py-1 rounded-md bg-muted text-muted-foreground text-xs font-mono"
               >
-                {t}
+                {tech}
               </span>
             ))}
           </div>
 
           <button className="flex items-center gap-2 text-sm text-primary font-medium hover:underline mt-2 font-body">
-            Ver projeto completo <ExternalLink size={14} />
+            {t("portfolio.viewProject")} <ExternalLink size={14} />
           </button>
         </div>
       </div>

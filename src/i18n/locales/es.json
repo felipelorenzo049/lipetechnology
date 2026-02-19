@@ -1,0 +1,203 @@
+{
+  "nav": {
+    "services": "Servicios",
+    "portfolio": "Portafolio",
+    "process": "Proceso",
+    "contact": "Contacto",
+    "plans": "Planes",
+    "talkToUs": "Contáctenos",
+    "customWebsites": "Sitios Personalizados",
+    "consultativeChatbots": "Chatbots Consultivos",
+    "saasTitle": "SaaS / Plataformas",
+    "digitalMarketing": "Marketing Digital",
+    "premiumEcommerce": "E-commerce Premium",
+    "premiumEcommerceDesc": "Tienda online completa con diseño exclusivo",
+    "saasApp": "App SaaS",
+    "saasAppDesc": "Plataforma de gestión a medida",
+    "landingPage": "Landing Page",
+    "landingPageDesc": "Página de alta conversión",
+    "aiChatbot": "Chatbot IA",
+    "aiChatbotDesc": "Asistente virtual inteligente",
+    "starter": "Starter",
+    "professional": "Profesional",
+    "enterprise": "Enterprise"
+  },
+  "hero": {
+    "badge": "LIPE Technology",
+    "title1": "Tecnología que",
+    "titleHighlight": "amplifica",
+    "title2": "quién eres",
+    "subtitle": "Creamos sitios web, chatbots y plataformas para empresas locales que quieren crecer sin perder su esencia",
+    "ctaProjects": "Ver nuestros proyectos",
+    "ctaContact": "Contáctenos"
+  },
+  "manifesto": {
+    "label": "Nuestra filosofía",
+    "quote1": "La mayoría de las agencias construyen sitios web que se ven iguales. Nosotros construimos tecnología que",
+    "quoteHighlight": "cuenta historias",
+    "description": "¿Tu restaurante tiene años de tradición? Haremos que el sitio web lo honre. ¿Tu tienda es el corazón del barrio? Tu sitio web también lo será. La tecnología no debe borrar la identidad —",
+    "descriptionHighlight": "debe amplificarla"
+  },
+  "services": {
+    "label": "Servicios",
+    "title": "Todo lo que necesitas para",
+    "titleHighlight": "crecer digital",
+    "customWebsites": "Sitios Personalizados",
+    "customWebsitesShort": "Sitios web que reflejan la identidad única de tu negocio. Responsivos, rápidos y hechos para convertir.",
+    "customWebsitesDetails": ["Diseño storytelling-first", "Mobile-first responsivo", "SEO local optimizado", "CMS para actualizaciones fáciles"],
+    "consultativeChatbots": "Chatbots Consultivos",
+    "consultativeChatbotsShort": "Asistentes inteligentes que califican leads 24/7 con la voz de tu marca.",
+    "consultativeChatbotsDetails": ["Calificación automática de leads", "Flujo de conversación natural", "Entrenamiento con voz de marca", "Integración WhatsApp & web"],
+    "saas": "SaaS / Plataformas",
+    "saasShort": "Aplicaciones web a medida para las operaciones únicas de tu negocio.",
+    "saasDetails": ["Hecho a medida para tus flujos", "Arquitectura escalable", "Cloud-hosted & seguro", "Datos en tiempo real"],
+    "digitalMarketing": "Estrategia de Marketing Digital",
+    "digitalMarketingShort": "SEO, ads, contenido y redes sociales. No solo construimos — te ayudamos a crecer.",
+    "digitalMarketingDetails": ["SEO & visibilidad local", "Gestión de campañas", "Estrategia de contenido", "Analytics & optimización"],
+    "maintenance": "Mantenimiento & Soporte",
+    "maintenanceShort": "Soporte continuo para mantener tu presencia digital funcionando sin problemas.",
+    "maintenanceDetails": ["Monitoreo 24/7", "Actualizaciones regulares", "Optimización de rendimiento", "Soporte prioritario"]
+  },
+  "portfolio": {
+    "label": "Nuestro Recorrido",
+    "title": "La evolución de",
+    "titleHighlight": "LIPE Technology",
+    "subtitle": "Productos propios y proyectos de clientes que muestran cómo construimos tecnología con identidad.",
+    "productBadge": "Producto LIPE",
+    "clientBadge": "Proyecto Cliente",
+    "viewProject": "Ver proyecto completo",
+    "easyline": {
+      "tagline": "E-commerce completo para líder en gestión de colas",
+      "description": "Plataforma e-commerce con homepage 3D interactiva, calculadora AI de pedestales, dashboard admin con CRM e integración WhatsApp checkout.",
+      "outcome": "100% plataforma independiente con calificación de leads por AI"
+    },
+    "plate": {
+      "tagline": "Plataforma completa para restaurantes: del menú al take away",
+      "description": "Menú digital con fotos y descripciones de platos, sistema de reservas online con confirmación automática, pedidos online con gestión de delivery y takeaway, e integración WhatsApp para contacto directo y pedidos.",
+      "outcome": "Restaurantes con presencia digital completa y aumento de pedidos"
+    },
+    "agendamento": {
+      "tagline": "Plataforma de agendamiento con AI by LIPE",
+      "description": "Sistema de agendamiento con AI, recordatorios automáticos, portal del cliente, integración de pagos y dashboard de analytics.",
+      "outcome": "60% reducción en conflictos de agenda, 2h/día ahorradas"
+    },
+    "milan": {
+      "tagline": "Sistema de liquidación de coches para subastador",
+      "description": "Sistema secundario de liquidación de vehículos desarrollado para Milan, empresa subastadora. Plataforma que agiliza el proceso de venta y liquidación de coches, con gestión de lotes, catálogo online y seguimiento en tiempo real.",
+      "outcome": "Proceso de liquidación digitalizado con gestión completa de lotes"
+    }
+  },
+  "process": {
+    "label": "Proceso",
+    "title": "Cómo",
+    "titleHighlight": "trabajamos",
+    "discovery": "Descubrimiento",
+    "discoveryShort": "Aprendemos tu historia, público y objetivos",
+    "discoveryDetail": "Nos sumergimos en tu negocio para entender qué lo hace único. Entrevistas, análisis de mercado y definición de metas claras antes de escribir una línea de código.",
+    "strategy": "Estrategia",
+    "strategyShort": "Diseñamos la tecnología que encaja con tu identidad",
+    "strategyDetail": "Wireframes, arquitectura técnica y estrategia de contenido alineados con tu marca. Cada decisión de diseño sirve a tu historia.",
+    "build": "Construcción",
+    "buildShort": "Construimos con calidad, velocidad y transparencia",
+    "buildDetail": "Desarrollo ágil con entregas semanales. Sigues cada paso y puedes dar feedback en tiempo real. Código limpio, probado y documentado.",
+    "growth": "Crecimiento",
+    "growthShort": "Te apoyamos y optimizamos mientras creces",
+    "growthDetail": "El lanzamiento es solo el comienzo. Monitoreamos rendimiento, optimizamos conversiones y evolucionamos tu plataforma conforme tu negocio crece."
+  },
+  "techstack": {
+    "techLabel": "Tecnologías",
+    "techTitle": "Stack de",
+    "techHighlight": "vanguardia",
+    "comparisonTitle": "Por qué las empresas locales nos",
+    "comparisonHighlight": "eligen",
+    "criteria": "Criterio",
+    "diyBuilders": "DIY Builders",
+    "tradAgency": "Agencia Trad.",
+    "customization": "Personalización",
+    "speed": "Velocidad",
+    "cost": "Costo",
+    "techQuality": "Calidad Técnica",
+    "storytelling": "Storytelling",
+    "continuousSupport": "Soporte Continuo"
+  },
+  "testimonials": {
+    "label": "Testimonios",
+    "title": "Lo que nuestros clientes",
+    "titleHighlight": "dicen",
+    "quotes": [
+      {
+        "quote": "LIPE no solo hizo nuestro sitio web — contaron nuestra historia de una forma que nunca pudimos antes.",
+        "author": "Maria S.",
+        "role": "Propietaria, Restaurante Sabor & Tradição"
+      },
+      {
+        "quote": "Nuestro chatbot califica clientes mientras dormimos. Es como tener un vendedor 24/7 que conoce cada detalle del negocio.",
+        "author": "Carlos R.",
+        "role": "CEO, EasyLine Brasil"
+      },
+      {
+        "quote": "Transformaron nuestra tiendita de barrio en un e-commerce que entrega en 12 ciudades. Sin perder nuestra identidad.",
+        "author": "Ana L.",
+        "role": "Fundadora, Empório do Bairro"
+      },
+      {
+        "quote": "El sistema de agendamiento redujo conflictos en 60%. Ahorro 2 horas por día. La mejor inversión que hice.",
+        "author": "Pedro M.",
+        "role": "Director, Studio Wellness"
+      }
+    ]
+  },
+  "pricing": {
+    "label": "Inversión",
+    "title": "Planes que",
+    "titleHighlight": "tienen sentido",
+    "mostPopular": "Más popular",
+    "cta": "Contáctenos",
+    "disclaimer": "Cada proyecto es único. Los valores finales dependen del alcance. Agende una conversación para un presupuesto personalizado.",
+    "essential": {
+      "name": "Esencial",
+      "price": "€2.000–4.000",
+      "description": "Ideal para empezar tu presencia digital",
+      "features": ["Sitio personalizado", "5-8 páginas", "Mobile responsivo", "SEO básico", "3 meses de soporte"]
+    },
+    "professional": {
+      "name": "Profesional",
+      "price": "€5.000–8.000",
+      "description": "Para quienes quieren crecer con inteligencia",
+      "features": ["Todo lo del Esencial", "Chatbot consultivo", "Integraciones (WhatsApp, pagos)", "Analytics avanzado", "6 meses de soporte"]
+    },
+    "enterprise": {
+      "name": "Enterprise / SaaS",
+      "price": "Bajo consulta",
+      "description": "Plataformas y soluciones a medida",
+      "features": ["Plataformas personalizadas", "Aplicaciones web complejas", "Dashboards & analytics", "Arquitectura escalable", "Soporte continuo"]
+    }
+  },
+  "contact": {
+    "label": "Contacto",
+    "title": "Construyamos algo",
+    "titleHighlight": "único juntos",
+    "name": "Nombre *",
+    "namePlaceholder": "Tu nombre",
+    "email": "Email *",
+    "emailPlaceholder": "tu@email.com",
+    "phone": "Teléfono (WhatsApp)",
+    "phonePlaceholder": "+34 612 345 678",
+    "company": "Empresa / Proyecto",
+    "companyPlaceholder": "Nombre de la empresa",
+    "budget": "Presupuesto estimado",
+    "budgetSelect": "Seleccionar...",
+    "budgetOptions": ["€2.000–5.000", "€5.000–10.000", "€10.000+", "Aún no sé"],
+    "message": "Mensaje (opcional)",
+    "messagePlaceholder": "Cuéntanos sobre tu proyecto...",
+    "submit": "Enviar mensaje",
+    "fillRequired": "Complete nombre y email",
+    "successTitle": "¡Mensaje enviado!",
+    "successDesc": "Nos pondremos en contacto pronto.",
+    "whatsapp": "Chatea directamente por WhatsApp"
+  },
+  "footer": {
+    "tagline": "Sitios · Chatbots · SaaS · Marketing · Mantenimiento",
+    "copyright": "© 2026 LIPE Technology. Todos los derechos reservados."
+  }
+}

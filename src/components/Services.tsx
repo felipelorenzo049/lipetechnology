@@ -1,49 +1,22 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Globe, MessageSquareText, Layers, TrendingUp, Wrench, ChevronDown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-const services = [
-  {
-    icon: Globe,
-    title: "Sites Personalizáveis",
-    short: "Websites que refletem a identidade única do seu negócio. Responsivos, rápidos e feitos para converter.",
-    details: ["Design storytelling-first", "Mobile-first responsivo", "SEO local otimizado", "CMS para atualizações fáceis"],
-    span: "md:col-span-2 md:row-span-1",
-  },
-  {
-    icon: MessageSquareText,
-    title: "Chatbots Consultivos",
-    short: "Assistentes inteligentes que qualificam leads 24/7 com a voz da sua marca.",
-    details: ["Qualificação automática de leads", "Fluxo de conversa natural", "Treinamento com voz da marca", "Integração WhatsApp & web"],
-    span: "md:col-span-1 md:row-span-2",
-  },
-  {
-    icon: Layers,
-    title: "SaaS / Plataformas",
-    short: "Aplicações web sob medida para operações únicas do seu negócio.",
-    details: ["Feito sob medida para seus fluxos", "Arquitetura escalável", "Cloud-hosted & seguro", "Dados em tempo real"],
-    span: "md:col-span-1 md:row-span-1",
-  },
-  {
-    icon: TrendingUp,
-    title: "Estratégia de Marketing Digital",
-    short: "SEO, ads, conteúdo e redes sociais. Não só construímos — ajudamos você a crescer.",
-    details: ["SEO & visibilidade local", "Gestão de campanhas", "Estratégia de conteúdo", "Analytics & otimização"],
-    span: "md:col-span-1 md:row-span-1",
-  },
-  {
-    icon: Wrench,
-    title: "Manutenção & Suporte",
-    short: "Suporte contínuo para manter sua presença digital rodando sem problemas.",
-    details: ["Monitoramento 24/7", "Atualizações regulares", "Otimização de performance", "Suporte prioritário"],
-    span: "md:col-span-1 md:row-span-1",
-  },
+const serviceKeys = [
+  { icon: Globe, titleKey: "customWebsites", shortKey: "customWebsitesShort", detailsKey: "customWebsitesDetails", span: "md:col-span-2 md:row-span-1" },
+  { icon: MessageSquareText, titleKey: "consultativeChatbots", shortKey: "consultativeChatbotsShort", detailsKey: "consultativeChatbotsDetails", span: "md:col-span-1 md:row-span-2" },
+  { icon: Layers, titleKey: "saas", shortKey: "saasShort", detailsKey: "saasDetails", span: "md:col-span-1 md:row-span-1" },
+  { icon: TrendingUp, titleKey: "digitalMarketing", shortKey: "digitalMarketingShort", detailsKey: "digitalMarketingDetails", span: "md:col-span-1 md:row-span-1" },
+  { icon: Wrench, titleKey: "maintenance", shortKey: "maintenanceShort", detailsKey: "maintenanceDetails", span: "md:col-span-1 md:row-span-1" },
 ];
 
-const ServiceCard = ({ service, index }: { service: typeof services[0]; index: number }) => {
+const ServiceCard = ({ service, index }: { service: typeof serviceKeys[0]; index: number }) => {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
+  const details = t(`services.${service.detailsKey}`, { returnObjects: true }) as string[];
 
   return (
     <motion.div
@@ -63,8 +36,8 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
           className={`text-muted-foreground transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
         />
       </div>
-      <h3 className="font-headline text-lg font-semibold mb-2">{service.title}</h3>
-      <p className="text-muted-foreground text-sm font-body leading-relaxed">{service.short}</p>
+      <h3 className="font-headline text-lg font-semibold mb-2">{t(`services.${service.titleKey}`)}</h3>
+      <p className="text-muted-foreground text-sm font-body leading-relaxed">{t(`services.${service.shortKey}`)}</p>
 
       {expanded && (
         <motion.ul
@@ -72,7 +45,7 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
           animate={{ opacity: 1, height: "auto" }}
           className="mt-4 space-y-2"
         >
-          {service.details.map((d) => (
+          {details.map((d) => (
             <li key={d} className="flex items-center gap-2 text-sm text-foreground/80 font-body">
               <div className="w-1.5 h-1.5 rounded-full bg-secondary" />
               {d}
@@ -85,6 +58,7 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
 };
 
 const Services = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -96,16 +70,16 @@ const Services = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           className="text-center mb-16"
         >
-          <span className="font-mono text-sm text-secondary tracking-wider uppercase">Serviços</span>
+          <span className="font-mono text-sm text-secondary tracking-wider uppercase">{t("services.label")}</span>
           <h2 className="font-headline text-3xl md:text-4xl font-bold mt-3">
-            Tudo que você precisa para{" "}
-            <span className="gradient-text">crescer digital</span>
+            {t("services.title")}{" "}
+            <span className="gradient-text">{t("services.titleHighlight")}</span>
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
-          {services.map((s, i) => (
-            <ServiceCard key={s.title} service={s} index={i} />
+          {serviceKeys.map((s, i) => (
+            <ServiceCard key={s.titleKey} service={s} index={i} />
           ))}
         </div>
       </div>

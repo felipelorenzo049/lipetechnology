@@ -1,31 +1,33 @@
 import { Linkedin, Instagram, Github } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+  const { t } = useTranslation();
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const links = [
+    { label: t("nav.services"), href: "#servicos" },
+    { label: t("nav.portfolio"), href: "#portfolio" },
+    { label: t("nav.process"), href: "#processo" },
+    { label: t("nav.contact"), href: "#contato" },
+  ];
 
   return (
     <footer className="border-t border-border py-12">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Logo & tagline */}
           <div className="text-center md:text-left">
             <span className="font-headline text-xl font-bold gradient-text">LIPE</span>
             <span className="text-sm text-muted-foreground ml-2 font-body">Technology</span>
             <p className="text-xs text-muted-foreground font-body mt-2">
-              Sites · Chatbots · SaaS · Marketing · Manutenção
+              {t("footer.tagline")}
             </p>
           </div>
 
-          {/* Links */}
           <div className="flex gap-6 text-sm font-body">
-            {[
-              { label: "Serviços", href: "#servicos" },
-              { label: "Portfólio", href: "#portfolio" },
-              { label: "Processo", href: "#processo" },
-              { label: "Contato", href: "#contato" },
-            ].map((l) => (
+            {links.map((l) => (
               <button
                 key={l.href}
                 onClick={() => scrollTo(l.href)}
@@ -36,7 +38,6 @@ const Footer = () => {
             ))}
           </div>
 
-          {/* Socials */}
           <div className="flex gap-4">
             {[
               { icon: Linkedin, href: "#" },
@@ -58,7 +59,7 @@ const Footer = () => {
 
         <div className="mt-8 pt-6 border-t border-border text-center">
           <p className="text-xs text-muted-foreground font-body">
-            © 2026 LIPE Technology. Todos os direitos reservados.
+            {t("footer.copyright")}
           </p>
         </div>
       </div>
