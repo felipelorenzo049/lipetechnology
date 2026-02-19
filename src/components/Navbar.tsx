@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import logoLipe from "@/assets/logo-lipe.png";
 import {
   Menu as NavMenu,
   MenuItem,
@@ -40,9 +39,9 @@ const Navbar = () => {
           <a
             href="#"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="mr-8 flex items-center"
+            className="font-headline text-lg font-bold gradient-text mr-8 flex items-center tracking-widest"
           >
-            <img src={logoLipe} alt="LIPE Technology" className="h-6" />
+            LIPE
           </a>
 
           <MenuItem setActive={setActive} active={active} item={t("nav.services")}>
@@ -120,7 +119,8 @@ const Navbar = () => {
       <div className="md:hidden glass">
         <div className="container mx-auto flex items-center justify-between px-6 py-4">
           <a href="#" className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-            <img src={logoLipe} alt="LIPE Technology" className="h-7" />
+            <span className="font-headline text-2xl font-bold gradient-text">LIPE</span>
+            <span className="text-sm font-body text-muted-foreground">Technology</span>
           </a>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
