@@ -218,5 +218,68 @@
       { "q": "Posso atualizar o conteúdo sozinho?", "a": "Claro. Construímos com integração CMS para que possa atualizar textos, imagens e produtos sem precisar de um developer." },
       { "q": "Que tecnologias utilizam?", "a": "Usamos tecnologias modernas e testadas: React, TypeScript, Node.js, Supabase e mais. O stack é escolhido por performance, segurança e escalabilidade." }
     ]
+  },
+  "pricing": {
+    "label": "Preços",
+    "title": "Preços",
+    "titleHighlight": "transparentes",
+    "subtitle": "Planos claros para cada fase do seu negócio. Sem custos ocultos.",
+    "popular": "Mais popular",
+    "note": "Todos os planos incluem uma call de descoberta gratuita. Orçamentos personalizados disponíveis para projetos complexos.",
+    "plans": [
+      {
+        "name": "Starter",
+        "price": "A partir de €2.000",
+        "description": "Perfeito para pequenos negócios a dar os primeiros passos online.",
+        "features": ["Landing page ou site simples", "Design responsivo mobile", "SEO básico configurado", "Integração de formulário", "1 mês de suporte incluído"],
+        "cta": "Começar"
+      },
+      {
+        "name": "Growth",
+        "price": "A partir de €5.000",
+        "description": "Para negócios prontos a escalar a presença digital.",
+        "popular": true,
+        "features": ["Site multi-página ou e-commerce", "CMS para atualizações fáceis", "SEO avançado & analytics", "Integração de chatbot", "3 meses de suporte incluído", "Otimização de performance"],
+        "cta": "Começar a crescer"
+      },
+      {
+        "name": "Premium",
+        "price": "A partir de €10.000",
+        "description": "Transformação digital completa para negócios ambiciosos.",
+        "features": ["SaaS ou plataforma customizada", "Funcionalidades com AI", "Branding & UX completo", "Integrações API", "6 meses de suporte prioritário", "Gestor de projeto dedicado"],
+        "cta": "Vamos conversar"
+      }
+    ]
+  },
+  "privacy": {
+    "title": "Política de Privacidade",
+    "lastUpdated": "Última atualização: Fevereiro 2026",
+    "sections": [
+      { "heading": "Informação que Recolhemos", "content": "Recolhemos informação que fornece diretamente, como nome, email, telefone e dados da empresa quando preenche o nosso formulário de contacto ou comunica connosco via WhatsApp." },
+      { "heading": "Como Usamos a Sua Informação", "content": "Usamos a informação para responder às suas questões, fornecer orçamentos, prestar os nossos serviços e enviar atualizações relevantes sobre o seu projeto. Nunca vendemos os seus dados a terceiros." },
+      { "heading": "Armazenamento & Segurança", "content": "Os seus dados são armazenados de forma segura usando encriptação padrão da indústria. Usamos provedores cloud de confiança e seguimos as melhores práticas de proteção de dados." },
+      { "heading": "Cookies", "content": "O nosso website usa cookies mínimos para preferências de idioma e analytics. Não são usados cookies de tracking para publicidade." },
+      { "heading": "Os Seus Direitos", "content": "Sob o RGPD/LGPD, tem o direito de aceder, corrigir ou eliminar os seus dados pessoais. Contacte-nos em privacy@lipetechnology.com para exercer estes direitos." },
+      { "heading": "Contacto", "content": "Para questões relacionadas com privacidade, contacte-nos em privacy@lipetechnology.com ou através do formulário de contacto do website." }
+    ]
+  },
+  "terms": {
+    "title": "Termos de Serviço",
+    "lastUpdated": "Última atualização: Fevereiro 2026",
+    "sections": [
+      { "heading": "Serviços", "content": "A LIPE Technology fornece serviços de desenvolvimento web, criação de chatbots, desenvolvimento de plataformas SaaS, marketing digital e manutenção conforme descrito no nosso website e acordado em propostas individuais de projeto." },
+      { "heading": "Acordos de Projeto", "content": "Cada projeto começa com uma proposta detalhada incluindo âmbito, cronograma e preços. O trabalho começa apenas após aprovação escrita e qualquer pagamento inicial necessário." },
+      { "heading": "Condições de Pagamento", "content": "Os calendários de pagamento são definidos por projeto, tipicamente divididos em marcos. Os termos padrão são 50% adiantado e 50% na entrega, salvo acordo em contrário." },
+      { "heading": "Propriedade Intelectual", "content": "Após pagamento integral, todo o código e designs customizados criados para o seu projeto tornam-se sua propriedade. Reservamo-nos o direito de mostrar o projeto no nosso portfólio salvo acordo em contrário." },
+      { "heading": "Limitação de Responsabilidade", "content": "A responsabilidade da LIPE Technology é limitada ao valor total pago pelo projeto específico. Não somos responsáveis por danos indiretos, perda de receita ou falhas de serviços terceiros." },
+      { "heading": "Rescisão", "content": "Qualquer parte pode rescindir um projeto com 30 dias de aviso prévio escrito. O trabalho concluído até à data de rescisão será faturado e entregue." }
+    ]
+  },
+  "footer": {
+    "tagline": "Sites · Chatbots · SaaS · Marketing · Manutenção",
+    "copyright": "© 2026 LIPE Technology. Todos os direitos reservados.",
+    "pricing": "Preços",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Serviço"
   }
 }

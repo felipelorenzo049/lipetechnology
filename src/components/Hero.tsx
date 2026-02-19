@@ -2,9 +2,11 @@ import { motion } from "framer-motion";
 import { ArrowDown, MessageCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SparklesCore } from "@/components/ui/sparkles";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Hero = () => {
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -21,7 +23,7 @@ const Hero = () => {
           background="transparent"
           minSize={0.4}
           maxSize={1.4}
-          particleDensity={60}
+          particleDensity={isMobile ? 15 : 60}
           className="w-full h-full"
           particleColor="#4B83F0"
           speed={1.5}

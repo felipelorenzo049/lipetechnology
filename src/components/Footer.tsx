@@ -1,5 +1,6 @@
 import { Linkedin, Instagram } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -26,7 +27,7 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="flex gap-6 text-sm font-body">
+          <div className="flex flex-wrap justify-center gap-6 text-sm font-body">
             {links.map((l) => (
               <button
                 key={l.href}
@@ -36,12 +37,15 @@ const Footer = () => {
                 {l.label}
               </button>
             ))}
+            <Link to="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">
+              {t("footer.pricing")}
+            </Link>
           </div>
 
           <div className="flex gap-4">
             {[
-              { icon: Linkedin, href: "#" },
-              { icon: Instagram, href: "#" },
+              { icon: Linkedin, href: "https://linkedin.com/company/lipetechnology" },
+              { icon: Instagram, href: "https://instagram.com/lipetechnology" },
             ].map(({ icon: Icon, href }, i) => (
               <a
                 key={i}
@@ -56,10 +60,18 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-border text-center">
+        <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground font-body">
             {t("footer.copyright")}
           </p>
+          <div className="flex gap-4 text-xs font-body">
+            <Link to="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
+              {t("footer.privacy")}
+            </Link>
+            <Link to="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
+              {t("footer.terms")}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

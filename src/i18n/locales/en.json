@@ -218,5 +218,68 @@
       { "q": "Can I update the content myself?", "a": "Absolutely. We build with CMS integration so you can update text, images, and products without needing a developer." },
       { "q": "What technologies do you use?", "a": "We use modern, battle-tested technologies: React, TypeScript, Node.js, Supabase, and more. Our stack is chosen for performance, security, and scalability." }
     ]
+  },
+  "pricing": {
+    "label": "Pricing",
+    "title": "Transparent",
+    "titleHighlight": "pricing",
+    "subtitle": "Clear plans for every stage of your business. No hidden fees.",
+    "popular": "Most popular",
+    "note": "All plans include a free discovery call. Custom quotes available for complex projects.",
+    "plans": [
+      {
+        "name": "Starter",
+        "price": "From €2,000",
+        "description": "Perfect for small businesses getting started online.",
+        "features": ["Landing page or simple website", "Mobile responsive design", "Basic SEO setup", "Contact form integration", "1 month support included"],
+        "cta": "Get started"
+      },
+      {
+        "name": "Growth",
+        "price": "From €5,000",
+        "description": "For businesses ready to scale their digital presence.",
+        "popular": true,
+        "features": ["Multi-page website or e-commerce", "CMS for easy updates", "Advanced SEO & analytics", "Chatbot integration", "3 months support included", "Performance optimization"],
+        "cta": "Start growing"
+      },
+      {
+        "name": "Premium",
+        "price": "From €10,000",
+        "description": "Full-scale digital transformation for ambitious businesses.",
+        "features": ["Custom SaaS or platform", "AI-powered features", "Full branding & UX design", "API integrations", "6 months priority support", "Dedicated project manager"],
+        "cta": "Let's talk"
+      }
+    ]
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: February 2026",
+    "sections": [
+      { "heading": "Information We Collect", "content": "We collect information you provide directly, such as your name, email, phone number, and company details when you fill out our contact form or communicate with us via WhatsApp." },
+      { "heading": "How We Use Your Information", "content": "We use the information to respond to your inquiries, provide project quotes, deliver our services, and send relevant updates about your project. We never sell your data to third parties." },
+      { "heading": "Data Storage & Security", "content": "Your data is stored securely using industry-standard encryption. We use trusted cloud providers and follow best practices for data protection." },
+      { "heading": "Cookies", "content": "Our website uses minimal cookies for language preferences and analytics. No tracking cookies are used for advertising purposes." },
+      { "heading": "Your Rights", "content": "Under GDPR/LGPD, you have the right to access, correct, or delete your personal data. Contact us at privacy@lipetechnology.com to exercise these rights." },
+      { "heading": "Contact", "content": "For privacy-related questions, contact us at privacy@lipetechnology.com or through our website contact form." }
+    ]
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: February 2026",
+    "sections": [
+      { "heading": "Services", "content": "LIPE Technology provides web development, chatbot creation, SaaS platform development, digital marketing, and maintenance services as described on our website and agreed upon in individual project proposals." },
+      { "heading": "Project Agreements", "content": "Each project begins with a detailed proposal including scope, timeline, and pricing. Work begins only after written approval and any required initial payment." },
+      { "heading": "Payment Terms", "content": "Payment schedules are defined per project, typically split into milestones. Standard terms are 50% upfront and 50% upon delivery, unless otherwise agreed." },
+      { "heading": "Intellectual Property", "content": "Upon full payment, all custom code and designs created for your project become your property. We retain the right to showcase the project in our portfolio unless otherwise agreed." },
+      { "heading": "Limitation of Liability", "content": "LIPE Technology's liability is limited to the total amount paid for the specific project. We are not liable for indirect damages, loss of revenue, or third-party service failures." },
+      { "heading": "Termination", "content": "Either party may terminate a project with 30 days written notice. Work completed up to the termination date will be invoiced and delivered." }
+    ]
+  },
+  "footer": {
+    "tagline": "Websites · Chatbots · SaaS · Marketing · Maintenance",
+    "copyright": "© 2026 LIPE Technology. All rights reserved.",
+    "pricing": "Pricing",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
   }
 }
