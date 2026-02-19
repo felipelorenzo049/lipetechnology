@@ -141,24 +141,24 @@
     "titleHighlight": "clienti",
     "quotes": [
       {
-        "quote": "LIPE non ha solo creato il nostro sito — hanno raccontato la nostra storia in un modo che non avremmo mai potuto fare.",
-        "author": "Maria S.",
-        "role": "Proprietaria, Ristorante Sabor & Tradição"
-      },
-      {
-        "quote": "Il nostro chatbot qualifica i clienti mentre dormiamo. È come avere un venditore 24/7 che conosce ogni dettaglio dell'attività.",
+        "quote": "LIPE ha costruito la nostra piattaforma e-commerce da zero — con homepage 3D, calcolatrice AI e checkout WhatsApp. Siamo 100% indipendenti.",
         "author": "Carlos R.",
-        "role": "CEO, EasyLine Brasil"
+        "role": "CEO, EasyLine"
       },
       {
-        "quote": "Hanno trasformato il nostro negozietto di quartiere in un e-commerce che consegna in 12 città. Senza perdere la nostra identità.",
-        "author": "Ana L.",
-        "role": "Fondatrice, Empório do Bairro"
+        "quote": "Il menu digitale, prenotazioni online e take away hanno completamente trasformato il nostro ristorante. I clienti adorano l'esperienza.",
+        "author": "Sofia M.",
+        "role": "Proprietaria, Plate Boutique"
       },
       {
         "quote": "Il sistema di prenotazione ha ridotto i conflitti del 60%. Risparmio 2 ore al giorno. Il miglior investimento che abbia mai fatto.",
         "author": "Pedro M.",
         "role": "Direttore, Studio Wellness"
+      },
+      {
+        "quote": "Hanno digitalizzato tutto il nostro processo di liquidazione veicoli. Gestione lotti e catalogo online in tempo reale. Impeccabile.",
+        "author": "Ricardo T.",
+        "role": "Battitore d'asta, Milan Veicoli"
       }
     ]
   },
@@ -194,7 +194,7 @@
   },
   "kpis": {
     "projects": "Progetti consegnati",
-    "countries": "Paesi serviti",
+    "hoursSaved": "Ore risparmiate",
     "satisfaction": "Soddisfazione clienti",
     "onTime": "Consegna puntuale"
   },

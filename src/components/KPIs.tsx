@@ -28,10 +28,10 @@ const KPIs = () => {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   const kpis = [
-    { value: 50, suffix: "+", labelKey: "kpis.projects" },
-    { value: 12, suffix: "", labelKey: "kpis.countries" },
+    { value: 4, suffix: "", labelKey: "kpis.projects" },
+    { value: 500, suffix: "+", labelKey: "kpis.hoursSaved" },
     { value: 4.9, suffix: "/5", labelKey: "kpis.satisfaction", isDecimal: true },
-    { value: 98, suffix: "%", labelKey: "kpis.onTime" },
+    { value: 100, suffix: "%", labelKey: "kpis.onTime" },
   ];
 
   return (
