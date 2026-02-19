@@ -1,59 +1,63 @@
 
-## Analise e Melhorias de UX/UI na Secao de Servicos
 
-### Problemas identificados
+## Corrigir indicacao de lingua no header e mascara de telefone dinamica
 
-1. **Layout do grid desequilibrado**: O card "Custom Websites" ocupa 2 colunas mas tem pouco conteudo para preencher o espaco. O card "Consultative Chatbots" ocupa 2 linhas mas visualmente nao se diferencia. O card "Maintenance & Support" fica sozinho na ultima linha, criando um espaco vazio assimetrico.
+### Problema 1: Header mostra "EN" em vez de "PT"
 
-2. **Falta de hierarquia visual**: Todos os cards parecem iguais (mesma cor de icone, mesmo peso visual). Nao ha destaque para o servico principal ou mais popular.
+O `LanguageDetector` deteta a lingua do browser como `"pt-PT"` ou `"pt-BR"`. O i18next resolve internamente para `"pt"` e mostra o conteudo correto, mas o `LanguageSwitcher` faz comparacao exata (`l.code === i18n.language`), que falha com `"pt-PT"`, e cai no fallback `languages[0]` = EN.
 
-3. **Interacao pouco evidente**: O chevron de expansao e pequeno e discreto. Nao ha indicacao clara de que os cards sao clicaveis (hover apenas adiciona glow, sem feedback forte).
+**Correcao em `src/components/LanguageSwitcher.tsx`:**
+- Usar `i18n.resolvedLanguage` em vez de `i18n.language` (o `resolvedLanguage` retorna o codigo da lingua que efetivamente esta a ser usada, ex: `"pt"`)
+- Alternativa de fallback: comparar com `startsWith` (ex: `"pt-PT".startsWith("pt")`)
 
-4. **Ausencia de CTA**: Depois de ler sobre um servico, o utilizador nao tem um caminho claro para agir (contactar, pedir orcamento).
+### Problema 2: Mascara de telefone dinamica por lingua
 
-5. **Descricoes curtas sem diferenciacao**: O texto muted-foreground e pequeno, dificultando a leitura rapida dos beneficios.
+Atualmente o placeholder e fixo (`+351 912 345 678`). Deve mudar conforme a lingua selecionada.
 
-6. **Sem subtitulo da secao**: A secao tem apenas titulo, sem contexto adicional que ajude o utilizador a entender o que vai encontrar.
+**Correcao em `src/components/Contact.tsx`:**
+- Criar um mapa de formatos por lingua:
+  - `pt` -> `+351 912 345 678`
+  - `es` -> `+34 612 345 678`
+  - `it` -> `+39 312 345 6789`
+  - `en` -> `+1 (555) 123-4567`
+- Usar `i18n.resolvedLanguage` para selecionar o placeholder e o prefixo adequado
+- Atualizar os ficheiros de traducao com os placeholders corretos para cada lingua
 
-### Melhorias propostas
-
-**1. Adicionar subtitulo a secao**
-- Texto breve abaixo do titulo para contextualizar (ex: "Solucoes completas para a sua presenca digital")
-
-**2. Badge de destaque no servico principal**
-- Adicionar um badge "Mais popular" ou "Recomendado" no card de Sites Personalizaveis para criar hierarquia
-
-**3. Melhorar feedback de interacao**
-- Adicionar borda com gradiente no hover (border-primary/50)
-- Adicionar texto "Ver detalhes" junto ao chevron para tornar a acao mais explicita
-- Animacao de scale sutil no hover (scale 1.02)
-
-**4. Adicionar CTA em cada card expandido**
-- Botao "Pedir orcamento" ou "Saber mais" no final da lista de detalhes expandida
-- Link direto para a secao de contacto com o servico pre-selecionado
-
-**5. Icones com cores diferenciadas**
-- Cada servico com uma cor de icone diferente (primary, secondary, accent) para facilitar scan visual
-
-**6. Melhorar layout do grid**
-- Reorganizar para que o ultimo card nao fique sozinho: fazer "Maintenance" ocupar as 2 colunas restantes ou reorganizar para 2 colunas em desktop
+**Correcao em `src/i18n/config.ts`:**
+- Adicionar `supportedLngs: ["en", "pt", "es", "it"]` na config do i18next para que o detector resolva automaticamente `"pt-PT"` para `"pt"`
 
 ### Ficheiros a modificar
 
-**`src/components/Services.tsx`**
-- Adicionar subtitulo na secao
-- Adicionar badge "Mais popular" ao primeiro card
-- Melhorar hover com `hover:scale-[1.02]` e `hover:border-primary/50`
-- Adicionar texto "Ver detalhes" junto ao chevron
-- Adicionar botao CTA dentro da area expandida que linka para `#contacto`
-- Diferenciar cores dos icones por servico (primary, secondary, accent)
-- Ajustar span do ultimo card para `md:col-span-2` equilibrando o grid
+| Ficheiro | Alteracao |
+|---|---|
+| `src/i18n/config.ts` | Adicionar `supportedLngs` para resolver linguas regionais automaticamente |
+| `src/components/LanguageSwitcher.tsx` | Usar `i18n.resolvedLanguage` em vez de `i18n.language` |
+| `src/i18n/locales/pt.json` | Placeholder telefone ja esta correto (`+351`) |
+| `src/i18n/locales/es.json` | Atualizar placeholder para `+34 612 345 678` |
+| `src/i18n/locales/it.json` | Atualizar placeholder para `+39 312 345 6789` |
+| `src/i18n/locales/en.json` | Atualizar placeholder para `+1 (555) 123-4567` |
 
-**`src/i18n/locales/pt.json`** (e en.json, es.json, it.json)
-- Adicionar chave `services.subtitle` com texto contextual
-- Adicionar chave `services.viewDetails` para o texto do botao
-- Adicionar chave `services.getQuote` para o CTA
-- Adicionar chave `services.popular` para o badge
+### Detalhes tecnicos
+
+**`src/i18n/config.ts`** - adicionar `supportedLngs`:
+```ts
+.init({
+  resources: { ... },
+  supportedLngs: ["en", "pt", "es", "it"],
+  fallbackLng: "en",
+  ...
+});
+```
+Isto faz com que `"pt-PT"` seja automaticamente resolvido para `"pt"`.
+
+**`src/components/LanguageSwitcher.tsx`** - usar `resolvedLanguage`:
+```ts
+const current = languages.find((l) => l.code === i18n.resolvedLanguage) || languages[0];
+// E na comparacao do dropdown:
+lang.code === i18n.resolvedLanguage ? "text-primary" : "text-foreground/80"
+```
 
 ### Resultado esperado
-Secao de servicos com hierarquia visual clara, feedback de interacao forte, caminho de conversao direto em cada card, e layout equilibrado sem espacos vazios.
+- O header mostra "PT" quando o site esta em portugues
+- O placeholder do telefone muda automaticamente conforme a lingua (ex: `+34` para espanhol, `+39` para italiano)
+
