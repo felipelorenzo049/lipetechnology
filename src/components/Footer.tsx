@@ -1,4 +1,4 @@
-import { Linkedin, Instagram, Github } from "lucide-react";
+import { Linkedin, Instagram } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const Footer = () => {
@@ -42,7 +42,6 @@ const Footer = () => {
             {[
               { icon: Linkedin, href: "#" },
               { icon: Instagram, href: "#" },
-              { icon: Github, href: "#" },
             ].map(({ icon: Icon, href }, i) => (
               <a
                 key={i}
