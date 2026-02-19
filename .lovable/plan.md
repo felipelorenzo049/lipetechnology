@@ -1,72 +1,71 @@
 
 
-# Plano: Substituir TechStack, Ajustar KPIs e Alinhar Depoimentos
+# Melhorias no Header, FAQ e Pricing
 
-## 1. Substituir secao TechStack por Integrations Grid
+## 1. Navbar - Design e Fluxo
 
-Reescrever `src/components/TechStack.tsx` com um layout de grid de cards (inspirado no componente cnblocks), adaptado ao dark theme do site. Cada card tera:
-- Logo SVG inline da tecnologia (nao texto)
-- Nome da tecnologia
-- Descricao curta
-- Animacao de entrada com Framer Motion
+### Problemas identificados (das imagens):
+- Falta link para a pagina de Precos/Planos no navbar
+- O dropdown do LanguageSwitcher usa classe `glass` que pode ficar semi-transparente em certos contextos
+- Navbar desktop nao tem link direto para `/pricing`
+- Mobile: falta link para Precos no menu drawer
 
-Tecnologias com logos SVG inline:
-- **React** (icone atomico)
-- **Next.js** (N logo)
-- **TypeScript** (TS logo)
-- **Supabase** (icone DB)
-- **Node.js** (hexagono)
-- **Tailwind CSS** (vento)
-- **OpenAI** (sparkle)
-- **Stripe** (S logo)
-- **Figma** (losango)
+### Alteracoes:
+**`src/components/Navbar.tsx`**:
+- Adicionar link "Planos" no navbar desktop (entre "Processo" e LanguageSwitcher) usando `react-router-dom` `Link` apontando para `/pricing`
+- Adicionar link "Planos" no menu mobile
+- Traduzir label via `t("nav.pricing")`
 
-Manter a tabela comparativa (DIY vs Agencia vs LIPE) abaixo, pois e uma ferramenta de conversao importante.
+**`src/components/LanguageSwitcher.tsx`**:
+- Substituir classe `glass` no dropdown por background solido: `bg-card border border-border backdrop-blur-xl` para garantir opacidade total e evitar transparencia
 
-Adaptacoes do componente original:
-- Remover `Link` do Next.js (usar `react-router-dom` ou remover links)
-- Remover botao "Learn More" (nao faz sentido neste contexto)
-- Adaptar classes para o dark theme existente (glass, gradients)
-- Usar `framer-motion` para animacoes de scroll
+### Novas chaves i18n em todos os 4 locales:
+- `nav.pricing`: "Planos" (PT), "Plans" (EN), "Planes" (ES), "Piani" (IT)
 
-## 2. Ajustar KPIs
+---
 
-Alterar `src/components/KPIs.tsx`:
-- **Projetos**: 50+ muda para **4** (numero real de projetos no portfolio)
-- **Remover "Paises"**: todos os projetos sao do mesmo pais
-- **Substituir por "Horas poupadas"**: ex: "500+" horas poupadas para clientes (KPI de impacto)
-- **Satisfacao**: manter 4.9/5
-- **Entrega no prazo**: mudar de 98% para **100%**
+## 2. FAQ - Alinhar com dados reais
 
-Novos KPIs:
-| KPI | Valor | Sufixo |
-|-----|-------|--------|
-| Projetos entregues | 4 | (sem sufixo) |
-| Horas poupadas | 500 | + |
-| Satisfacao | 4.9 | /5 |
-| Entrega no prazo | 100 | % |
+### Problemas atuais:
+- "Trabalham com clientes em 12 paises" - inconsistente (todos os projetos sao do mesmo pais)
+- "Projetos comecam em 2.000 euros" - desatualizado (Starter agora e 750 euros)
+- Tom generico, nao reflete a identidade do site
 
-Atualizar traducoes em todos os 4 locales.
+### Alteracoes nos 4 locales:
+Reescrever as 6 respostas do FAQ para:
 
-## 3. Alinhar Depoimentos com Projetos Reais
+1. **Quanto tempo demora?** - Manter, esta ok
+2. **Quanto custa?** - Atualizar: "Os nossos projetos comecam em 750 euros para landing pages. O plano Growth comeca em 3.000 euros e o Premium e sob consulta. Fornecemos sempre um orcamento detalhado antes de comecar."
+3. **Trabalham com empresas fora de Portugal?** - Reescrever: remover "12 paises", dizer que trabalham remotamente com empresas de qualquer localizacao
+4. **O que acontece apos o lancamento?** - Manter, esta ok
+5. **Posso atualizar o conteudo sozinho?** - Manter, esta ok
+6. **Que tecnologias utilizam?** - Manter, esta ok
 
-Reescrever os 4 testimonials para corresponder aos 4 projetos do portfolio:
+---
 
-| Projeto | Autor | Role |
-|---------|-------|------|
-| EasyLine | Carlos R. | CEO, EasyLine |
-| Plate Boutique | Sofia M. | Proprietaria, Plate Boutique |
-| Agendamento Inteligente | Pedro M. | Diretor, Studio Wellness |
-| Milan | Ricardo T. | Leiloeiro, Milan Veiculos |
+## 3. Pricing - Atualizar precos
 
-Atualizar quotes em PT, EN, ES e IT com depoimentos especificos ao resultado de cada projeto.
+### Novos valores:
+| Plano | Preco |
+|-------|-------|
+| Starter | 750 euros |
+| Growth | 3.000 euros |
+| Premium | Consultar / Sob consulta |
+
+### Alteracoes nos 4 locales (`pricing.plans`):
+
+**Starter**: "750 euros" (PT), "€750" (EN), "750€" (ES), "750€" (IT)
+**Growth**: "3.000 euros" (PT: "A partir de €3.000"), (EN: "From €3,000"), etc.
+**Premium**: "Sob consulta" (PT), "Custom quote" (EN), "A consultar" (ES), "Su preventivo" (IT)
+
+---
 
 ## Ficheiros a alterar
 
-1. `src/components/TechStack.tsx` - Reescrever com grid de cards + logos SVG
-2. `src/components/KPIs.tsx` - Ajustar valores e remover "paises"
-3. `src/i18n/locales/pt.json` - KPIs + testimonials
-4. `src/i18n/locales/en.json` - KPIs + testimonials
-5. `src/i18n/locales/es.json` - KPIs + testimonials
-6. `src/i18n/locales/it.json` - KPIs + testimonials
+1. `src/components/Navbar.tsx` - Adicionar link Planos (desktop + mobile)
+2. `src/components/LanguageSwitcher.tsx` - Background solido no dropdown
+3. `src/i18n/locales/pt.json` - nav.pricing + FAQ + Pricing prices
+4. `src/i18n/locales/en.json` - nav.pricing + FAQ + Pricing prices
+5. `src/i18n/locales/es.json` - nav.pricing + FAQ + Pricing prices
+6. `src/i18n/locales/it.json` - nav.pricing + FAQ + Pricing prices
 
