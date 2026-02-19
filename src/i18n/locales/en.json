@@ -67,6 +67,20 @@
     "productBadge": "LIPE Product",
     "clientBadge": "Client Project",
     "viewProject": "View full project",
+    "metrics": {
+      "easylineMetric1": "28 years",
+      "easylineMetric2": "35K clients",
+      "plateMetric1": "Digital menu",
+      "plateMetric2": "Online reservations",
+      "plateMetric3": "Take away",
+      "plateMetric4": "WhatsApp",
+      "agendamentoMetric1": "-60% conflicts",
+      "agendamentoMetric2": "2h/day",
+      "agendamentoMetric3": "AI-powered",
+      "milanMetric1": "Liquidation",
+      "milanMetric2": "Lot management",
+      "milanMetric3": "Real-time"
+    },
     "easyline": {
       "tagline": "Complete e-commerce for queue management leader",
       "description": "E-commerce platform with interactive 3D homepage, AI pedestal calculator, admin dashboard with CRM and WhatsApp checkout integration.",

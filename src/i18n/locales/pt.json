@@ -67,6 +67,20 @@
     "productBadge": "Produto LIPE",
     "clientBadge": "Projeto Cliente",
     "viewProject": "Ver projeto completo",
+    "metrics": {
+      "easylineMetric1": "28 anos",
+      "easylineMetric2": "35K clientes",
+      "plateMetric1": "Menu digital",
+      "plateMetric2": "Reservas online",
+      "plateMetric3": "Take away",
+      "plateMetric4": "WhatsApp",
+      "agendamentoMetric1": "-60% conflitos",
+      "agendamentoMetric2": "2h/dia",
+      "agendamentoMetric3": "AI-powered",
+      "milanMetric1": "Liquidação",
+      "milanMetric2": "Gestão de lotes",
+      "milanMetric3": "Tempo real"
+    },
     "easyline": {
       "tagline": "E-commerce completo para líder em gestão de filas",
       "description": "Plataforma e-commerce com homepage 3D interativa, calculadora AI de pedestais, dashboard admin com CRM e integração WhatsApp checkout.",

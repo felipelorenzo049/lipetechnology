@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 type Project = {
   title: string;
   i18nKey: string;
-  metrics: string[];
+  metricsKeys: string[];
   tech: string[];
   color: "primary" | "secondary" | "accent";
   type: "produto" | "cliente";
@@ -20,7 +20,7 @@ const projects: Project[] = [
   {
     title: "EasyLine Platform",
     i18nKey: "easyline",
-    metrics: ["28 anos", "35K clientes"],
+    metricsKeys: ["easylineMetric1", "easylineMetric2"],
     tech: ["React 18", "TypeScript", "Three.js", "Supabase", "Framer Motion"],
     color: "primary",
     type: "cliente",
@@ -28,7 +28,7 @@ const projects: Project[] = [
   {
     title: "Plate Boutique by LIPE",
     i18nKey: "plate",
-    metrics: ["Menu digital", "Reservas online", "Take away", "WhatsApp"],
+    metricsKeys: ["plateMetric1", "plateMetric2", "plateMetric3", "plateMetric4"],
     tech: ["React", "Contentful CMS", "Stripe", "SEO local"],
     color: "secondary",
     type: "produto",
@@ -36,7 +36,7 @@ const projects: Project[] = [
   {
     title: "Agendamento Inteligente",
     i18nKey: "agendamento",
-    metrics: ["-60% conflitos", "2h/dia", "AI-powered"],
+    metricsKeys: ["agendamentoMetric1", "agendamentoMetric2", "agendamentoMetric3"],
     tech: ["React", "Node.js", "Stripe", "Twilio"],
     color: "primary",
     type: "produto",
@@ -44,7 +44,7 @@ const projects: Project[] = [
   {
     title: "Milan",
     i18nKey: "milan",
-    metrics: ["Liquidação", "Gestão de lotes", "Tempo real"],
+    metricsKeys: ["milanMetric1", "milanMetric2", "milanMetric3"],
     tech: ["React", "TypeScript", "Tailwind CSS"],
     color: "secondary",
     type: "cliente",
@@ -192,12 +192,12 @@ const TimelineNode = ({ project, index }: { project: Project; index: number }) =
           </p>
 
           <div className="flex flex-wrap gap-2">
-            {project.metrics.map((m) => (
+            {project.metricsKeys.map((key) => (
               <span
-                key={m}
+                key={key}
                 className={`px-3 py-1 rounded-full text-xs font-mono font-medium ${badgeColorMap[project.color]}`}
               >
-                {m}
+                {t(`portfolio.metrics.${key}`)}
               </span>
             ))}
           </div>
