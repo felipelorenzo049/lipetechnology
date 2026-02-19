@@ -4,7 +4,6 @@
     "portfolio": "Portfolio",
     "process": "Process",
     "contact": "Contact",
-    "plans": "Plans",
     "talkToUs": "Talk to Us",
     "customWebsites": "Custom Websites",
     "consultativeChatbots": "Consultative Chatbots",
@@ -17,10 +16,7 @@
     "landingPage": "Landing Page",
     "landingPageDesc": "High-conversion page",
     "aiChatbot": "AI Chatbot",
-    "aiChatbotDesc": "Intelligent virtual assistant",
-    "starter": "Starter",
-    "professional": "Professional",
-    "enterprise": "Enterprise"
+    "aiChatbotDesc": "Intelligent virtual assistant"
   },
   "hero": {
     "badge": "LIPE Technology",
@@ -63,6 +59,7 @@
     "title": "The evolution of",
     "titleHighlight": "LIPE Technology",
     "subtitle": "Own products and client projects that show how we build technology with identity.",
+    "viewAll": "View all projects",
     "productBadge": "LIPE Product",
     "clientBadge": "Client Project",
     "viewProject": "View full project",
@@ -146,32 +143,6 @@
         "role": "Director, Studio Wellness"
       }
     ]
-  },
-  "pricing": {
-    "label": "Investment",
-    "title": "Plans that",
-    "titleHighlight": "make sense",
-    "mostPopular": "Most popular",
-    "cta": "Talk to us",
-    "disclaimer": "Each project is unique. Final values depend on scope. Schedule a conversation for a personalized quote.",
-    "essential": {
-      "name": "Essential",
-      "price": "€2,000–4,000",
-      "description": "Ideal to start your digital presence",
-      "features": ["Custom website", "5-8 pages", "Mobile responsive", "Basic SEO", "3 months support"]
-    },
-    "professional": {
-      "name": "Professional",
-      "price": "€5,000–8,000",
-      "description": "For those who want to grow with intelligence",
-      "features": ["Everything in Essential", "Consultative chatbot", "Integrations (WhatsApp, payments)", "Advanced analytics", "6 months support"]
-    },
-    "enterprise": {
-      "name": "Enterprise / SaaS",
-      "price": "On request",
-      "description": "Custom platforms and solutions",
-      "features": ["Custom platforms", "Complex web applications", "Dashboards & analytics", "Scalable architecture", "Continuous support"]
-    }
   },
   "contact": {
     "label": "Contact",

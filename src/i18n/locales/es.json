@@ -4,7 +4,6 @@
     "portfolio": "Portafolio",
     "process": "Proceso",
     "contact": "Contacto",
-    "plans": "Planes",
     "talkToUs": "Contáctenos",
     "customWebsites": "Sitios Personalizados",
     "consultativeChatbots": "Chatbots Consultivos",
@@ -17,30 +16,27 @@
     "landingPage": "Landing Page",
     "landingPageDesc": "Página de alta conversión",
     "aiChatbot": "Chatbot IA",
-    "aiChatbotDesc": "Asistente virtual inteligente",
-    "starter": "Starter",
-    "professional": "Profesional",
-    "enterprise": "Enterprise"
+    "aiChatbotDesc": "Asistente virtual inteligente"
   },
   "hero": {
     "badge": "LIPE Technology",
     "title1": "Tecnología que",
     "titleHighlight": "amplifica",
     "title2": "quién eres",
-    "subtitle": "Creamos sitios web, chatbots y plataformas para empresas locales que quieren crecer sin perder su esencia",
-    "ctaProjects": "Ver nuestros proyectos",
+    "subtitle": "Sitios web, chatbots y plataformas para empresas que quieren crecer sin perder su esencia",
+    "ctaProjects": "Ver proyectos",
     "ctaContact": "Contáctenos"
   },
   "manifesto": {
     "label": "Nuestra filosofía",
-    "quote1": "La mayoría de las agencias construyen sitios web que se ven iguales. Nosotros construimos tecnología que",
+    "quote1": "La mayoría de las agencias hacen sitios iguales. Nosotros creamos tecnología que",
     "quoteHighlight": "cuenta historias",
-    "description": "¿Tu restaurante tiene años de tradición? Haremos que el sitio web lo honre. ¿Tu tienda es el corazón del barrio? Tu sitio web también lo será. La tecnología no debe borrar la identidad —",
+    "description": "¿Tu restaurante tiene tradición? El sitio la honrará. ¿Tu tienda es el corazón del barrio? Tu sitio también. La tecnología no borra identidad —",
     "descriptionHighlight": "debe amplificarla"
   },
   "services": {
     "label": "Servicios",
-    "title": "Todo lo que necesitas para",
+    "title": "Todo para",
     "titleHighlight": "crecer digital",
     "customWebsites": "Sitios Personalizados",
     "customWebsitesShort": "Sitios web que reflejan la identidad única de tu negocio. Responsivos, rápidos y hechos para convertir.",
@@ -51,7 +47,7 @@
     "saas": "SaaS / Plataformas",
     "saasShort": "Aplicaciones web a medida para las operaciones únicas de tu negocio.",
     "saasDetails": ["Hecho a medida para tus flujos", "Arquitectura escalable", "Cloud-hosted & seguro", "Datos en tiempo real"],
-    "digitalMarketing": "Estrategia de Marketing Digital",
+    "digitalMarketing": "Marketing Digital",
     "digitalMarketingShort": "SEO, ads, contenido y redes sociales. No solo construimos — te ayudamos a crecer.",
     "digitalMarketingDetails": ["SEO & visibilidad local", "Gestión de campañas", "Estrategia de contenido", "Analytics & optimización"],
     "maintenance": "Mantenimiento & Soporte",
@@ -63,6 +59,7 @@
     "title": "La evolución de",
     "titleHighlight": "LIPE Technology",
     "subtitle": "Productos propios y proyectos de clientes que muestran cómo construimos tecnología con identidad.",
+    "viewAll": "Ver todos los proyectos",
     "productBadge": "Producto LIPE",
     "clientBadge": "Proyecto Cliente",
     "viewProject": "Ver proyecto completo",
@@ -95,20 +92,20 @@
     "discoveryShort": "Aprendemos tu historia, público y objetivos",
     "discoveryDetail": "Nos sumergimos en tu negocio para entender qué lo hace único. Entrevistas, análisis de mercado y definición de metas claras antes de escribir una línea de código.",
     "strategy": "Estrategia",
-    "strategyShort": "Diseñamos la tecnología que encaja con tu identidad",
+    "strategyShort": "Tecnología a la medida de tu identidad",
     "strategyDetail": "Wireframes, arquitectura técnica y estrategia de contenido alineados con tu marca. Cada decisión de diseño sirve a tu historia.",
     "build": "Construcción",
-    "buildShort": "Construimos con calidad, velocidad y transparencia",
+    "buildShort": "Calidad, velocidad y transparencia",
     "buildDetail": "Desarrollo ágil con entregas semanales. Sigues cada paso y puedes dar feedback en tiempo real. Código limpio, probado y documentado.",
     "growth": "Crecimiento",
-    "growthShort": "Te apoyamos y optimizamos mientras creces",
+    "growthShort": "Te apoyamos mientras creces",
     "growthDetail": "El lanzamiento es solo el comienzo. Monitoreamos rendimiento, optimizamos conversiones y evolucionamos tu plataforma conforme tu negocio crece."
   },
   "techstack": {
     "techLabel": "Tecnologías",
     "techTitle": "Stack de",
     "techHighlight": "vanguardia",
-    "comparisonTitle": "Por qué las empresas locales nos",
+    "comparisonTitle": "Por qué nos",
     "comparisonHighlight": "eligen",
     "criteria": "Criterio",
     "diyBuilders": "DIY Builders",
@@ -122,7 +119,7 @@
   },
   "testimonials": {
     "label": "Testimonios",
-    "title": "Lo que nuestros clientes",
+    "title": "Lo que los clientes",
     "titleHighlight": "dicen",
     "quotes": [
       {
@@ -146,32 +143,6 @@
         "role": "Director, Studio Wellness"
       }
     ]
-  },
-  "pricing": {
-    "label": "Inversión",
-    "title": "Planes que",
-    "titleHighlight": "tienen sentido",
-    "mostPopular": "Más popular",
-    "cta": "Contáctenos",
-    "disclaimer": "Cada proyecto es único. Los valores finales dependen del alcance. Agende una conversación para un presupuesto personalizado.",
-    "essential": {
-      "name": "Esencial",
-      "price": "€2.000–4.000",
-      "description": "Ideal para empezar tu presencia digital",
-      "features": ["Sitio personalizado", "5-8 páginas", "Mobile responsivo", "SEO básico", "3 meses de soporte"]
-    },
-    "professional": {
-      "name": "Profesional",
-      "price": "€5.000–8.000",
-      "description": "Para quienes quieren crecer con inteligencia",
-      "features": ["Todo lo del Esencial", "Chatbot consultivo", "Integraciones (WhatsApp, pagos)", "Analytics avanzado", "6 meses de soporte"]
-    },
-    "enterprise": {
-      "name": "Enterprise / SaaS",
-      "price": "Bajo consulta",
-      "description": "Plataformas y soluciones a medida",
-      "features": ["Plataformas personalizadas", "Aplicaciones web complejas", "Dashboards & analytics", "Arquitectura escalable", "Soporte continuo"]
-    }
   },
   "contact": {
     "label": "Contacto",

@@ -1,9 +1,10 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { ExternalLink, Briefcase, Rocket } from "lucide-react";
+import { ExternalLink, Briefcase, Rocket, ArrowRight } from "lucide-react";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 type Project = {
   title: string;
@@ -68,10 +69,16 @@ const dotColorMap: Record<string, string> = {
   accent: "bg-accent shadow-[0_0_12px_hsl(var(--accent)/0.5)]",
 };
 
-const Portfolio = () => {
+interface PortfolioProps {
+  preview?: boolean;
+}
+
+const Portfolio = ({ preview = false }: PortfolioProps) => {
   const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  const displayProjects = preview ? projects.slice(0, 2) : projects;
 
   return (
     <section id="portfolio" className="py-24 md:py-32">
@@ -109,11 +116,27 @@ const Portfolio = () => {
           <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/60 via-secondary/40 to-accent/60 md:-translate-x-px" />
 
           <div className="space-y-16 md:space-y-20">
-            {projects.map((project, i) => (
+            {displayProjects.map((project, i) => (
               <TimelineNode key={project.title} project={project} index={i} />
             ))}
           </div>
         </div>
+
+        {preview && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.4 }}
+            className="text-center mt-16"
+          >
+            <Link
+              to="/portfolio"
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-primary-foreground font-semibold font-body hover:bg-primary/90 transition-all hover:shadow-[0_0_20px_-4px_hsl(var(--primary)/0.4)] uppercase tracking-wide text-sm"
+            >
+              {t("portfolio.viewAll")} <ArrowRight size={16} />
+            </Link>
+          </motion.div>
+        )}
       </div>
     </section>
   );

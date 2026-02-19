@@ -6,7 +6,6 @@ import Portfolio from "@/components/Portfolio";
 import Process from "@/components/Process";
 import TechStack from "@/components/TechStack";
 import Testimonials from "@/components/Testimonials";
-import Pricing from "@/components/Pricing";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { GradientBackground } from "@/components/ui/gradient-background";
@@ -23,11 +22,10 @@ const Index = () => {
       <Hero />
       <Manifesto />
       <Services />
-      <Portfolio />
+      <Portfolio preview />
       <Process />
       <TechStack />
       <Testimonials />
-      <Pricing />
       <Contact />
       <Footer />
     </GradientBackground>
