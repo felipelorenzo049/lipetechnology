@@ -89,6 +89,9 @@ const Hero = () => {
         </motion.div>
       </div>
 
+      {/* Bottom fade to background */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-background z-[2]" />
+
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
