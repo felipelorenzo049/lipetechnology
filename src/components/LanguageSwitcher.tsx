@@ -3,10 +3,10 @@ import { useState, useRef, useEffect } from "react";
 import { Globe } from "lucide-react";
 
 const languages = [
-  { code: "en", label: "EN", flag: "🇬🇧" },
-  { code: "pt", label: "PT", flag: "🇵🇹" },
-  { code: "es", label: "ES", flag: "🇪🇸" },
-  { code: "it", label: "IT", flag: "🇮🇹" },
+  { code: "en", label: "EN" },
+  { code: "pt", label: "PT" },
+  { code: "es", label: "ES" },
+  { code: "it", label: "IT" },
 ];
 
 const LanguageSwitcher = () => {
@@ -32,7 +32,7 @@ const LanguageSwitcher = () => {
         aria-label="Change language"
       >
         <Globe size={14} />
-        <span>{current.flag} {current.label}</span>
+        <span>{current.label}</span>
       </button>
 
       {open && (
@@ -48,7 +48,6 @@ const LanguageSwitcher = () => {
                 lang.code === i18n.language ? "text-primary" : "text-foreground/80"
               }`}
             >
-              <span>{lang.flag}</span>
               <span>{lang.label}</span>
             </button>
           ))}
