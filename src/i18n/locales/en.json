@@ -141,24 +141,24 @@
     "titleHighlight": "say",
     "quotes": [
       {
-        "quote": "LIPE didn't just build our website — they told our story in a way we never could before.",
-        "author": "Maria S.",
-        "role": "Owner, Sabor & Tradição Restaurant"
-      },
-      {
-        "quote": "Our chatbot qualifies clients while we sleep. It's like having a 24/7 salesperson who knows every detail of the business.",
+        "quote": "LIPE built our e-commerce platform from scratch — with a 3D homepage, AI calculator and WhatsApp checkout. We became 100% independent.",
         "author": "Carlos R.",
-        "role": "CEO, EasyLine Brasil"
+        "role": "CEO, EasyLine"
       },
       {
-        "quote": "They turned our neighborhood shop into an e-commerce that delivers to 12 cities. Without losing our identity.",
-        "author": "Ana L.",
-        "role": "Founder, Empório do Bairro"
+        "quote": "The digital menu, online reservations and take away completely transformed our restaurant. Customers love the experience.",
+        "author": "Sofia M.",
+        "role": "Owner, Plate Boutique"
       },
       {
         "quote": "The scheduling system reduced conflicts by 60%. I save 2 hours a day. Best investment I've made.",
         "author": "Pedro M.",
         "role": "Director, Studio Wellness"
+      },
+      {
+        "quote": "They digitalized our entire vehicle liquidation process. Lot management and real-time online catalog. Flawless.",
+        "author": "Ricardo T.",
+        "role": "Auctioneer, Milan Vehicles"
       }
     ]
   },
@@ -194,7 +194,7 @@
   },
   "kpis": {
     "projects": "Projects delivered",
-    "countries": "Countries served",
+    "hoursSaved": "Hours saved",
     "satisfaction": "Client satisfaction",
     "onTime": "On-time delivery"
   },

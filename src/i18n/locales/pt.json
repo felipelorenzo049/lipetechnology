@@ -141,24 +141,24 @@
     "titleHighlight": "dizem",
     "quotes": [
       {
-        "quote": "A LIPE não só fez o nosso site — contaram a nossa história de forma que nunca conseguimos antes.",
-        "author": "Maria S.",
-        "role": "Proprietária, Restaurante Sabor & Tradição"
-      },
-      {
-        "quote": "O nosso chatbot qualifica clientes enquanto dormimos. É como ter um vendedor 24/7 que conhece cada detalhe do negócio.",
+        "quote": "A LIPE construiu a nossa plataforma e-commerce do zero — com homepage 3D, calculadora AI e checkout WhatsApp. Ficámos 100% independentes.",
         "author": "Carlos R.",
-        "role": "CEO, EasyLine Brasil"
+        "role": "CEO, EasyLine"
       },
       {
-        "quote": "Transformaram a nossa lojinha de bairro num e-commerce que entrega em 12 cidades. Sem perder a nossa cara.",
-        "author": "Ana L.",
-        "role": "Fundadora, Empório do Bairro"
+        "quote": "O menu digital, reservas online e take away mudaram completamente o nosso restaurante. Os clientes adoram a experiência.",
+        "author": "Sofia M.",
+        "role": "Proprietária, Plate Boutique"
       },
       {
         "quote": "O sistema de agendamento reduziu conflitos em 60%. Economizo 2 horas por dia. Melhor investimento que fiz.",
         "author": "Pedro M.",
         "role": "Diretor, Studio Wellness"
+      },
+      {
+        "quote": "Digitalizaram todo o nosso processo de liquidação de veículos. Gestão de lotes e catálogo online em tempo real. Impecável.",
+        "author": "Ricardo T.",
+        "role": "Leiloeiro, Milan Veículos"
       }
     ]
   },
@@ -194,7 +194,7 @@
   },
   "kpis": {
     "projects": "Projetos entregues",
-    "countries": "Países atendidos",
+    "hoursSaved": "Horas poupadas",
     "satisfaction": "Satisfação dos clientes",
     "onTime": "Entrega no prazo"
   },
