@@ -4,7 +4,6 @@
     "portfolio": "Portfolio",
     "process": "Processo",
     "contact": "Contatto",
-    "plans": "Piani",
     "talkToUs": "Contattaci",
     "customWebsites": "Siti Personalizzati",
     "consultativeChatbots": "Chatbot Consulenziali",
@@ -17,31 +16,28 @@
     "landingPage": "Landing Page",
     "landingPageDesc": "Pagina ad alta conversione",
     "aiChatbot": "Chatbot IA",
-    "aiChatbotDesc": "Assistente virtuale intelligente",
-    "starter": "Starter",
-    "professional": "Professionale",
-    "enterprise": "Enterprise"
+    "aiChatbotDesc": "Assistente virtuale intelligente"
   },
   "hero": {
     "badge": "LIPE Technology",
     "title1": "Tecnologia che",
     "titleHighlight": "amplifica",
     "title2": "chi sei",
-    "subtitle": "Creiamo siti web, chatbot e piattaforme per le imprese locali che vogliono crescere senza perdere la propria essenza",
-    "ctaProjects": "Vedi i nostri progetti",
+    "subtitle": "Siti web, chatbot e piattaforme per imprese che vogliono crescere senza perdere la propria essenza",
+    "ctaProjects": "Vedi i progetti",
     "ctaContact": "Contattaci"
   },
   "manifesto": {
     "label": "La nostra filosofia",
-    "quote1": "La maggior parte delle agenzie costruisce siti che si assomigliano tutti. Noi costruiamo tecnologia che",
+    "quote1": "La maggior parte delle agenzie fa siti uguali. Noi creiamo tecnologia che",
     "quoteHighlight": "racconta storie",
-    "description": "Il tuo ristorante ha anni di tradizione? Faremo in modo che il sito lo onori. Il tuo negozio è il cuore del quartiere? Anche il tuo sito lo sarà. La tecnologia non deve cancellare l'identità —",
+    "description": "Il tuo ristorante ha tradizione? Il sito la onorerà. Il tuo negozio è il cuore del quartiere? Anche il sito lo sarà. La tecnologia non cancella l'identità —",
     "descriptionHighlight": "deve amplificarla"
   },
   "services": {
     "label": "Servizi",
-    "title": "Tutto ciò che ti serve per",
-    "titleHighlight": "crescere nel digitale",
+    "title": "Tutto per",
+    "titleHighlight": "crescere digitale",
     "customWebsites": "Siti Personalizzati",
     "customWebsitesShort": "Siti web che riflettono l'identità unica della tua attività. Responsivi, veloci e progettati per convertire.",
     "customWebsitesDetails": ["Design storytelling-first", "Mobile-first responsivo", "SEO locale ottimizzato", "CMS per aggiornamenti facili"],
@@ -51,7 +47,7 @@
     "saas": "SaaS / Piattaforme",
     "saasShort": "Applicazioni web su misura per le operazioni uniche della tua attività.",
     "saasDetails": ["Su misura per i tuoi flussi", "Architettura scalabile", "Cloud-hosted & sicuro", "Dati in tempo reale"],
-    "digitalMarketing": "Strategia di Marketing Digitale",
+    "digitalMarketing": "Marketing Digitale",
     "digitalMarketingShort": "SEO, ads, contenuti e social media. Non solo costruiamo — ti aiutiamo a crescere.",
     "digitalMarketingDetails": ["SEO & visibilità locale", "Gestione campagne", "Strategia di contenuto", "Analytics & ottimizzazione"],
     "maintenance": "Manutenzione & Supporto",
@@ -63,6 +59,7 @@
     "title": "L'evoluzione di",
     "titleHighlight": "LIPE Technology",
     "subtitle": "Prodotti propri e progetti clienti che mostrano come costruiamo tecnologia con identità.",
+    "viewAll": "Vedi tutti i progetti",
     "productBadge": "Prodotto LIPE",
     "clientBadge": "Progetto Cliente",
     "viewProject": "Vedi progetto completo",
@@ -92,23 +89,23 @@
     "title": "Come",
     "titleHighlight": "lavoriamo",
     "discovery": "Scoperta",
-    "discoveryShort": "Impariamo la tua storia, pubblico e obiettivi",
+    "discoveryShort": "La tua storia, pubblico e obiettivi",
     "discoveryDetail": "Ci immergiamo nella tua attività per capire cosa la rende unica. Interviste, analisi di mercato e definizione di obiettivi chiari prima di scrivere una riga di codice.",
     "strategy": "Strategia",
-    "strategyShort": "Progettiamo la tecnologia che si adatta alla tua identità",
+    "strategyShort": "Tecnologia su misura per la tua identità",
     "strategyDetail": "Wireframe, architettura tecnica e strategia di contenuto allineati al tuo brand. Ogni decisione di design serve la tua storia.",
     "build": "Costruzione",
-    "buildShort": "Costruiamo con qualità, velocità e trasparenza",
+    "buildShort": "Qualità, velocità e trasparenza",
     "buildDetail": "Sviluppo agile con consegne settimanali. Segui ogni fase e puoi dare feedback in tempo reale. Codice pulito, testato e documentato.",
     "growth": "Crescita",
-    "growthShort": "Ti supportiamo e ottimizziamo mentre cresci",
+    "growthShort": "Ti supportiamo mentre cresci",
     "growthDetail": "Il lancio è solo l'inizio. Monitoriamo le prestazioni, ottimizziamo le conversioni e facciamo evolvere la tua piattaforma mentre la tua attività cresce."
   },
   "techstack": {
     "techLabel": "Tecnologie",
     "techTitle": "Stack",
     "techHighlight": "all'avanguardia",
-    "comparisonTitle": "Perché le imprese locali ci",
+    "comparisonTitle": "Perché ci",
     "comparisonHighlight": "scelgono",
     "criteria": "Criterio",
     "diyBuilders": "DIY Builders",
@@ -122,7 +119,7 @@
   },
   "testimonials": {
     "label": "Testimonianze",
-    "title": "Cosa dicono i nostri",
+    "title": "Cosa dicono i",
     "titleHighlight": "clienti",
     "quotes": [
       {
@@ -146,32 +143,6 @@
         "role": "Direttore, Studio Wellness"
       }
     ]
-  },
-  "pricing": {
-    "label": "Investimento",
-    "title": "Piani che",
-    "titleHighlight": "hanno senso",
-    "mostPopular": "Più popolare",
-    "cta": "Contattaci",
-    "disclaimer": "Ogni progetto è unico. I valori finali dipendono dall'ambito. Prenota una conversazione per un preventivo personalizzato.",
-    "essential": {
-      "name": "Essenziale",
-      "price": "€2.000–4.000",
-      "description": "Ideale per iniziare la tua presenza digitale",
-      "features": ["Sito personalizzato", "5-8 pagine", "Mobile responsivo", "SEO base", "3 mesi di supporto"]
-    },
-    "professional": {
-      "name": "Professionale",
-      "price": "€5.000–8.000",
-      "description": "Per chi vuole crescere con intelligenza",
-      "features": ["Tutto dell'Essenziale", "Chatbot consulenziale", "Integrazioni (WhatsApp, pagamenti)", "Analytics avanzato", "6 mesi di supporto"]
-    },
-    "enterprise": {
-      "name": "Enterprise / SaaS",
-      "price": "Su richiesta",
-      "description": "Piattaforme e soluzioni su misura",
-      "features": ["Piattaforme personalizzate", "Applicazioni web complesse", "Dashboard & analytics", "Architettura scalabile", "Supporto continuo"]
-    }
   },
   "contact": {
     "label": "Contatto",

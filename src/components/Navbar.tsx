@@ -90,19 +90,6 @@ const Navbar = () => {
             </div>
           </MenuItem>
 
-          <MenuItem setActive={setActive} active={active} item={t("nav.plans")}>
-            <div className="flex flex-col space-y-3 text-sm">
-              <HoveredLink href="#contato" onClick={() => scrollTo("#contato")}>
-                {t("nav.starter")}
-              </HoveredLink>
-              <HoveredLink href="#contato" onClick={() => scrollTo("#contato")}>
-                {t("nav.professional")}
-              </HoveredLink>
-              <HoveredLink href="#contato" onClick={() => scrollTo("#contato")}>
-                {t("nav.enterprise")}
-              </HoveredLink>
-            </div>
-          </MenuItem>
 
           <LanguageSwitcher />
 
