@@ -8,6 +8,7 @@ import TechStack from "@/components/TechStack";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { GradientBackground } from "@/components/ui/gradient-background";
 
 const Index = () => {
@@ -28,6 +29,7 @@ const Index = () => {
       <Testimonials />
       <Contact />
       <Footer />
+      <WhatsAppButton />
     </GradientBackground>
   );
 };

@@ -130,22 +130,6 @@ const Contact = () => {
           </button>
         </motion.form>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.4 }}
-          className="text-center mt-6"
-        >
-          <a
-            href="https://wa.me/5511940575960?text=Hello! I'd like to know more about LIPE Technology services."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium hover:bg-secondary/90 transition-colors"
-          >
-            <MessageCircle size={20} />
-            {t("contact.whatsapp")}
-          </a>
-        </motion.div>
       </div>
     </section>
   );
