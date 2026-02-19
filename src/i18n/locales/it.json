@@ -16,7 +16,8 @@
     "landingPage": "Landing Page",
     "landingPageDesc": "Pagina ad alta conversione",
     "aiChatbot": "Chatbot IA",
-    "aiChatbotDesc": "Assistente virtuale intelligente"
+    "aiChatbotDesc": "Assistente virtuale intelligente",
+    "pricing": "Piani"
   },
   "hero": {
     "badge": "LIPE Technology",
@@ -212,8 +213,8 @@
     "titleHighlight": "frequenti",
     "items": [
       { "q": "Quanto tempo ci vuole per un progetto?", "a": "Dipende dalla complessità, ma la maggior parte dei siti web viene consegnata in 3-6 settimane. Le piattaforme SaaS e i chatbot possono richiedere 6-12 settimane." },
-      { "q": "Quanto costa?", "a": "I nostri progetti partono da €2.000 per le landing page e aumentano in base alla complessità. Forniamo sempre un preventivo dettagliato prima di iniziare." },
-      { "q": "Lavorate con aziende fuori dal Portogallo?", "a": "Sì! Lavoriamo con clienti in 12 paesi. Tutta la comunicazione e la gestione del progetto avviene da remoto con videochiamate settimanali." },
+      { "q": "Quanto costa?", "a": "I nostri progetti partono da 750€ per le landing page. Il piano Growth parte da 3.000€ e il Premium è su preventivo. Forniamo sempre un preventivo dettagliato prima di iniziare." },
+      { "q": "Lavorate con aziende fuori dal Portogallo?", "a": "Sì! Lavoriamo da remoto con aziende di qualsiasi località. Tutta la comunicazione e la gestione del progetto avviene online con videochiamate settimanali." },
       { "q": "Cosa succede dopo il lancio?", "a": "Offriamo piani di manutenzione e supporto continuo. Monitoriamo le prestazioni, risolviamo problemi e aiutiamo a far evolvere la tua piattaforma." },
       { "q": "Posso aggiornare i contenuti da solo?", "a": "Assolutamente. Costruiamo con integrazione CMS così puoi aggiornare testi, immagini e prodotti senza bisogno di uno sviluppatore." },
       { "q": "Quali tecnologie usate?", "a": "Usiamo tecnologie moderne e collaudate: React, TypeScript, Node.js, Supabase e altro. Lo stack è scelto per prestazioni, sicurezza e scalabilità." }
@@ -227,9 +228,9 @@
     "popular": "Più popolare",
     "note": "Tutti i piani includono una call di scoperta gratuita. Preventivi personalizzati disponibili per progetti complessi.",
     "plans": [
-      { "name": "Starter", "price": "Da €2.000", "description": "Perfetto per piccole attività che muovono i primi passi online.", "features": ["Landing page o sito semplice", "Design responsivo mobile", "SEO base configurato", "Integrazione modulo contatto", "1 mese di supporto incluso"], "cta": "Inizia" },
-      { "name": "Growth", "price": "Da €5.000", "description": "Per attività pronte a scalare la propria presenza digitale.", "popular": true, "features": ["Sito multi-pagina o e-commerce", "CMS per aggiornamenti facili", "SEO avanzato & analytics", "Integrazione chatbot", "3 mesi di supporto incluso", "Ottimizzazione prestazioni"], "cta": "Inizia a crescere" },
-      { "name": "Premium", "price": "Da €10.000", "description": "Trasformazione digitale completa per attività ambiziose.", "features": ["SaaS o piattaforma personalizzata", "Funzionalità con AI", "Branding & UX completo", "Integrazioni API", "6 mesi di supporto prioritario", "Project manager dedicato"], "cta": "Parliamone" }
+      { "name": "Starter", "price": "750€", "description": "Perfetto per piccole attività che muovono i primi passi online.", "features": ["Landing page o sito semplice", "Design responsivo mobile", "SEO base configurato", "Integrazione modulo contatto", "1 mese di supporto incluso"], "cta": "Inizia" },
+      { "name": "Growth", "price": "Da €3.000", "description": "Per attività pronte a scalare la propria presenza digitale.", "popular": true, "features": ["Sito multi-pagina o e-commerce", "CMS per aggiornamenti facili", "SEO avanzato & analytics", "Integrazione chatbot", "3 mesi di supporto incluso", "Ottimizzazione prestazioni"], "cta": "Inizia a crescere" },
+      { "name": "Premium", "price": "Su preventivo", "description": "Trasformazione digitale completa per attività ambiziose.", "features": ["SaaS o piattaforma personalizzata", "Funzionalità con AI", "Branding & UX completo", "Integrazioni API", "6 mesi di supporto prioritario", "Project manager dedicato"], "cta": "Parliamone" }
     ]
   },
   "privacy": {

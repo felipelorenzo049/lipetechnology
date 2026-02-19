@@ -36,7 +36,7 @@ const LanguageSwitcher = () => {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-1 glass rounded-lg border border-border shadow-lg py-1 min-w-[120px] z-50">
+        <div className="absolute right-0 top-full mt-1 bg-card rounded-lg border border-border backdrop-blur-xl shadow-lg py-1 min-w-[120px] z-50">
           {languages.map((lang) => (
             <button
               key={lang.code}

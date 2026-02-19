@@ -16,7 +16,8 @@
     "landingPage": "Landing Page",
     "landingPageDesc": "High-conversion page",
     "aiChatbot": "AI Chatbot",
-    "aiChatbotDesc": "Intelligent virtual assistant"
+    "aiChatbotDesc": "Intelligent virtual assistant",
+    "pricing": "Plans"
   },
   "hero": {
     "badge": "LIPE Technology",
@@ -212,8 +213,8 @@
     "titleHighlight": "questions",
     "items": [
       { "q": "How long does a project take?", "a": "It depends on complexity, but most websites are delivered in 3-6 weeks. SaaS platforms and chatbots may take 6-12 weeks. We'll give you a clear timeline during the Discovery phase." },
-      { "q": "How much does it cost?", "a": "Our projects start at €2,000 for landing pages and go up based on complexity. We always provide a detailed quote before starting so there are no surprises." },
-      { "q": "Do you work with businesses outside Portugal?", "a": "Yes! We work with clients across 12 countries. All communication and project management is done remotely with weekly video calls." },
+      { "q": "How much does it cost?", "a": "Our projects start at €750 for landing pages. The Growth plan starts at €3,000 and Premium is custom-quoted. We always provide a detailed quote before starting." },
+      { "q": "Do you work with businesses outside Portugal?", "a": "Yes! We work remotely with businesses from any location. All communication and project management is done online with weekly video calls." },
       { "q": "What happens after launch?", "a": "We offer ongoing maintenance and support plans. We monitor performance, fix issues, and help you evolve your platform as your business grows." },
       { "q": "Can I update the content myself?", "a": "Absolutely. We build with CMS integration so you can update text, images, and products without needing a developer." },
       { "q": "What technologies do you use?", "a": "We use modern, battle-tested technologies: React, TypeScript, Node.js, Supabase, and more. Our stack is chosen for performance, security, and scalability." }
@@ -229,14 +230,14 @@
     "plans": [
       {
         "name": "Starter",
-        "price": "From €2,000",
+        "price": "€750",
         "description": "Perfect for small businesses getting started online.",
         "features": ["Landing page or simple website", "Mobile responsive design", "Basic SEO setup", "Contact form integration", "1 month support included"],
         "cta": "Get started"
       },
       {
         "name": "Growth",
-        "price": "From €5,000",
+        "price": "From €3,000",
         "description": "For businesses ready to scale their digital presence.",
         "popular": true,
         "features": ["Multi-page website or e-commerce", "CMS for easy updates", "Advanced SEO & analytics", "Chatbot integration", "3 months support included", "Performance optimization"],
@@ -244,7 +245,7 @@
       },
       {
         "name": "Premium",
-        "price": "From €10,000",
+        "price": "Custom quote",
         "description": "Full-scale digital transformation for ambitious businesses.",
         "features": ["Custom SaaS or platform", "AI-powered features", "Full branding & UX design", "API integrations", "6 months priority support", "Dedicated project manager"],
         "cta": "Let's talk"

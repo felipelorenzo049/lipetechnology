@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import {
   Menu as NavMenu,
   MenuItem,
@@ -19,6 +20,7 @@ const Navbar = () => {
     { label: t("nav.services"), href: "#servicos" },
     { label: t("nav.portfolio"), href: "#portfolio" },
     { label: t("nav.process"), href: "#processo" },
+    { label: t("nav.pricing"), href: "/pricing", isRoute: true },
     { label: t("nav.contact"), href: "#contato" },
   ];
 
@@ -97,6 +99,13 @@ const Navbar = () => {
             {t("nav.process")}
           </button>
 
+          <Link
+            to="/pricing"
+            className="text-sm font-body text-foreground/80 hover:text-foreground transition-colors"
+          >
+            {t("nav.pricing")}
+          </Link>
+
           <LanguageSwitcher />
 
           <button
@@ -133,13 +142,24 @@ const Navbar = () => {
             >
               <div className="flex flex-col gap-4 px-6 py-6">
                 {navLinks.map((link) => (
-                  <button
-                    key={link.href}
-                    onClick={() => scrollTo(link.href)}
-                    className="text-left text-foreground font-body hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </button>
+                  link.isRoute ? (
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="text-left text-foreground font-body hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <button
+                      key={link.href}
+                      onClick={() => scrollTo(link.href)}
+                      className="text-left text-foreground font-body hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </button>
+                  )
                 ))}
                 <button
                   onClick={() => scrollTo("#contato")}
