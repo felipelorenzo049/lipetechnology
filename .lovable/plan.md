@@ -1,63 +1,23 @@
 
 
-## Corrigir indicacao de lingua no header e mascara de telefone dinamica
+## Transicao quase imperceptivel entre Hero e Manifesto
 
-### Problema 1: Header mostra "EN" em vez de "PT"
+### Problema atual
+Na imagem ve-se uma linha de corte visivel entre o fundo do Hero (com sparkles) e a secao "A Nossa Filosofia". Isto acontece porque:
+- A fade do Hero tem apenas `h-32` (curta demais)
+- O Manifesto tem uma fade de `from-background/50` (semi-transparente, nao cobre totalmente)
+- O separador decorativo horizontal marca visualmente a divisao
+- O padding superior do Manifesto (`py-24`) cria um espaco vazio que expoe o corte
 
-O `LanguageDetector` deteta a lingua do browser como `"pt-PT"` ou `"pt-BR"`. O i18next resolve internamente para `"pt"` e mostra o conteudo correto, mas o `LanguageSwitcher` faz comparacao exata (`l.code === i18n.language`), que falha com `"pt-PT"`, e cai no fallback `languages[0]` = EN.
+### Alteracoes
 
-**Correcao em `src/components/LanguageSwitcher.tsx`:**
-- Usar `i18n.resolvedLanguage` em vez de `i18n.language` (o `resolvedLanguage` retorna o codigo da lingua que efetivamente esta a ser usada, ex: `"pt"`)
-- Alternativa de fallback: comparar com `startsWith` (ex: `"pt-PT".startsWith("pt")`)
+**`src/components/Hero.tsx`**
+- Aumentar a fade inferior de `h-32` para `h-48` para uma dissolucao mais gradual
 
-### Problema 2: Mascara de telefone dinamica por lingua
-
-Atualmente o placeholder e fixo (`+351 912 345 678`). Deve mudar conforme a lingua selecionada.
-
-**Correcao em `src/components/Contact.tsx`:**
-- Criar um mapa de formatos por lingua:
-  - `pt` -> `+351 912 345 678`
-  - `es` -> `+34 612 345 678`
-  - `it` -> `+39 312 345 6789`
-  - `en` -> `+1 (555) 123-4567`
-- Usar `i18n.resolvedLanguage` para selecionar o placeholder e o prefixo adequado
-- Atualizar os ficheiros de traducao com os placeholders corretos para cada lingua
-
-**Correcao em `src/i18n/config.ts`:**
-- Adicionar `supportedLngs: ["en", "pt", "es", "it"]` na config do i18next para que o detector resolva automaticamente `"pt-PT"` para `"pt"`
-
-### Ficheiros a modificar
-
-| Ficheiro | Alteracao |
-|---|---|
-| `src/i18n/config.ts` | Adicionar `supportedLngs` para resolver linguas regionais automaticamente |
-| `src/components/LanguageSwitcher.tsx` | Usar `i18n.resolvedLanguage` em vez de `i18n.language` |
-| `src/i18n/locales/pt.json` | Placeholder telefone ja esta correto (`+351`) |
-| `src/i18n/locales/es.json` | Atualizar placeholder para `+34 612 345 678` |
-| `src/i18n/locales/it.json` | Atualizar placeholder para `+39 312 345 6789` |
-| `src/i18n/locales/en.json` | Atualizar placeholder para `+1 (555) 123-4567` |
-
-### Detalhes tecnicos
-
-**`src/i18n/config.ts`** - adicionar `supportedLngs`:
-```ts
-.init({
-  resources: { ... },
-  supportedLngs: ["en", "pt", "es", "it"],
-  fallbackLng: "en",
-  ...
-});
-```
-Isto faz com que `"pt-PT"` seja automaticamente resolvido para `"pt"`.
-
-**`src/components/LanguageSwitcher.tsx`** - usar `resolvedLanguage`:
-```ts
-const current = languages.find((l) => l.code === i18n.resolvedLanguage) || languages[0];
-// E na comparacao do dropdown:
-lang.code === i18n.resolvedLanguage ? "text-primary" : "text-foreground/80"
-```
+**`src/components/Manifesto.tsx`**
+- Mudar a fade do topo de `from-background/50` para `from-background` (opacidade total) e aumentar de `h-24` para `h-40`
+- Remover o separador decorativo horizontal (a linha `via-primary/30`) que marca a divisao entre secoes
+- Reduzir o padding superior de `py-24 md:py-32` para `pt-12 pb-24 md:pt-16 md:pb-32` para aproximar o conteudo e eliminar o espaco vazio
 
 ### Resultado esperado
-- O header mostra "PT" quando o site esta em portugues
-- O placeholder do telefone muda automaticamente conforme a lingua (ex: `+34` para espanhol, `+39` para italiano)
-
+O fundo do Hero dissolve-se suavemente numa area maior, sem nenhuma marca visual de separacao, criando a ilusao de uma unica secao continua.
