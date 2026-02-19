@@ -1,35 +1,17 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Search, Target, Hammer, Rocket, ChevronDown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-const steps = [
-  {
-    icon: Search,
-    title: "Descoberta",
-    short: "Aprendemos sua história, público e objetivos",
-    detail: "Mergulhamos no seu negócio para entender o que o torna único. Entrevistas, análise de mercado e definição de metas claras antes de escrever uma linha de código.",
-  },
-  {
-    icon: Target,
-    title: "Estratégia",
-    short: "Desenhamos a tecnologia que se encaixa na sua identidade",
-    detail: "Wireframes, arquitetura técnica e estratégia de conteúdo alinhados à sua marca. Cada decisão de design serve à sua história.",
-  },
-  {
-    icon: Hammer,
-    title: "Construção",
-    short: "Construímos com qualidade, velocidade e transparência",
-    detail: "Desenvolvimento ágil com entregas semanais. Você acompanha cada etapa e pode dar feedback em tempo real. Código limpo, testado e documentado.",
-  },
-  {
-    icon: Rocket,
-    title: "Crescimento",
-    short: "Suportamos e otimizamos enquanto você cresce",
-    detail: "Lançamento é só o começo. Monitoramos performance, otimizamos conversões e evoluímos sua plataforma conforme seu negócio cresce.",
-  },
+const stepKeys = [
+  { icon: Search, titleKey: "discovery", shortKey: "discoveryShort", detailKey: "discoveryDetail" },
+  { icon: Target, titleKey: "strategy", shortKey: "strategyShort", detailKey: "strategyDetail" },
+  { icon: Hammer, titleKey: "build", shortKey: "buildShort", detailKey: "buildDetail" },
+  { icon: Rocket, titleKey: "growth", shortKey: "growthShort", detailKey: "growthDetail" },
 ];
 
 const Process = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -41,20 +23,18 @@ const Process = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           className="text-center mb-16"
         >
-          <span className="font-mono text-sm text-secondary tracking-wider uppercase">Processo</span>
+          <span className="font-mono text-sm text-secondary tracking-wider uppercase">{t("process.label")}</span>
           <h2 className="font-headline text-3xl md:text-4xl font-bold mt-3">
-            Como{" "}
-            <span className="gradient-text">trabalhamos</span>
+            {t("process.title")}{" "}
+            <span className="gradient-text">{t("process.titleHighlight")}</span>
           </h2>
         </motion.div>
 
         <div className="relative">
-          {/* Vertical line */}
           <div className="absolute left-6 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-primary/40 via-secondary/40 to-transparent" />
-
           <div className="space-y-8">
-            {steps.map((step, i) => (
-              <StepCard key={step.title} step={step} index={i} />
+            {stepKeys.map((step, i) => (
+              <StepCard key={step.titleKey} step={step} index={i} />
             ))}
           </div>
         </div>
@@ -63,7 +43,8 @@ const Process = () => {
   );
 };
 
-const StepCard = ({ step, index }: { step: typeof steps[0]; index: number }) => {
+const StepCard = ({ step, index }: { step: typeof stepKeys[0]; index: number }) => {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
@@ -76,7 +57,6 @@ const StepCard = ({ step, index }: { step: typeof steps[0]; index: number }) => 
       transition={{ duration: 0.5, delay: index * 0.15 }}
       className="relative pl-16 md:pl-20"
     >
-      {/* Node */}
       <div className="absolute left-3 md:left-5 top-2 w-6 h-6 rounded-full bg-muted border-2 border-primary flex items-center justify-center">
         <div className="w-2 h-2 rounded-full bg-primary" />
       </div>
@@ -90,7 +70,7 @@ const StepCard = ({ step, index }: { step: typeof steps[0]; index: number }) => 
             <step.icon size={20} className="text-primary" />
             <div>
               <span className="font-mono text-xs text-muted-foreground">0{index + 1}</span>
-              <h3 className="font-headline text-lg font-semibold">{step.title}</h3>
+              <h3 className="font-headline text-lg font-semibold">{t(`process.${step.titleKey}`)}</h3>
             </div>
           </div>
           <ChevronDown
@@ -98,7 +78,7 @@ const StepCard = ({ step, index }: { step: typeof steps[0]; index: number }) => 
             className={`text-muted-foreground transition-transform ${expanded ? "rotate-180" : ""}`}
           />
         </div>
-        <p className="text-muted-foreground text-sm mt-2 font-body">{step.short}</p>
+        <p className="text-muted-foreground text-sm mt-2 font-body">{t(`process.${step.shortKey}`)}</p>
 
         {expanded && (
           <motion.p
@@ -106,7 +86,7 @@ const StepCard = ({ step, index }: { step: typeof steps[0]; index: number }) => 
             animate={{ opacity: 1, height: "auto" }}
             className="text-foreground/80 text-sm mt-3 font-body leading-relaxed border-t border-border pt-3"
           >
-            {step.detail}
+            {t(`process.${step.detailKey}`)}
           </motion.p>
         )}
       </div>

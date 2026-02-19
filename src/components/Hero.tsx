@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { ArrowDown, MessageCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Hero = () => {
+  const { t } = useTranslation();
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -26,7 +28,7 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
         >
           <span className="inline-block font-mono text-sm text-primary mb-6 tracking-wider uppercase">
-            LIPE Technology
+            {t("hero.badge")}
           </span>
         </motion.div>
 
@@ -36,9 +38,9 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="font-headline text-4xl sm:text-5xl md:text-7xl font-bold leading-tight mb-6"
         >
-          Tecnologia que{" "}
-          <span className="gradient-text">amplifica</span>{" "}
-          quem você é
+          {t("hero.title1")}{" "}
+          <span className="gradient-text">{t("hero.titleHighlight")}</span>{" "}
+          {t("hero.title2")}
         </motion.h1>
 
         <motion.p
@@ -47,7 +49,7 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-body"
         >
-          Criamos sites, chatbots e plataformas para empresas locais que querem crescer sem perder sua essência
+          {t("hero.subtitle")}
         </motion.p>
 
         <motion.div
@@ -60,7 +62,7 @@ const Hero = () => {
             onClick={() => scrollTo("#portfolio")}
             className="group flex items-center gap-2 px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20"
           >
-            Ver nossos projetos
+            {t("hero.ctaProjects")}
             <ArrowDown size={18} className="group-hover:translate-y-0.5 transition-transform" />
           </button>
           <button
@@ -68,7 +70,7 @@ const Hero = () => {
             className="flex items-center gap-2 px-8 py-3.5 rounded-lg border border-border text-foreground font-medium hover:bg-muted transition-colors"
           >
             <MessageCircle size={18} />
-            Fale conosco
+            {t("hero.ctaContact")}
           </button>
         </motion.div>
       </div>

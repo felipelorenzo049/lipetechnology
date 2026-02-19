@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 const Manifesto = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -18,7 +19,7 @@ const Manifesto = () => {
           transition={{ duration: 0.8 }}
           className="font-mono text-sm text-secondary tracking-wider uppercase mb-8"
         >
-          Nossa filosofia
+          {t("manifesto.label")}
         </motion.p>
 
         <motion.blockquote
@@ -27,8 +28,8 @@ const Manifesto = () => {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="font-headline text-xl md:text-2xl lg:text-3xl leading-relaxed text-foreground/90 mb-8"
         >
-          A maioria das agências constrói sites que parecem iguais. Nós construímos tecnologia que{" "}
-          <span className="gradient-text font-bold">conta histórias</span>.
+          {t("manifesto.quote1")}{" "}
+          <span className="gradient-text font-bold">{t("manifesto.quoteHighlight")}</span>.
         </motion.blockquote>
 
         <motion.p
@@ -37,9 +38,8 @@ const Manifesto = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="text-muted-foreground text-base md:text-lg leading-relaxed font-body"
         >
-          Seu restaurante tem anos de tradição? Vamos fazer o site honrar isso. Sua loja é o coração do bairro? 
-          Seu site será também. Tecnologia não deve apagar identidade —{" "}
-          <span className="text-foreground font-medium">deve ampliá-la</span>.
+          {t("manifesto.description")}{" "}
+          <span className="text-foreground font-medium">{t("manifesto.descriptionHighlight")}</span>.
         </motion.p>
       </div>
     </section>

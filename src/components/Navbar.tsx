@@ -1,23 +1,26 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
   Menu as NavMenu,
   MenuItem,
   ProductItem,
   HoveredLink,
 } from "@/components/ui/navbar-menu";
-
-const navLinks = [
-  { label: "Serviços", href: "#servicos" },
-  { label: "Portfólio", href: "#portfolio" },
-  { label: "Processo", href: "#processo" },
-  { label: "Contato", href: "#contato" },
-];
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const Navbar = () => {
+  const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [active, setActive] = useState<string | null>(null);
+
+  const navLinks = [
+    { label: t("nav.services"), href: "#servicos" },
+    { label: t("nav.portfolio"), href: "#portfolio" },
+    { label: t("nav.process"), href: "#processo" },
+    { label: t("nav.contact"), href: "#contato" },
+  ];
 
   const scrollTo = (href: string) => {
     setMobileOpen(false);
@@ -39,71 +42,73 @@ const Navbar = () => {
             LIPE
           </a>
 
-          <MenuItem setActive={setActive} active={active} item="Serviços">
+          <MenuItem setActive={setActive} active={active} item={t("nav.services")}>
             <div className="flex flex-col space-y-3 text-sm">
               <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
-                Sites Personalizáveis
+                {t("nav.customWebsites")}
               </HoveredLink>
               <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
-                Chatbots Consultivos
+                {t("nav.consultativeChatbots")}
               </HoveredLink>
               <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
-                SaaS / Plataformas
+                {t("nav.saasTitle")}
               </HoveredLink>
               <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
-                Marketing Digital
+                {t("nav.digitalMarketing")}
               </HoveredLink>
             </div>
           </MenuItem>
 
-          <MenuItem setActive={setActive} active={active} item="Portfólio">
+          <MenuItem setActive={setActive} active={active} item={t("nav.portfolio")}>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <ProductItem
-                title="E-commerce Premium"
-                description="Loja online completa com design exclusivo"
+                title={t("nav.premiumEcommerce")}
+                description={t("nav.premiumEcommerceDesc")}
                 href="#portfolio"
                 src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=140&h=70&fit=crop"
               />
               <ProductItem
-                title="App SaaS"
-                description="Plataforma de gestão sob medida"
+                title={t("nav.saasApp")}
+                description={t("nav.saasAppDesc")}
                 href="#portfolio"
                 src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=140&h=70&fit=crop"
               />
               <ProductItem
-                title="Landing Page"
-                description="Página de alta conversão"
+                title={t("nav.landingPage")}
+                description={t("nav.landingPageDesc")}
                 href="#portfolio"
                 src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=140&h=70&fit=crop"
               />
               <ProductItem
-                title="Chatbot IA"
-                description="Assistente virtual inteligente"
+                title={t("nav.aiChatbot")}
+                description={t("nav.aiChatbotDesc")}
                 href="#portfolio"
                 src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=140&h=70&fit=crop"
               />
             </div>
           </MenuItem>
 
-          <MenuItem setActive={setActive} active={active} item="Planos">
+          <MenuItem setActive={setActive} active={active} item={t("nav.plans")}>
             <div className="flex flex-col space-y-3 text-sm">
               <HoveredLink href="#contato" onClick={() => scrollTo("#contato")}>
-                Starter
+                {t("nav.starter")}
               </HoveredLink>
               <HoveredLink href="#contato" onClick={() => scrollTo("#contato")}>
-                Profissional
+                {t("nav.professional")}
               </HoveredLink>
               <HoveredLink href="#contato" onClick={() => scrollTo("#contato")}>
-                Enterprise
+                {t("nav.enterprise")}
               </HoveredLink>
             </div>
           </MenuItem>
 
+          <LanguageSwitcher />
+
           <button
             onClick={() => scrollTo("#contato")}
-            className="ml-6 px-5 py-1.5 rounded-full bg-accent text-accent-foreground text-sm font-semibold font-body hover:bg-accent/90 transition-all hover:shadow-[0_0_20px_-4px_hsl(20_100%_53%/0.4)] uppercase tracking-wide"
+            className="ml-4 px-5 py-1.5 rounded-full bg-accent text-accent-foreground text-sm font-semibold font-body hover:bg-accent/90 transition-all hover:shadow-[0_0_20px_-4px_hsl(20_100%_53%/0.4)] uppercase tracking-wide"
           >
-            Fale Conosco
+            {t("nav.talkToUs")}
           </button>
         </NavMenu>
       </div>
@@ -115,9 +120,12 @@ const Navbar = () => {
             <span className="font-headline text-2xl font-bold gradient-text">LIPE</span>
             <span className="text-sm font-body text-muted-foreground">Technology</span>
           </a>
-          <button className="text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <button className="text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         <AnimatePresence>
@@ -142,7 +150,7 @@ const Navbar = () => {
                   onClick={() => scrollTo("#contato")}
                   className="mt-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium"
                 >
-                  Fale Conosco
+                  {t("nav.talkToUs")}
                 </button>
               </div>
             </motion.div>
