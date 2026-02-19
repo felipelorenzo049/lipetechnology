@@ -5,6 +5,7 @@ import { SparklesCore } from "@/components/ui/sparkles";
 import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Project = {
   title: string;
@@ -77,6 +78,7 @@ const Portfolio = ({ preview = false }: PortfolioProps) => {
   const { t } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const isMobile = useIsMobile();
 
   const displayProjects = preview ? projects.slice(0, 2) : projects;
 
@@ -106,7 +108,7 @@ const Portfolio = ({ preview = false }: PortfolioProps) => {
               background="transparent"
               minSize={0.4}
               maxSize={1.4}
-              particleDensity={40}
+              particleDensity={isMobile ? 10 : 40}
               className="w-full h-full"
               particleColor="#4B83F0"
               speed={1.5}

@@ -218,5 +218,49 @@
       { "q": "¿Puedo actualizar el contenido yo mismo?", "a": "Por supuesto. Construimos con integración CMS para que puedas actualizar textos, imágenes y productos sin necesitar un desarrollador." },
       { "q": "¿Qué tecnologías usan?", "a": "Usamos tecnologías modernas y probadas: React, TypeScript, Node.js, Supabase y más. El stack se elige por rendimiento, seguridad y escalabilidad." }
     ]
+  },
+  "pricing": {
+    "label": "Precios",
+    "title": "Precios",
+    "titleHighlight": "transparentes",
+    "subtitle": "Planes claros para cada etapa de tu negocio. Sin costos ocultos.",
+    "popular": "Más popular",
+    "note": "Todos los planes incluyen una llamada de descubrimiento gratuita. Presupuestos personalizados disponibles para proyectos complejos.",
+    "plans": [
+      { "name": "Starter", "price": "Desde €2.000", "description": "Perfecto para pequeños negocios que dan sus primeros pasos online.", "features": ["Landing page o sitio simple", "Diseño responsivo móvil", "SEO básico configurado", "Integración de formulario", "1 mes de soporte incluido"], "cta": "Empezar" },
+      { "name": "Growth", "price": "Desde €5.000", "description": "Para negocios listos para escalar su presencia digital.", "popular": true, "features": ["Sitio multi-página o e-commerce", "CMS para actualizaciones fáciles", "SEO avanzado & analytics", "Integración de chatbot", "3 meses de soporte incluido", "Optimización de rendimiento"], "cta": "Empezar a crecer" },
+      { "name": "Premium", "price": "Desde €10.000", "description": "Transformación digital completa para negocios ambiciosos.", "features": ["SaaS o plataforma personalizada", "Funcionalidades con AI", "Branding & UX completo", "Integraciones API", "6 meses de soporte prioritario", "Gestor de proyecto dedicado"], "cta": "Hablemos" }
+    ]
+  },
+  "privacy": {
+    "title": "Política de Privacidad",
+    "lastUpdated": "Última actualización: Febrero 2026",
+    "sections": [
+      { "heading": "Información que Recopilamos", "content": "Recopilamos información que proporcionas directamente, como nombre, email, teléfono y datos de empresa al completar nuestro formulario de contacto o comunicarte vía WhatsApp." },
+      { "heading": "Cómo Usamos tu Información", "content": "Usamos la información para responder consultas, proporcionar presupuestos, prestar servicios y enviar actualizaciones relevantes. Nunca vendemos tus datos a terceros." },
+      { "heading": "Almacenamiento y Seguridad", "content": "Tus datos se almacenan de forma segura usando encriptación estándar de la industria." },
+      { "heading": "Cookies", "content": "Nuestro sitio web usa cookies mínimas para preferencias de idioma y analytics." },
+      { "heading": "Tus Derechos", "content": "Bajo el RGPD, tienes derecho a acceder, corregir o eliminar tus datos personales. Contáctanos en privacy@lipetechnology.com." },
+      { "heading": "Contacto", "content": "Para preguntas relacionadas con privacidad, contáctanos en privacy@lipetechnology.com." }
+    ]
+  },
+  "terms": {
+    "title": "Términos de Servicio",
+    "lastUpdated": "Última actualización: Febrero 2026",
+    "sections": [
+      { "heading": "Servicios", "content": "LIPE Technology proporciona servicios de desarrollo web, chatbots, plataformas SaaS, marketing digital y mantenimiento." },
+      { "heading": "Acuerdos de Proyecto", "content": "Cada proyecto comienza con una propuesta detallada. El trabajo comienza solo tras aprobación escrita y pago inicial." },
+      { "heading": "Condiciones de Pago", "content": "Los calendarios de pago se definen por proyecto. Los términos estándar son 50% por adelantado y 50% a la entrega." },
+      { "heading": "Propiedad Intelectual", "content": "Tras el pago completo, todo el código y diseños personalizados se convierten en tu propiedad." },
+      { "heading": "Limitación de Responsabilidad", "content": "La responsabilidad de LIPE Technology se limita al monto total pagado por el proyecto específico." },
+      { "heading": "Rescisión", "content": "Cualquier parte puede rescindir un proyecto con 30 días de aviso previo escrito." }
+    ]
+  },
+  "footer": {
+    "tagline": "Sitios · Chatbots · SaaS · Marketing · Mantenimiento",
+    "copyright": "© 2026 LIPE Technology. Todos los derechos reservados.",
+    "pricing": "Precios",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio"
   }
 }
