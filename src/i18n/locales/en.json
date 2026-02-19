@@ -188,5 +188,35 @@
   "footer": {
     "tagline": "Websites · Chatbots · SaaS · Marketing · Maintenance",
     "copyright": "© 2026 LIPE Technology. All rights reserved."
+  },
+  "cta": {
+    "getQuote": "Get a free quote"
+  },
+  "kpis": {
+    "projects": "Projects delivered",
+    "countries": "Countries served",
+    "satisfaction": "Client satisfaction",
+    "onTime": "On-time delivery"
+  },
+  "ctaSections": {
+    "afterServices": "Ready to transform your business?",
+    "afterServicesHighlight": "Let's talk.",
+    "afterPortfolio": "Want results like these?",
+    "afterPortfolioHighlight": "Start your project today.",
+    "afterTestimonials": "Join our satisfied clients.",
+    "afterTestimonialsHighlight": "Get started now."
+  },
+  "faq": {
+    "label": "FAQ",
+    "title": "Frequently asked",
+    "titleHighlight": "questions",
+    "items": [
+      { "q": "How long does a project take?", "a": "It depends on complexity, but most websites are delivered in 3-6 weeks. SaaS platforms and chatbots may take 6-12 weeks. We'll give you a clear timeline during the Discovery phase." },
+      { "q": "How much does it cost?", "a": "Our projects start at €2,000 for landing pages and go up based on complexity. We always provide a detailed quote before starting so there are no surprises." },
+      { "q": "Do you work with businesses outside Portugal?", "a": "Yes! We work with clients across 12 countries. All communication and project management is done remotely with weekly video calls." },
+      { "q": "What happens after launch?", "a": "We offer ongoing maintenance and support plans. We monitor performance, fix issues, and help you evolve your platform as your business grows." },
+      { "q": "Can I update the content myself?", "a": "Absolutely. We build with CMS integration so you can update text, images, and products without needing a developer." },
+      { "q": "What technologies do you use?", "a": "We use modern, battle-tested technologies: React, TypeScript, Node.js, Supabase, and more. Our stack is chosen for performance, security, and scalability." }
+    ]
   }
 }

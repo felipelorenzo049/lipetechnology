@@ -188,5 +188,35 @@
   "footer": {
     "tagline": "Sites · Chatbots · SaaS · Marketing · Manutenção",
     "copyright": "© 2026 LIPE Technology. Todos os direitos reservados."
+  },
+  "cta": {
+    "getQuote": "Pedir orçamento grátis"
+  },
+  "kpis": {
+    "projects": "Projetos entregues",
+    "countries": "Países atendidos",
+    "satisfaction": "Satisfação dos clientes",
+    "onTime": "Entrega no prazo"
+  },
+  "ctaSections": {
+    "afterServices": "Pronto para transformar o seu negócio?",
+    "afterServicesHighlight": "Vamos conversar.",
+    "afterPortfolio": "Quer resultados como estes?",
+    "afterPortfolioHighlight": "Comece o seu projeto hoje.",
+    "afterTestimonials": "Junte-se aos nossos clientes satisfeitos.",
+    "afterTestimonialsHighlight": "Comece agora."
+  },
+  "faq": {
+    "label": "FAQ",
+    "title": "Perguntas",
+    "titleHighlight": "frequentes",
+    "items": [
+      { "q": "Quanto tempo demora um projeto?", "a": "Depende da complexidade, mas a maioria dos websites é entregue em 3-6 semanas. Plataformas SaaS e chatbots podem levar 6-12 semanas. Damos um cronograma claro na fase de Descoberta." },
+      { "q": "Quanto custa?", "a": "Os nossos projetos começam em €2.000 para landing pages e sobem conforme a complexidade. Fornecemos sempre um orçamento detalhado antes de começar." },
+      { "q": "Trabalham com empresas fora de Portugal?", "a": "Sim! Trabalhamos com clientes em 12 países. Toda a comunicação e gestão de projeto é feita remotamente com videochamadas semanais." },
+      { "q": "O que acontece após o lançamento?", "a": "Oferecemos planos de manutenção e suporte contínuo. Monitorizamos performance, corrigimos problemas e ajudamos a evoluir a sua plataforma." },
+      { "q": "Posso atualizar o conteúdo sozinho?", "a": "Claro. Construímos com integração CMS para que possa atualizar textos, imagens e produtos sem precisar de um developer." },
+      { "q": "Que tecnologias utilizam?", "a": "Usamos tecnologias modernas e testadas: React, TypeScript, Node.js, Supabase e mais. O stack é escolhido por performance, segurança e escalabilidade." }
+    ]
   }
 }

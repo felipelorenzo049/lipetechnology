@@ -1,8 +1,15 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Send, MessageCircle } from "lucide-react";
+import { Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -98,16 +105,16 @@ const Contact = () => {
 
           <div>
             <label className="text-sm font-body text-muted-foreground mb-1.5 block">{t("contact.budget")}</label>
-            <select
-              value={form.orcamento}
-              onChange={(e) => update("orcamento", e.target.value)}
-              className="w-full px-4 py-2.5 rounded-lg bg-muted border border-border text-foreground text-sm font-body focus:outline-none focus:ring-2 focus:ring-primary/50"
-            >
-              <option value="">{t("contact.budgetSelect")}</option>
-              {budgetOptions.map((o) => (
-                <option key={o} value={o}>{o}</option>
-              ))}
-            </select>
+            <Select value={form.orcamento} onValueChange={(val) => update("orcamento", val)}>
+              <SelectTrigger className="w-full bg-muted border-border text-foreground text-sm font-body">
+                <SelectValue placeholder={t("contact.budgetSelect")} />
+              </SelectTrigger>
+              <SelectContent>
+                {budgetOptions.map((o) => (
+                  <SelectItem key={o} value={o}>{o}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div>

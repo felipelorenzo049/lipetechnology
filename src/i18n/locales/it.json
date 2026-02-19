@@ -188,5 +188,35 @@
   "footer": {
     "tagline": "Siti · Chatbot · SaaS · Marketing · Manutenzione",
     "copyright": "© 2026 LIPE Technology. Tutti i diritti riservati."
+  },
+  "cta": {
+    "getQuote": "Richiedi preventivo gratuito"
+  },
+  "kpis": {
+    "projects": "Progetti consegnati",
+    "countries": "Paesi serviti",
+    "satisfaction": "Soddisfazione clienti",
+    "onTime": "Consegna puntuale"
+  },
+  "ctaSections": {
+    "afterServices": "Pronto a trasformare la tua attività?",
+    "afterServicesHighlight": "Parliamone.",
+    "afterPortfolio": "Vuoi risultati come questi?",
+    "afterPortfolioHighlight": "Inizia il tuo progetto oggi.",
+    "afterTestimonials": "Unisciti ai nostri clienti soddisfatti.",
+    "afterTestimonialsHighlight": "Inizia ora."
+  },
+  "faq": {
+    "label": "FAQ",
+    "title": "Domande",
+    "titleHighlight": "frequenti",
+    "items": [
+      { "q": "Quanto tempo ci vuole per un progetto?", "a": "Dipende dalla complessità, ma la maggior parte dei siti web viene consegnata in 3-6 settimane. Le piattaforme SaaS e i chatbot possono richiedere 6-12 settimane." },
+      { "q": "Quanto costa?", "a": "I nostri progetti partono da €2.000 per le landing page e aumentano in base alla complessità. Forniamo sempre un preventivo dettagliato prima di iniziare." },
+      { "q": "Lavorate con aziende fuori dal Portogallo?", "a": "Sì! Lavoriamo con clienti in 12 paesi. Tutta la comunicazione e la gestione del progetto avviene da remoto con videochiamate settimanali." },
+      { "q": "Cosa succede dopo il lancio?", "a": "Offriamo piani di manutenzione e supporto continuo. Monitoriamo le prestazioni, risolviamo problemi e aiutiamo a far evolvere la tua piattaforma." },
+      { "q": "Posso aggiornare i contenuti da solo?", "a": "Assolutamente. Costruiamo con integrazione CMS così puoi aggiornare testi, immagini e prodotti senza bisogno di uno sviluppatore." },
+      { "q": "Quali tecnologie usate?", "a": "Usiamo tecnologie moderne e collaudate: React, TypeScript, Node.js, Supabase e altro. Lo stack è scelto per prestazioni, sicurezza e scalabilità." }
+    ]
   }
 }
