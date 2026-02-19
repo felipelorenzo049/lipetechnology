@@ -14,7 +14,7 @@ const LanguageSwitcher = () => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const current = languages.find((l) => l.code === i18n.language) || languages[0];
+  const current = languages.find((l) => l.code === i18n.resolvedLanguage) || languages[0];
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -45,7 +45,7 @@ const LanguageSwitcher = () => {
                 setOpen(false);
               }}
               className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-mono hover:bg-muted transition-colors ${
-                lang.code === i18n.language ? "text-primary" : "text-foreground/80"
+                lang.code === i18n.resolvedLanguage ? "text-primary" : "text-foreground/80"
               }`}
             >
               <span>{lang.label}</span>
