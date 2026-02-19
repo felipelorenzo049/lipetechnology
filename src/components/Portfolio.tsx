@@ -30,7 +30,7 @@ const projects: Project[] = [
   },
   {
     title: "Plate Boutique by LIPE",
-    tagline: "Plataforma completa para restaurantes: do menu ao delivery",
+    tagline: "Plataforma completa para restaurantes: do menu ao take away",
     description:
       "Menu digital com fotos e descrições dos pratos, sistema de reservas online com confirmação automática, pedidos online com gestão de delivery e takeaway, e integração WhatsApp para contato direto e encomendas.",
     outcome: "Restaurantes com presença digital completa e aumento de pedidos",
