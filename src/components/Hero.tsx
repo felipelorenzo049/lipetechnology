@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowDown, MessageCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { SparklesCore } from "@/components/ui/sparkles";
 
 const Hero = () => {
   const { t } = useTranslation();
@@ -13,6 +14,19 @@ const Hero = () => {
       {/* Background */}
       <div className="absolute inset-0 gradient-mesh" />
       <div className="absolute inset-0 grid-overlay opacity-30" />
+
+      {/* Sparkles background */}
+      <div className="absolute inset-0 z-[1]">
+        <SparklesCore
+          background="transparent"
+          minSize={0.4}
+          maxSize={1.4}
+          particleDensity={60}
+          className="w-full h-full"
+          particleColor="hsl(var(--primary))"
+          speed={1.5}
+        />
+      </div>
 
       {/* Floating shapes */}
       <div className="absolute top-20 left-[10%] w-72 h-72 rounded-full bg-primary/5 blur-3xl animate-float" />
