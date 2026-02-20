@@ -106,8 +106,36 @@ export const ProductItem = ({
 export const HoveredLink = ({
   children,
   href,
+  icon: Icon,
+  description,
   ...rest
-}: React.AnchorHTMLAttributes<HTMLAnchorElement> & { children: React.ReactNode }) => {
+}: React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+  children: React.ReactNode;
+  icon?: React.ComponentType<{ className?: string }>;
+  description?: string;
+}) => {
+  if (Icon) {
+    return (
+      <a
+        href={href}
+        {...rest}
+        className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer group"
+      >
+        <Icon className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+        <div>
+          <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+            {children}
+          </p>
+          {description && (
+            <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">
+              {description}
+            </p>
+          )}
+        </div>
+      </a>
+    );
+  }
+
   return (
     <a
       href={href}
