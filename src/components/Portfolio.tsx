@@ -15,6 +15,7 @@ type Project = {
   color: "primary" | "secondary" | "accent";
   type: "produto" | "cliente";
   parent?: string;
+  url?: string;
 };
 
 const projects: Project[] = [
@@ -25,6 +26,7 @@ const projects: Project[] = [
     tech: ["React 18", "TypeScript", "Three.js", "Supabase", "Framer Motion"],
     color: "primary",
     type: "cliente",
+    url: "https://easylinetheway.com",
   },
   {
     title: "Plate Boutique by LIPE",
@@ -219,9 +221,15 @@ const TimelineNode = ({ project, index }: { project: Project; index: number }) =
             ))}
           </div>
 
-          <button className="flex items-center gap-2 text-sm text-primary font-medium hover:underline mt-2 font-body">
-            {t("portfolio.viewProject")} <ExternalLink size={14} />
-          </button>
+          {project.url ? (
+            <a href={project.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-primary font-medium hover:underline mt-2 font-body">
+              {t("portfolio.viewProject")} <ExternalLink size={14} />
+            </a>
+          ) : (
+            <button className="flex items-center gap-2 text-sm text-primary font-medium hover:underline mt-2 font-body">
+              {t("portfolio.viewProject")} <ExternalLink size={14} />
+            </button>
+          )}
         </div>
       </div>
     </motion.div>
