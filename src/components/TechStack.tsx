@@ -2,7 +2,6 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Star, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 // --- Inline SVG Logos ---
@@ -163,7 +162,6 @@ const Stars = ({ count }: { count: number }) => (
 
 const TechStack = () => {
   const { t } = useTranslation();
-  const isMobile = useIsMobile();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -191,49 +189,34 @@ const TechStack = () => {
               <div className="absolute w-[170px] h-[170px] md:w-[250px] md:h-[250px] rounded-full border border-primary/20 bg-gradient-to-b from-primary/10 to-transparent animate-glow-ring-3" />
             </div>
 
-            {/* Rotating ring containers */}
+            {/* Individual orbiting logos — chained transforms */}
             {rings.map((ring, ringIndex) => {
-              const orbitClasses = [
-                "animate-orbit-cw-120",
-                "animate-orbit-ccw-90",
-                "animate-orbit-cw-60",
-              ];
-              const counterOrbitDurations = ["120s", "90s", "60s"];
-              const counterOrbitDirections = ["reverse", "normal", "reverse"];
+              const animationNames = ["orbit-ring-1", "orbit-ring-2", "orbit-ring-3"];
+              const durations = [120, 90, 60];
 
-              return (
-                <div
-                  key={ringIndex}
-                  className={cn("absolute left-1/2 top-1/2 w-0 h-0 orbit-ring will-change-transform", orbitClasses[ringIndex])}
-                  style={{ animationPlayState: inView ? "running" : "paused" }}
-                >
-                  {ring.items.map((tech, i) => {
-                    const angle = (i / ring.items.length) * 2 * Math.PI - Math.PI / 2;
-                    const r = isMobile ? ring.mobileRadius : ring.radius;
-                    const x = Math.cos(angle) * r;
-                    const y = Math.sin(angle) * r;
-                    const globalIndex = rings.slice(0, ringIndex).reduce((acc, rr) => acc + rr.items.length, 0) + i;
-                    return (
-                      <motion.div
-                        key={tech.name}
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={inView ? { opacity: 1, scale: 1 } : {}}
-                        transition={{ delay: 0.1 + globalIndex * 0.06, type: "spring", stiffness: 200 }}
-                        className="absolute z-10 orbit-counter will-change-transform"
-                        style={{
-                          transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                          animation: `orbit ${counterOrbitDurations[ringIndex]} linear infinite ${counterOrbitDirections[ringIndex]}`,
-                          animationPlayState: inView ? "running" : "paused",
-                        }}
-                      >
-                        <IntegrationCard name={tech.name} className="size-11 md:size-14 hover:!scale-125 hover:shadow-[0_0_25px_-4px_hsl(var(--primary)/0.4)] transition-all duration-300">
-                          <tech.Logo />
-                        </IntegrationCard>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              );
+              return ring.items.map((tech, i) => {
+                const globalIndex = rings.slice(0, ringIndex).reduce((acc, rr) => acc + rr.items.length, 0) + i;
+                const delay = -(i / ring.items.length) * durations[ringIndex];
+
+                return (
+                  <motion.div
+                    key={tech.name}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={inView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ delay: 0.1 + globalIndex * 0.06, type: "spring", stiffness: 200 }}
+                    className="absolute left-1/2 top-1/2 z-10 orbit-logo -ml-[22px] -mt-[22px] md:-ml-[28px] md:-mt-[28px]"
+                    style={{
+                      animation: `${animationNames[ringIndex]} ${durations[ringIndex]}s linear infinite`,
+                      animationDelay: `${delay}s`,
+                      animationPlayState: inView ? "running" : "paused",
+                    }}
+                  >
+                    <IntegrationCard name={tech.name} className="size-11 md:size-14 hover:!scale-125 hover:shadow-[0_0_25px_-4px_hsl(var(--primary)/0.4)] transition-all duration-300">
+                      <tech.Logo />
+                    </IntegrationCard>
+                  </motion.div>
+                );
+              });
             })}
 
             {/* Center LIPE logo with breathing glow */}
@@ -241,9 +224,11 @@ const TechStack = () => {
               initial={{ opacity: 0, scale: 0 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ delay: 0.9, type: "spring", stiffness: 150 }}
-              className="absolute z-20 left-1/2 top-1/2 animate-breathe lipe-glow"
+              className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             >
-              <span className="font-headline font-bold tracking-widest gradient-text text-2xl md:text-3xl select-none">LIPE</span>
+              <div className="animate-breathe lipe-glow">
+                <span className="font-headline font-bold tracking-widest gradient-text text-2xl md:text-3xl select-none">LIPE</span>
+              </div>
             </motion.div>
           </div>
 
@@ -290,13 +275,13 @@ const TechStack = () => {
           transition={{ delay: 0.4 }}
           className="max-w-4xl mx-auto overflow-x-auto"
         >
-          <table className="w-full min-w-[500px]">
+          <table className="w-full min-w-[500px] glass rounded-xl overflow-hidden">
             <thead>
-              <tr className="border-b border-border">
-                <th className="text-left py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.criteria")}</th>
+              <tr className="border-b border-border/50">
+                <th className="text-left py-4 px-5 font-body text-sm text-muted-foreground font-medium">{t("techstack.criteria")}</th>
                 <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.diyBuilders")}</th>
                 <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.tradAgency")}</th>
-                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">
+                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium bg-primary/5 border-l border-primary/10">
                   <span className="gradient-text font-bold">LIPE</span>
                 </th>
               </tr>
@@ -305,11 +290,11 @@ const TechStack = () => {
               {comparisonKeys.map((key) => {
                 const row = comparisonData[key];
                 return (
-                  <tr key={key} className="border-b border-border/50">
-                    <td className="py-3 px-4 text-sm font-body font-medium">{t(`techstack.${key}`)}</td>
-                    <td className="py-3 px-4 text-center"><div className="flex justify-center"><Stars count={row.diy} /></div></td>
-                    <td className="py-3 px-4 text-center"><div className="flex justify-center"><Stars count={row.agency} /></div></td>
-                    <td className="py-3 px-4 text-center"><div className="flex justify-center"><Stars count={row.lipe} /></div></td>
+                  <tr key={key} className="border-b border-border/30 transition-colors hover:bg-primary/[0.03]">
+                    <td className="py-3.5 px-5 text-sm font-body font-medium">{t(`techstack.${key}`)}</td>
+                    <td className="py-3.5 px-4 text-center"><div className="flex justify-center"><Stars count={row.diy} /></div></td>
+                    <td className="py-3.5 px-4 text-center"><div className="flex justify-center"><Stars count={row.agency} /></div></td>
+                    <td className="py-3.5 px-4 text-center bg-primary/5 border-l border-primary/10"><div className="flex justify-center"><Stars count={row.lipe} /></div></td>
                   </tr>
                 );
               })}
