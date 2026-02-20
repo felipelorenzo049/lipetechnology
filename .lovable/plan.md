@@ -1,31 +1,121 @@
 
 
-# Fix: Logos Empilhados no Centro
+# Refatoracao Completa da Secao TechStack
 
-## Problema
-Os logos estao todos empilhados no centro porque os elementos `absolute` nao tem `top` e `left` definidos. O `transform: translate(Xpx, Ypx)` precisa de um ponto de ancoragem no centro do container para funcionar corretamente.
+## Diagnostico dos Problemas Atuais
 
-## Solucao
+### 1. Bug Critico: Logos Invisiveis
+O sistema orbital atual esta quebrado. A animacao CSS `orbit` (que define `transform: rotate()`) sobrescreve o `transform: translate()` inline que posiciona cada logo. Resultado: todos os logos colapsam no centro e ficam invisiveis.
 
-Alteracao simples em **uma linha** no ficheiro `src/components/TechStack.tsx`:
+### 2. Arquitetura Errada
+O codigo usa containers `w-0 h-0` com `absolute` para cada anel, depois tenta aplicar translate + counter-rotate separadamente. Isso nao funciona porque CSS animations sobrepoem transforms inline.
 
-### Linha 202-203 (motion.div dos logos)
+### 3. Layout e UX
+- Secao do titulo e texto ficam desconectados do visual orbital
+- Tabela de comparacao e generica e nao segue o estilo minimalista
+- Sem hierarquia visual clara entre os elementos
 
-**De:**
-```tsx
-className="absolute z-10"
-style={{ transform: `translate(${x}px, ${y}px)` }}
+---
+
+## Solucao: Tecnica de Transforms Encadeados
+
+A tecnica correta para orbitas CSS usa **transforms encadeados** numa unica animacao:
+
+```text
+from { transform: rotate(0deg)   translateX(RAIO) rotate(0deg);    }
+to   { transform: rotate(360deg) translateX(RAIO) rotate(-360deg); }
 ```
 
-**Para:**
-```tsx
-className="absolute z-10 left-1/2 top-1/2"
-style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
+Isso:
+1. Roda o ponto de ancoragem (orbita)
+2. Desloca para fora pelo raio
+3. Contra-roda para manter o logo na vertical
+
+Tudo num unico `transform` -- sem conflitos.
+
+---
+
+## Implementacao Detalhada
+
+### Ficheiro: `src/components/TechStack.tsx` (reescrita completa da secao orbital)
+
+### A. Remover containers orbit-ring
+Eliminar os `div` wrappers com `w-0 h-0` e `animate-orbit-*`. Cada logo sera posicionado individualmente.
+
+### B. Animacoes por logo com CSS custom properties
+Cada logo recebe uma animacao unica via `@keyframes` inline (usando `style`) com:
+- `--radius`: raio do seu anel (240px, 160px, 85px desktop / 145px, 95px, 52px mobile)
+- `--start-angle`: angulo inicial (distribuido uniformemente)
+- `--duration`: velocidade do anel (120s, 90s, 60s)
+- `--direction`: normal ou reverse (alternado por anel)
+
+Usar CSS animation com nome unico por anel + offset via `animation-delay` negativo para posicionar cada logo no angulo correto:
+
+```text
+animation: orbit-outer 120s linear infinite;
+animation-delay: -(index / total * 120)s;
 ```
 
-Isso ancora cada logo no centro exato do container (50%, 50%) e depois desloca com as coordenadas polares calculadas (`x`, `y`). O `-50%` compensa o tamanho do proprio card para centralizar.
+### C. Keyframes por anel (3 keyframes no CSS)
+Adicionar ao `src/index.css`:
 
-### Mesma correcao no logo LIPE central (linha 219)
+```text
+@keyframes orbit-ring-1 {
+  from { transform: rotate(0deg) translateX(240px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(240px) rotate(-360deg); }
+}
+@keyframes orbit-ring-2 {
+  from { transform: rotate(0deg) translateX(160px) rotate(0deg); }
+  to   { transform: rotate(-360deg) translateX(160px) rotate(360deg); }
+}
+@keyframes orbit-ring-3 {
+  from { transform: rotate(0deg) translateX(85px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(85px) rotate(-360deg); }
+}
+```
 
-Adicionar `left-1/2 top-1/2` e `style={{ transform: 'translate(-50%, -50%)' }}` ao `motion.div` do LIPE para garantir centralizacao perfeita.
+Plus versoes mobile com raios menores.
+
+### D. LIPE Central
+- Manter `animate-breathe` e `lipe-glow`
+- Adicionar um anel de luz pulsante ao redor (pseudo-element ou div extra)
+
+### E. Efeitos Visuais
+- **Circulos de fundo**: manter os 3 circulos concentricos com glow pulsante (`animate-glow-ring-*`)
+- **Trilhas orbitais**: circulos dashed nos raios exatos dos logos
+- **Hover**: pausa a animacao do logo individual (`animation-play-state: paused` no hover) + escala 1.2x + glow forte
+- **Entrada**: framer-motion `initial/animate` para fade+scale no scroll (staggered)
+
+### F. Tabela de Comparacao
+- Adicionar fundo glass ao container da tabela
+- Highlight na coluna LIPE com fundo gradiente sutil
+- Hover nas linhas com glow
+
+---
+
+## Ficheiros a Alterar
+
+1. **`src/components/TechStack.tsx`** -- reescrita da secao orbital (linhas 180-248) e melhorias na tabela
+2. **`src/index.css`** -- adicionar keyframes `orbit-ring-1/2/3` com media query para mobile, e remover utilidades de orbital obsoletas
+3. **`tailwind.config.ts`** -- sem alteracoes (keyframes existentes de glow/breathe permanecem)
+
+---
+
+## Resumo Visual
+
+```text
+       .  .  .  .  .  .       <-- trilha dashed outer
+     .                   .
+   .   [React] [Next]      .
+  .  [Tail]          [TS]   .
+  .       .  .  .  .       .  <-- trilha dashed middle
+  .     . [OAI] [Str] .     .
+   .   .    . . .    .   .
+    .  . [FM]     [N8N].  .   <-- trilha dashed inner
+     . .   [ LIPE ]  . .
+      ..  [Lov]     ..
+       .  .  .  .  .
+```
+
+Todos os logos orbitam lentamente, mantendo-se na vertical, com glow pulsante nos circulos de fundo e pausa interativa no hover.
 
