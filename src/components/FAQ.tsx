@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/accordion";
 
 const FAQ = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const faqs = t("faq.items", { returnObjects: true }) as Array<{ q: string; a: string }>;
+  const faqs = t("faq.items", { returnObjects: true, lng: i18n.language }) as Array<{ q: string; a: string }>;
 
   return (
     <section className="py-24 md:py-32">
