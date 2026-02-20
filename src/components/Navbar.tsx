@@ -38,13 +38,12 @@ const Navbar = () => {
       <div className="hidden md:flex justify-center pt-4">
         <NavMenu setActive={setActive}>
           {/* Logo */}
-          <a
-            href="#"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          <Link
+            to="/"
             className="font-headline text-lg font-bold gradient-text mr-8 flex items-center tracking-widest"
           >
             LIPE
-          </a>
+          </Link>
 
           <MenuItem setActive={setActive} active={active} item={t("nav.services")}>
             <div className="flex flex-col space-y-3 text-sm">
@@ -120,10 +119,10 @@ const Navbar = () => {
       {/* Mobile */}
       <div className="md:hidden glass">
         <div className="container mx-auto flex items-center justify-between px-6 py-4">
-          <a href="#" className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+          <Link to="/" className="flex items-center gap-2">
             <span className="font-headline text-2xl font-bold gradient-text">LIPE</span>
             <span className="text-sm font-body text-muted-foreground">Technology</span>
-          </a>
+          </Link>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <button className="text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
