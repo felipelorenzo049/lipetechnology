@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Star, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 // --- Inline SVG Logos ---
@@ -112,13 +113,11 @@ const techs = [
   { name: "Lovable", Logo: LovableLogo },
 ];
 
-// Rows: 1, 2, 3, 3, 4
-const rows = [
-  [techs[0]],
-  [techs[1], techs[2]],
-  [techs[3], techs[4], techs[5]],
-  [techs[6], techs[7], techs[8]],
-  [techs[9], techs[10], techs[11], techs[12]],
+// Concentric rings distribution
+const rings = [
+  { radius: 240, mobileRadius: 145, items: [techs[0], techs[1], techs[2], techs[3], techs[4], techs[5]] },
+  { radius: 160, mobileRadius: 95, items: [techs[6], techs[7], techs[8], techs[9]] },
+  { radius: 85, mobileRadius: 52, items: [techs[10], techs[11], techs[12]] },
 ];
 
 const IntegrationCard = ({ children, className, isCenter = false, name }: { children: React.ReactNode; className?: string; isCenter?: boolean; name?: string }) => {
@@ -164,6 +163,7 @@ const Stars = ({ count }: { count: number }) => (
 
 const TechStack = () => {
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -176,49 +176,48 @@ const TechStack = () => {
       <div ref={ref} className="container mx-auto px-6">
         {/* Concentric Arc Integration Layout */}
         <div className="flex flex-col items-center mb-24">
-          {/* Arc container */}
-          <div className="relative flex flex-col items-center gap-6 py-16 px-8 mb-12">
+          {/* Circular arc container */}
+          <div className="relative flex items-center justify-center w-[320px] h-[320px] md:w-[560px] md:h-[560px] mb-12">
             {/* Concentric arc backgrounds */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              {/* Outer arc */}
-              <div className="absolute w-[480px] h-[480px] md:w-[600px] md:h-[600px] rounded-full border border-border/20 bg-gradient-to-b from-primary/5 to-secondary/5" />
-              {/* Middle arc */}
-              <div className="absolute w-[340px] h-[340px] md:w-[440px] md:h-[440px] rounded-full border border-border/15 bg-gradient-to-b from-primary/5 to-transparent" />
-              {/* Inner arc */}
-              <div className="absolute w-[200px] h-[200px] md:w-[280px] md:h-[280px] rounded-full border border-primary/20 bg-gradient-to-b from-primary/10 to-transparent" />
+              <div className="absolute w-[480px] h-[480px] md:w-[560px] md:h-[560px] rounded-full border border-border/20 bg-gradient-to-b from-primary/5 to-secondary/5" />
+              <div className="absolute w-[320px] h-[320px] md:w-[400px] md:h-[400px] rounded-full border border-border/15 bg-gradient-to-b from-primary/5 to-transparent" />
+              <div className="absolute w-[170px] h-[170px] md:w-[250px] md:h-[250px] rounded-full border border-primary/20 bg-gradient-to-b from-primary/10 to-transparent" />
             </div>
 
-            {/* Icon rows */}
-            {rows.map((row, rowIndex) => (
-              <div key={rowIndex} className="relative z-10 flex items-center justify-center gap-5 md:gap-8">
-                {row.map((tech, i) => {
-                  const globalIndex = rows.slice(0, rowIndex).reduce((acc, r) => acc + r.length, 0) + i;
-                  return (
-                    <motion.div
-                      key={tech.name}
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={inView ? { opacity: 1, scale: 1 } : {}}
-                      transition={{ delay: 0.1 + globalIndex * 0.06, type: "spring", stiffness: 200 }}
-                    >
-                      <IntegrationCard name={tech.name}>
-                        <tech.Logo />
-                      </IntegrationCard>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            ))}
+            {/* Logos distributed along rings */}
+            {rings.map((ring, ringIndex) =>
+              ring.items.map((tech, i) => {
+                const angle = (i / ring.items.length) * 2 * Math.PI - Math.PI / 2;
+                const r = isMobile ? ring.mobileRadius : ring.radius;
+                const x = Math.cos(angle) * r;
+                const y = Math.sin(angle) * r;
+                const globalIndex = rings.slice(0, ringIndex).reduce((acc, rr) => acc + rr.items.length, 0) + i;
+                return (
+                  <motion.div
+                    key={tech.name}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={inView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ delay: 0.1 + globalIndex * 0.06, type: "spring", stiffness: 200 }}
+                    className="absolute z-10"
+                    style={{ transform: `translate(${x}px, ${y}px)` }}
+                  >
+                    <IntegrationCard name={tech.name} className="size-11 md:size-14">
+                      <tech.Logo />
+                    </IntegrationCard>
+                  </motion.div>
+                );
+              })
+            )}
 
-            {/* Center LIPE logo - text styled like header */}
+            {/* Center LIPE logo */}
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ delay: 0.9, type: "spring", stiffness: 150 }}
-              className="relative z-10"
+              className="absolute z-10"
             >
-              <IntegrationCard isCenter>
-                <span className="font-headline font-bold tracking-widest gradient-text text-xl">LIPE</span>
-              </IntegrationCard>
+              <span className="font-headline font-bold tracking-widest gradient-text text-2xl md:text-3xl">LIPE</span>
             </motion.div>
           </div>
 
