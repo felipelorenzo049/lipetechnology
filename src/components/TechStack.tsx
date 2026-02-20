@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Star } from "lucide-react";
+import { Star, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
@@ -88,36 +88,33 @@ const techs = [
   { name: "Figma", Logo: FigmaLogo },
 ];
 
-// Positions for radial layout matching reference image
-// Arc arrangement: top, then two rows of 3, center logo at bottom
-const arcPositions = [
-  // Top
-  { top: "0%", left: "50%", translate: "-50% 0" },
-  // Second row
-  { top: "18%", left: "72%", translate: "-50% -50%" },
-  { top: "18%", left: "28%", translate: "-50% -50%" },
-  // Middle row  
-  { top: "38%", left: "85%", translate: "-50% -50%" },
-  { top: "38%", left: "15%", translate: "-50% -50%" },
-  { top: "38%", left: "50%", translate: "-50% -50%" },
-  // Lower row
-  { top: "58%", left: "75%", translate: "-50% -50%" },
-  { top: "58%", left: "25%", translate: "-50% -50%" },
-  { top: "58%", left: "50%", translate: "-50% -50%" },
+// Rows: 1, 2, 3, 3
+const rows = [
+  [techs[0]],
+  [techs[1], techs[2]],
+  [techs[3], techs[4], techs[5]],
+  [techs[6], techs[7], techs[8]],
 ];
 
-const IntegrationCard = ({ children, className, isCenter = false }: { children: React.ReactNode; className?: string; isCenter?: boolean }) => {
+const IntegrationCard = ({ children, className, isCenter = false, name }: { children: React.ReactNode; className?: string; isCenter?: boolean; name?: string }) => {
   return (
-    <div className={cn(
-      "group size-12 rounded-xl flex items-center justify-center border shadow-md transition-all duration-300 hover:scale-110",
-      isCenter
-        ? "size-16 border-primary/40 bg-primary/10 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.3)]"
-        : "border-border/50 bg-card/80 backdrop-blur-sm text-muted-foreground hover:text-primary hover:border-primary/30 hover:shadow-[0_0_15px_-4px_hsl(var(--primary)/0.2)]",
-      className
-    )}>
+    <div
+      className={cn(
+        "group relative rounded-xl flex items-center justify-center border shadow-md transition-all duration-300 hover:scale-110",
+        isCenter
+          ? "size-16 border-primary/40 bg-primary/10 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.3)]"
+          : "size-12 border-border/50 bg-card/80 backdrop-blur-sm text-muted-foreground hover:text-primary hover:border-primary/30 hover:shadow-[0_0_15px_-4px_hsl(var(--primary)/0.2)]",
+        className
+      )}
+    >
       <div className={cn("flex items-center justify-center", isCenter ? "text-primary" : "")}>
         {children}
       </div>
+      {name && (
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-muted-foreground font-body whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+          {name}
+        </span>
+      )}
     </div>
   );
 };
@@ -145,37 +142,46 @@ const TechStack = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
+  const scrollToContact = () => {
+    document.querySelector("#contato")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section className="py-24 md:py-32">
       <div ref={ref} className="container mx-auto px-6">
-        {/* Radial Integration Layout */}
+        {/* Concentric Arc Integration Layout */}
         <div className="flex flex-col items-center mb-24">
-          {/* Arc visualization */}
-          <div className="relative w-full max-w-md aspect-square mb-12">
-            {/* Decorative arc lines */}
-            <div className="absolute inset-[10%] rounded-full border border-border/20" />
-            <div className="absolute inset-[25%] rounded-full border border-border/15" />
-            <div className="absolute inset-[40%] rounded-full border border-border/10" />
+          {/* Arc container */}
+          <div className="relative flex flex-col items-center gap-5 py-16 px-8 mb-12">
+            {/* Concentric arc backgrounds */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {/* Outer arc */}
+              <div className="absolute w-[420px] h-[420px] md:w-[520px] md:h-[520px] rounded-full border border-border/20 bg-gradient-to-b from-primary/5 to-secondary/5" />
+              {/* Middle arc */}
+              <div className="absolute w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full border border-border/15 bg-gradient-to-b from-primary/5 to-transparent" />
+              {/* Inner arc */}
+              <div className="absolute w-[180px] h-[180px] md:w-[240px] md:h-[240px] rounded-full border border-primary/20 bg-gradient-to-b from-primary/10 to-transparent" />
+            </div>
 
-            {/* Tech logos positioned in arc */}
-            {techs.map((tech, i) => (
-              <motion.div
-                key={tech.name}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={inView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ delay: 0.1 + i * 0.08, type: "spring", stiffness: 200 }}
-                className="absolute"
-                style={{
-                  top: arcPositions[i].top,
-                  left: arcPositions[i].left,
-                  translate: arcPositions[i].translate,
-                }}
-                title={tech.name}
-              >
-                <IntegrationCard>
-                  <tech.Logo />
-                </IntegrationCard>
-              </motion.div>
+            {/* Icon rows */}
+            {rows.map((row, rowIndex) => (
+              <div key={rowIndex} className="relative z-10 flex items-center justify-center gap-6 md:gap-10">
+                {row.map((tech, i) => {
+                  const globalIndex = rows.slice(0, rowIndex).reduce((acc, r) => acc + r.length, 0) + i;
+                  return (
+                    <motion.div
+                      key={tech.name}
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={inView ? { opacity: 1, scale: 1 } : {}}
+                      transition={{ delay: 0.1 + globalIndex * 0.08, type: "spring", stiffness: 200 }}
+                    >
+                      <IntegrationCard name={tech.name}>
+                        <tech.Logo />
+                      </IntegrationCard>
+                    </motion.div>
+                  );
+                })}
+              </div>
             ))}
 
             {/* Center LIPE logo */}
@@ -183,8 +189,7 @@ const TechStack = () => {
               initial={{ opacity: 0, scale: 0 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ delay: 0.8, type: "spring", stiffness: 150 }}
-              className="absolute"
-              style={{ top: "80%", left: "50%", translate: "-50% -50%" }}
+              className="relative z-10"
             >
               <IntegrationCard isCenter>
                 <LipeLogo />
@@ -203,9 +208,16 @@ const TechStack = () => {
               {t("techstack.techTitle")}{" "}
               <span className="gradient-text">{t("techstack.techHighlight")}</span>
             </h2>
-            <p className="text-muted-foreground font-body text-base leading-relaxed">
+            <p className="text-muted-foreground font-body text-base leading-relaxed mb-6">
               {t("techstack.techSubtitle")}
             </p>
+            <button
+              onClick={scrollToContact}
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-full border border-border bg-card/50 backdrop-blur-sm text-foreground font-semibold font-body hover:bg-primary/10 hover:border-primary/40 transition-all hover:shadow-[0_0_20px_-4px_hsl(var(--primary)/0.3)] uppercase tracking-wide text-sm group"
+            >
+              {t("cta.getQuote")}
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            </button>
           </motion.div>
         </div>
 
