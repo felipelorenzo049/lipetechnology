@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe, MessageSquare, LayoutDashboard, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -46,17 +46,17 @@ const Navbar = () => {
           </Link>
 
           <MenuItem setActive={setActive} active={active} item={t("nav.services")}>
-            <div className="flex flex-col space-y-3 text-sm">
-              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
+            <div className="flex flex-col space-y-1 min-w-[240px]">
+              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")} icon={Globe} description={t("nav.customWebsitesDesc")}>
                 {t("nav.customWebsites")}
               </HoveredLink>
-              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
+              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")} icon={MessageSquare} description={t("nav.consultativeChatbotsDesc")}>
                 {t("nav.consultativeChatbots")}
               </HoveredLink>
-              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
+              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")} icon={LayoutDashboard} description={t("nav.saasDesc")}>
                 {t("nav.saasTitle")}
               </HoveredLink>
-              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")}>
+              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")} icon={TrendingUp} description={t("nav.digitalMarketingDesc")}>
                 {t("nav.digitalMarketing")}
               </HoveredLink>
             </div>
@@ -93,14 +93,14 @@ const Navbar = () => {
 
           <button
             onClick={() => scrollTo("#processo")}
-            className="text-sm font-body text-foreground/80 hover:text-foreground transition-colors"
+            className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors tracking-wide uppercase cursor-pointer"
           >
             {t("nav.process")}
           </button>
 
           <Link
             to="/pricing"
-            className="text-sm font-body text-foreground/80 hover:text-foreground transition-colors"
+            className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors tracking-wide uppercase cursor-pointer"
           >
             {t("nav.pricing")}
           </Link>
