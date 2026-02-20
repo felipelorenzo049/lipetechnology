@@ -1,23 +1,42 @@
 
 
-## Gerar Favicon "LIPE" com Gradient da Marca
+## Adicionar link externo ao projeto EasyLine no portfolio
 
 ### O que sera feito
 
-1. **Gerar uma imagem** usando o modelo de IA (Gemini Flash Image) com as letras "LIPE" no estilo gradient da marca (azul primario para verde/teal secundario), fundo escuro, formato quadrado adequado para favicon (512x512px).
+Adicionar o link `https://easylinetheway.com` ao projeto EasyLine para que o botao "Ver projeto completo" redirecione para o site real.
 
-2. **Copiar a imagem gerada** para `public/favicon.png`.
+### Alteracoes tecnicas
 
-3. **Atualizar `index.html`** para referenciar o novo favicon:
-   - Adicionar `<link rel="icon" href="/favicon.png" type="image/png">` no `<head>`.
+**1. `src/components/Portfolio.tsx`**
 
-### Estilo do favicon
-- Fundo escuro (cor de fundo da marca: ~hsl(216, 33%, 7%))
-- Letras "LIPE" em gradient azul-para-teal (primary #3B72E9 para secondary #3BB58C)
-- Fonte bold/moderna estilo Syne
-- Formato quadrado, legivel mesmo em tamanhos pequenos (16x16, 32x32)
+- Adicionar campo opcional `url?: string` ao tipo `Project`
+- Adicionar `url: "https://easylinetheway.com"` ao projeto EasyLine na lista de projetos
+- Transformar o botao "Ver projeto completo" num link `<a>` que abre o URL numa nova aba (`target="_blank"`) quando o projeto tiver URL definido; caso contrario, manter o botao atual
+
+**Antes:**
+```tsx
+<button className="flex items-center gap-2 ...">
+  {t("portfolio.viewProject")} <ExternalLink size={14} />
+</button>
+```
+
+**Depois:**
+```tsx
+{project.url ? (
+  <a href={project.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 ...">
+    {t("portfolio.viewProject")} <ExternalLink size={14} />
+  </a>
+) : (
+  <button className="flex items-center gap-2 ...">
+    {t("portfolio.viewProject")} <ExternalLink size={14} />
+  </button>
+)}
+```
 
 ### Ficheiros afetados
-- `public/favicon.png` (novo)
-- `index.html` (adicionar link rel="icon")
+
+| Ficheiro | Acao |
+|----------|------|
+| `src/components/Portfolio.tsx` | Atualizado |
 
