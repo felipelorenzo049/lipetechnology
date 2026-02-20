@@ -109,16 +109,46 @@
     box-shadow: 0 0 30px -5px hsl(20 100% 53% / 0.3);
   }
 
-  /* Orbital ring hover pause */
-  .orbit-ring:hover {
-    animation-play-state: paused;
-  }
-  .orbit-ring:hover .orbit-counter {
-    animation-play-state: paused;
-  }
-
   /* LIPE central glow */
   .lipe-glow {
     text-shadow: 0 0 20px hsl(220 78% 57% / 0.4), 0 0 60px hsl(168 55% 44% / 0.2);
+  }
+
+  /* Orbital logo hover pause + scale */
+  .orbit-logo {
+    will-change: transform;
+  }
+  .orbit-logo:hover {
+    animation-play-state: paused !important;
+  }
+}
+
+/* Chained transform orbit keyframes — desktop */
+@keyframes orbit-ring-1 {
+  from { transform: rotate(0deg) translateX(240px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(240px) rotate(-360deg); }
+}
+@keyframes orbit-ring-2 {
+  from { transform: rotate(0deg) translateX(160px) rotate(0deg); }
+  to   { transform: rotate(-360deg) translateX(160px) rotate(360deg); }
+}
+@keyframes orbit-ring-3 {
+  from { transform: rotate(0deg) translateX(85px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(85px) rotate(-360deg); }
+}
+
+/* Chained transform orbit keyframes — mobile */
+@media (max-width: 767px) {
+  @keyframes orbit-ring-1 {
+    from { transform: rotate(0deg) translateX(145px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(145px) rotate(-360deg); }
+  }
+  @keyframes orbit-ring-2 {
+    from { transform: rotate(0deg) translateX(95px) rotate(0deg); }
+    to   { transform: rotate(-360deg) translateX(95px) rotate(360deg); }
+  }
+  @keyframes orbit-ring-3 {
+    from { transform: rotate(0deg) translateX(52px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(52px) rotate(-360deg); }
   }
 }
