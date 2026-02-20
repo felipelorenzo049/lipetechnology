@@ -1,50 +1,31 @@
 
 
-# Distribuir Logos em Circulos Concentricos
+# Fix: Logos Empilhados no Centro
 
-## Problema Atual
-Os logos estao distribuidos em filas horizontais (1, 2, 3, 3, 4) que criam uma forma de cone/triangulo invertido. O usuario quer que os logos sejam distribuidos **ao longo dos circulos concentricos**, como na referencia 2 (imagem-27).
+## Problema
+Os logos estao todos empilhados no centro porque os elementos `absolute` nao tem `top` e `left` definidos. O `transform: translate(Xpx, Ypx)` precisa de um ponto de ancoragem no centro do container para funcionar corretamente.
 
 ## Solucao
 
-### Layout Circular
-Posicionar os logos usando coordenadas polares (`sin`/`cos`) ao longo de 3 aneis concentricos, com o logo LIPE no centro absoluto (sem card wrapper).
+Alteracao simples em **uma linha** no ficheiro `src/components/TechStack.tsx`:
 
-**Distribuicao dos 13 logos em 3 aneis:**
-- **Anel externo** (raio ~240px): 6 logos espacados a cada 60 graus
-- **Anel medio** (raio ~160px): 4 logos espacados a cada 90 graus
-- **Anel interno** (raio ~90px): 3 logos espacados a cada 120 graus
-- **Centro**: Logo LIPE (texto gradient, sem card/div wrapper)
+### Linha 202-203 (motion.div dos logos)
 
-### Logo LIPE Central
-Remover o `IntegrationCard` wrapper do LIPE. Usar apenas o texto estilizado `gradient-text font-headline` centrado, com tamanho maior para destaque.
-
-### Detalhes Tecnicos
-
-**Ficheiro a alterar:** `src/components/TechStack.tsx`
-
-**Posicionamento circular** - cada logo sera posicionado com `absolute` usando calculo trigonometrico:
+**De:**
 ```tsx
-const angle = (index / total) * 2 * Math.PI - Math.PI / 2; // inicio no topo
-const x = Math.cos(angle) * radius;
-const y = Math.sin(angle) * radius;
-// style={{ transform: `translate(${x}px, ${y}px)` }}
+className="absolute z-10"
+style={{ transform: `translate(${x}px, ${y}px)` }}
 ```
 
-**Estrutura dos aneis:**
+**Para:**
 ```tsx
-const rings = [
-  { radius: 240, items: [techs 0-5] },   // 6 logos
-  { radius: 160, items: [techs 6-9] },   // 4 logos
-  { radius: 90,  items: [techs 10-12] }, // 3 logos
-];
+className="absolute z-10 left-1/2 top-1/2"
+style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
 ```
 
-**Container:** area quadrada com `relative` e dimensoes fixas (`min-h-[500px] md:min-h-[600px]`), todos os logos posicionados com `absolute` a partir do centro.
+Isso ancora cada logo no centro exato do container (50%, 50%) e depois desloca com as coordenadas polares calculadas (`x`, `y`). O `-50%` compensa o tamanho do proprio card para centralizar.
 
-**Responsivo:** raios reduzidos em mobile (~60% do desktop), cards ligeiramente menores (`size-12` em mobile vs `size-14` em desktop).
+### Mesma correcao no logo LIPE central (linha 219)
 
-**LIPE central:** substituir o `IntegrationCard` por um simples `span` com `gradient-text font-headline font-bold text-2xl tracking-widest`, posicionado no centro absoluto sem borda ou fundo.
-
-Os arcos concentricos de fundo permanecem iguais (3 circulos com bordas sutis e gradientes).
+Adicionar `left-1/2 top-1/2` e `style={{ transform: 'translate(-50%, -50%)' }}` ao `motion.div` do LIPE para garantir centralizacao perfeita.
 
