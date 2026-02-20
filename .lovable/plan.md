@@ -1,59 +1,43 @@
 
-# Padronizar Design e Fontes do Header
 
-## Problemas Identificados
+# Refazer TechStack com Layout de Arcos Concentricos (Referencia Exata)
 
-1. **Inconsistencia de fontes**: "SERVICOS" e "PORTFOLIO" estao em uppercase (via MenuItem), enquanto "Processo" e "Planos" estao em title case (botao/link separados com classe diferente)
-2. **Dropdown de Servicos**: Links simples sem destaque visual, sem icones, sem hover sofisticado
-3. **Dropdown de Portfolio**: Tem imagens mas estilo diferente do de Servicos - falta padronizacao entre os dois dropdowns
+## Problema
+O layout atual usa posicionamento manual com coordenadas absolutas que nao reproduz fielmente o design de referencia com arcos concentricos e gradientes coloridos.
 
 ## Solucao
+Reescrever o `TechStack.tsx` seguindo a estrutura exata do componente `demo.tsx` fornecido, adaptando para o tema escuro do site.
 
-### 1. Padronizar fonte dos itens de navegacao (sem alterar o CTA "Fale Conosco")
+## Layout (baseado na imagem de referencia)
 
-No `Navbar.tsx`, os botoes "Processo" e "Planos" usam classes diferentes dos MenuItems. Vou padronizar todos para usar o mesmo estilo: `font-body text-sm tracking-wide uppercase text-muted-foreground hover:text-foreground`.
-
-### 2. Melhorar dropdown de Servicos
-
-Adicionar icones (Lucide) a cada link de servico e um hover mais rico com fundo highlight:
-- Sites Personalizados -> icone `Globe`
-- Chatbots Consultivos -> icone `MessageSquare`
-- SaaS / Plataformas -> icone `LayoutDashboard`
-- Marketing Digital -> icone `TrendingUp`
-
-Cada item tera: icone + titulo + descricao curta, com hover `bg-muted/50 rounded-lg` - mesmo padrao visual do dropdown de Portfolio.
-
-### 3. Padronizar dropdown de Portfolio
-
-Manter o layout com imagens mas alinhar o padding, border-radius e hover com o de Servicos. Ambos usarao `p-2 rounded-lg hover:bg-muted/50`.
-
-### 4. Melhorar o componente `navbar-menu.tsx`
-
-- `HoveredLink`: adicionar suporte a icone e descricao como props opcionais
-- `MenuItem`: manter o trigger uppercase padronizado
-- Ambos os dropdowns terao cantos arredondados consistentes e mesmo box-shadow
-
-## Ficheiros a alterar
-
-1. **`src/components/ui/navbar-menu.tsx`** - Atualizar `HoveredLink` para suportar icone + descricao; refinar estilos do dropdown
-2. **`src/components/Navbar.tsx`** - Padronizar classes dos botoes "Processo" e "Planos" para uppercase; adicionar icones e descricoes ao dropdown de Servicos
+O design usa uma area central com:
+1. **Arcos concentricos** (3 circulos com bordas sutis e gradiente) como fundo decorativo
+2. **Icones em 4 filas** distribuidos simetricamente:
+   - Fila 1 (topo): 1 icone centrado
+   - Fila 2: 2 icones
+   - Fila 3: 3 icones
+   - Fila 4: 3 icones
+   - Centro (embaixo): Logo LIPE com destaque
+3. **Texto abaixo**: titulo + subtitulo + botao CTA
+4. **Tabela comparativa** mantida abaixo
 
 ## Detalhes Tecnicos
 
-**Navbar.tsx** - Botoes Processo e Planos:
-```
-className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors tracking-wide uppercase cursor-pointer"
-```
+### Estrutura do layout de arcos
+Usar `grid` com posicionamento relativo em vez de coordenadas absolutas. Cada fila sera um `flex` centrado com `gap` e `justify-center`. Os arcos serao circulos concentricos posicionados com `absolute` e gradientes sutis usando as cores do tema (primary, secondary).
 
-**Dropdown Servicos** - Cada item tera layout com icone:
-```
-<div className="flex items-start gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
-  <Icon className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-  <div>
-    <p className="text-sm font-semibold text-foreground">Titulo</p>
-    <p className="text-xs text-muted-foreground">Descricao curta</p>
-  </div>
-</div>
-```
+### Gradientes dos arcos (adaptados ao tema escuro)
+- Arco externo: `border-border/20` com gradiente sutil de `primary/10` a `secondary/10`
+- Arco medio: `border-border/15`
+- Arco interno: `border-primary/20`
 
-Nao sera alterado o CTA "Fale Conosco" nem o logo.
+### Cards dos icones
+Manter o `IntegrationCard` existente com hover effects.
+
+### CTA
+Adicionar botao "Fale Conosco" (link para secao de contato) abaixo do subtitulo, usando `Button` com variante `outline`.
+
+## Ficheiro a alterar
+
+1. **`src/components/TechStack.tsx`** - Reescrever a secao de arcos com layout em filas centradas + arcos concentricos como fundo decorativo, mantendo a tabela comparativa intacta
+
