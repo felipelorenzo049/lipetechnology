@@ -1,50 +1,50 @@
 
 
-# Melhorar Logos das Integracoes e Adicionar Logo LIPE
+# Distribuir Logos em Circulos Concentricos
 
-## O que sera feito
+## Problema Atual
+Os logos estao distribuidos em filas horizontais (1, 2, 3, 3, 4) que criam uma forma de cone/triangulo invertido. O usuario quer que os logos sejam distribuidos **ao longo dos circulos concentricos**, como na referencia 2 (imagem-27).
 
-1. **Adicionar mais tecnologias** para preencher melhor o espaco dos arcos concentricos. Atualmente sao 9 icones -- vou adicionar mais 4 para totalizar 13, redistribuidos em 5 filas: 1, 2, 3, 3, 3, mais o logo LIPE centralizado embaixo.
+## Solucao
 
-2. **Melhorar os SVGs existentes** -- tornar os icones mais reconheciveis e com melhor proporcao dentro dos cards.
+### Layout Circular
+Posicionar os logos usando coordenadas polares (`sin`/`cos`) ao longo de 3 aneis concentricos, com o logo LIPE no centro absoluto (sem card wrapper).
 
-3. **Usar o logo LIPE do header** (texto "LIPE" com `gradient-text` e `font-headline`) no card central inferior, em vez do SVG generico atual.
+**Distribuicao dos 13 logos em 3 aneis:**
+- **Anel externo** (raio ~240px): 6 logos espacados a cada 60 graus
+- **Anel medio** (raio ~160px): 4 logos espacados a cada 90 graus
+- **Anel interno** (raio ~90px): 3 logos espacados a cada 120 graus
+- **Centro**: Logo LIPE (texto gradient, sem card/div wrapper)
 
-## Novas tecnologias a adicionar
+### Logo LIPE Central
+Remover o `IntegrationCard` wrapper do LIPE. Usar apenas o texto estilizado `gradient-text font-headline` centrado, com tamanho maior para destaque.
 
-- **Vercel** (deploy/hosting)
-- **Framer Motion** (animacoes)
-- **N8N** (automacao)
-- **Lovable** (ou outro relevante)
+### Detalhes Tecnicos
 
-## Nova distribuicao em filas
+**Ficheiro a alterar:** `src/components/TechStack.tsx`
 
-```text
-         [ 1 ]           <- Fila 1: 1 icone
-       [ 2 ] [ 3 ]       <- Fila 2: 2 icones
-     [ 4 ] [ 5 ] [ 6 ]   <- Fila 3: 3 icones
-   [ 7 ] [ 8 ] [ 9 ]     <- Fila 4: 3 icones
-  [10 ] [11 ] [12 ] [13]  <- Fila 5: 4 icones (preenche arco externo)
-        [ LIPE ]          <- Logo central
+**Posicionamento circular** - cada logo sera posicionado com `absolute` usando calculo trigonometrico:
+```tsx
+const angle = (index / total) * 2 * Math.PI - Math.PI / 2; // inicio no topo
+const x = Math.cos(angle) * radius;
+const y = Math.sin(angle) * radius;
+// style={{ transform: `translate(${x}px, ${y}px)` }}
 ```
 
-## Logo LIPE no centro
+**Estrutura dos aneis:**
+```tsx
+const rings = [
+  { radius: 240, items: [techs 0-5] },   // 6 logos
+  { radius: 160, items: [techs 6-9] },   // 4 logos
+  { radius: 90,  items: [techs 10-12] }, // 3 logos
+];
+```
 
-Substituir o `LipeLogo` SVG atual por um componente que usa o mesmo estilo do header:
-- `font-headline` (Syne)
-- `gradient-text` (gradiente primary -> secondary)
-- Texto "LIPE" com `font-bold tracking-widest`
+**Container:** area quadrada com `relative` e dimensoes fixas (`min-h-[500px] md:min-h-[600px]`), todos os logos posicionados com `absolute` a partir do centro.
 
-## Detalhes Tecnicos
+**Responsivo:** raios reduzidos em mobile (~60% do desktop), cards ligeiramente menores (`size-12` em mobile vs `size-14` em desktop).
 
-### Ficheiro a alterar
-- `src/components/TechStack.tsx`
+**LIPE central:** substituir o `IntegrationCard` por um simples `span` com `gradient-text font-headline font-bold text-2xl tracking-widest`, posicionado no centro absoluto sem borda ou fundo.
 
-### Alteracoes:
-1. Adicionar 4 novos componentes SVG inline (Vercel, Framer Motion, N8N, Lovable)
-2. Atualizar array `techs` com 13 itens
-3. Atualizar `rows` para 5 filas: `[1], [2], [3], [3], [4]`
-4. Substituir `LipeLogo` por texto estilizado com `gradient-text font-headline`
-5. Aumentar ligeiramente o tamanho dos arcos concentricos para acomodar a fila extra
-6. Manter toda a logica de animacao e a tabela comparativa intactas
+Os arcos concentricos de fundo permanecem iguais (3 circulos com bordas sutis e gradientes).
 
