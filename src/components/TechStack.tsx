@@ -178,47 +178,72 @@ const TechStack = () => {
         <div className="flex flex-col items-center mb-24">
           {/* Circular arc container */}
           <div className="relative flex items-center justify-center w-[320px] h-[320px] md:w-[560px] md:h-[560px] mb-12">
-            {/* Concentric arc backgrounds */}
+            {/* Glowing concentric arc backgrounds with orbital tracks */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="absolute w-[480px] h-[480px] md:w-[560px] md:h-[560px] rounded-full border border-border/20 bg-gradient-to-b from-primary/5 to-secondary/5" />
-              <div className="absolute w-[320px] h-[320px] md:w-[400px] md:h-[400px] rounded-full border border-border/15 bg-gradient-to-b from-primary/5 to-transparent" />
-              <div className="absolute w-[170px] h-[170px] md:w-[250px] md:h-[250px] rounded-full border border-primary/20 bg-gradient-to-b from-primary/10 to-transparent" />
+              {/* Outer ring glow + dashed orbit track */}
+              <div className="absolute w-[290px] h-[290px] md:w-[480px] md:h-[480px] rounded-full border border-dashed border-primary/10 animate-glow-ring-1" />
+              <div className="absolute w-[480px] h-[480px] md:w-[560px] md:h-[560px] rounded-full border border-border/20 bg-gradient-to-b from-primary/5 to-secondary/5 animate-glow-ring-1" />
+              {/* Middle ring glow + dashed orbit track */}
+              <div className="absolute w-[190px] h-[190px] md:w-[320px] md:h-[320px] rounded-full border border-dashed border-primary/10 animate-glow-ring-2" />
+              <div className="absolute w-[320px] h-[320px] md:w-[400px] md:h-[400px] rounded-full border border-border/15 bg-gradient-to-b from-primary/5 to-transparent animate-glow-ring-2" />
+              {/* Inner ring glow + dashed orbit track */}
+              <div className="absolute w-[104px] h-[104px] md:w-[170px] md:h-[170px] rounded-full border border-dashed border-primary/15 animate-glow-ring-3" />
+              <div className="absolute w-[170px] h-[170px] md:w-[250px] md:h-[250px] rounded-full border border-primary/20 bg-gradient-to-b from-primary/10 to-transparent animate-glow-ring-3" />
             </div>
 
-            {/* Logos distributed along rings */}
-            {rings.map((ring, ringIndex) =>
-              ring.items.map((tech, i) => {
-                const angle = (i / ring.items.length) * 2 * Math.PI - Math.PI / 2;
-                const r = isMobile ? ring.mobileRadius : ring.radius;
-                const x = Math.cos(angle) * r;
-                const y = Math.sin(angle) * r;
-                const globalIndex = rings.slice(0, ringIndex).reduce((acc, rr) => acc + rr.items.length, 0) + i;
-                return (
-                  <motion.div
-                    key={tech.name}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={inView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: 0.1 + globalIndex * 0.06, type: "spring", stiffness: 200 }}
-                    className="absolute z-10 left-1/2 top-1/2"
-                    style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
-                  >
-                    <IntegrationCard name={tech.name} className="size-11 md:size-14">
-                      <tech.Logo />
-                    </IntegrationCard>
-                  </motion.div>
-                );
-              })
-            )}
+            {/* Rotating ring containers */}
+            {rings.map((ring, ringIndex) => {
+              const orbitClasses = [
+                "animate-orbit-cw-120",
+                "animate-orbit-ccw-90",
+                "animate-orbit-cw-60",
+              ];
+              const counterOrbitDurations = ["120s", "90s", "60s"];
+              const counterOrbitDirections = ["reverse", "normal", "reverse"];
 
-            {/* Center LIPE logo */}
+              return (
+                <div
+                  key={ringIndex}
+                  className={cn("absolute left-1/2 top-1/2 w-0 h-0 orbit-ring will-change-transform", orbitClasses[ringIndex])}
+                  style={{ animationPlayState: inView ? "running" : "paused" }}
+                >
+                  {ring.items.map((tech, i) => {
+                    const angle = (i / ring.items.length) * 2 * Math.PI - Math.PI / 2;
+                    const r = isMobile ? ring.mobileRadius : ring.radius;
+                    const x = Math.cos(angle) * r;
+                    const y = Math.sin(angle) * r;
+                    const globalIndex = rings.slice(0, ringIndex).reduce((acc, rr) => acc + rr.items.length, 0) + i;
+                    return (
+                      <motion.div
+                        key={tech.name}
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={inView ? { opacity: 1, scale: 1 } : {}}
+                        transition={{ delay: 0.1 + globalIndex * 0.06, type: "spring", stiffness: 200 }}
+                        className="absolute z-10 orbit-counter will-change-transform"
+                        style={{
+                          transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                          animation: `orbit ${counterOrbitDurations[ringIndex]} linear infinite ${counterOrbitDirections[ringIndex]}`,
+                          animationPlayState: inView ? "running" : "paused",
+                        }}
+                      >
+                        <IntegrationCard name={tech.name} className="size-11 md:size-14 hover:!scale-125 hover:shadow-[0_0_25px_-4px_hsl(var(--primary)/0.4)] transition-all duration-300">
+                          <tech.Logo />
+                        </IntegrationCard>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+
+            {/* Center LIPE logo with breathing glow */}
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ delay: 0.9, type: "spring", stiffness: 150 }}
-              className="absolute z-10 left-1/2 top-1/2"
-              style={{ transform: 'translate(-50%, -50%)' }}
+              className="absolute z-20 left-1/2 top-1/2 animate-breathe lipe-glow"
             >
-              <span className="font-headline font-bold tracking-widest gradient-text text-2xl md:text-3xl">LIPE</span>
+              <span className="font-headline font-bold tracking-widest gradient-text text-2xl md:text-3xl select-none">LIPE</span>
             </motion.div>
           </div>
 

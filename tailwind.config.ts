@@ -89,6 +89,26 @@ export default {
           "0%, 100%": { opacity: "0.4" },
           "50%": { opacity: "0.8" },
         },
+        "orbit": {
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(360deg)" },
+        },
+        "glow-ring": {
+          "0%, 100%": {
+            boxShadow: "0 0 15px 2px hsl(var(--primary) / 0.05), inset 0 0 15px 2px hsl(var(--primary) / 0.03)",
+          },
+          "50%": {
+            boxShadow: "0 0 35px 6px hsl(var(--primary) / 0.15), inset 0 0 35px 6px hsl(var(--primary) / 0.08)",
+          },
+        },
+        "breathe": {
+          "0%, 100%": {
+            transform: "translate(-50%, -50%) scale(1)",
+          },
+          "50%": {
+            transform: "translate(-50%, -50%) scale(1.06)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -96,6 +116,13 @@ export default {
         "float": "float 6s ease-in-out infinite",
         "float-slow": "float-slow 8s ease-in-out infinite",
         "pulse-glow": "pulse-glow 3s ease-in-out infinite",
+        "orbit-cw-120": "orbit 120s linear infinite",
+        "orbit-ccw-90": "orbit 90s linear infinite reverse",
+        "orbit-cw-60": "orbit 60s linear infinite",
+        "glow-ring-1": "glow-ring 4s ease-in-out infinite",
+        "glow-ring-2": "glow-ring 4s ease-in-out infinite 1.3s",
+        "glow-ring-3": "glow-ring 4s ease-in-out infinite 2.6s",
+        "breathe": "breathe 4s ease-in-out infinite",
       },
     },
   },

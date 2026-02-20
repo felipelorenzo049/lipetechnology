@@ -108,4 +108,17 @@
   .glow-accent {
     box-shadow: 0 0 30px -5px hsl(20 100% 53% / 0.3);
   }
+
+  /* Orbital ring hover pause */
+  .orbit-ring:hover {
+    animation-play-state: paused;
+  }
+  .orbit-ring:hover .orbit-counter {
+    animation-play-state: paused;
+  }
+
+  /* LIPE central glow */
+  .lipe-glow {
+    text-shadow: 0 0 20px hsl(220 78% 57% / 0.4), 0 0 60px hsl(168 55% 44% / 0.2);
+  }
 }
