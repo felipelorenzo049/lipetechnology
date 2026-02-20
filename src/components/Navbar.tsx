@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, Globe, MessageSquare, LayoutDashboard, TrendingUp } from "lucide-react";
+import { Menu, X, Globe, MessageSquare, LayoutDashboard, TrendingUp, ShoppingCart, AppWindow, FileText, Bot } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -63,31 +63,19 @@ const Navbar = () => {
           </MenuItem>
 
           <MenuItem setActive={setActive} active={active} item={t("nav.portfolio")}>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <ProductItem
-                title={t("nav.premiumEcommerce")}
-                description={t("nav.premiumEcommerceDesc")}
-                href="#portfolio"
-                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=140&h=70&fit=crop"
-              />
-              <ProductItem
-                title={t("nav.saasApp")}
-                description={t("nav.saasAppDesc")}
-                href="#portfolio"
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=140&h=70&fit=crop"
-              />
-              <ProductItem
-                title={t("nav.landingPage")}
-                description={t("nav.landingPageDesc")}
-                href="#portfolio"
-                src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=140&h=70&fit=crop"
-              />
-              <ProductItem
-                title={t("nav.aiChatbot")}
-                description={t("nav.aiChatbotDesc")}
-                href="#portfolio"
-                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=140&h=70&fit=crop"
-              />
+            <div className="flex flex-col space-y-1 min-w-[240px]">
+              <HoveredLink href="#portfolio" onClick={() => scrollTo("#portfolio")} icon={ShoppingCart} description={t("nav.premiumEcommerceDesc")}>
+                {t("nav.premiumEcommerce")}
+              </HoveredLink>
+              <HoveredLink href="#portfolio" onClick={() => scrollTo("#portfolio")} icon={AppWindow} description={t("nav.saasAppDesc")}>
+                {t("nav.saasApp")}
+              </HoveredLink>
+              <HoveredLink href="#portfolio" onClick={() => scrollTo("#portfolio")} icon={FileText} description={t("nav.landingPageDesc")}>
+                {t("nav.landingPage")}
+              </HoveredLink>
+              <HoveredLink href="#portfolio" onClick={() => scrollTo("#portfolio")} icon={Bot} description={t("nav.aiChatbotDesc")}>
+                {t("nav.aiChatbot")}
+              </HoveredLink>
             </div>
           </MenuItem>
 
