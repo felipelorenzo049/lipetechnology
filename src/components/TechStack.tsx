@@ -199,8 +199,8 @@ const TechStack = () => {
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={inView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ delay: 0.1 + globalIndex * 0.06, type: "spring", stiffness: 200 }}
-                    className="absolute z-10"
-                    style={{ transform: `translate(${x}px, ${y}px)` }}
+                    className="absolute z-10 left-1/2 top-1/2"
+                    style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
                   >
                     <IntegrationCard name={tech.name} className="size-11 md:size-14">
                       <tech.Logo />
@@ -215,7 +215,8 @@ const TechStack = () => {
               initial={{ opacity: 0, scale: 0 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ delay: 0.9, type: "spring", stiffness: 150 }}
-              className="absolute z-10"
+              className="absolute z-10 left-1/2 top-1/2"
+              style={{ transform: 'translate(-50%, -50%)' }}
             >
               <span className="font-headline font-bold tracking-widest gradient-text text-2xl md:text-3xl">LIPE</span>
             </motion.div>
