@@ -1,83 +1,51 @@
 
 
-## Dashboard Admin 100% Funcional
+## Criar Admin felipe@lipe.com com Sistema de Roles
 
-### Problema atual
+### Resumo
 
-O dashboard esta conectado ao Supabase mas nao funciona porque:
-1. **Sem autenticacao** -- as policies RLS exigem `authenticated`, logo o dashboard mostra dados vazios
-2. **Sidebar nao funciona** -- apenas "Dashboard" tem conteudo, os outros items (Projetos, Clientes, Financeiro, etc.) nao fazem nada
-3. **Sem CRUD** -- nao e possivel adicionar, editar ou eliminar projetos, leads ou pagamentos
+Criar o utilizador admin no Supabase Auth, implementar um sistema de roles seguro (tabela `user_roles` com funcao `has_role`), e atualizar o `ProtectedRoute` para verificar a role `admin` no servidor.
 
-### O que sera implementado
+### 1. Migracao SQL - Sistema de Roles
 
-#### 1. Autenticacao Admin (Login)
+Criar a infraestrutura de roles seguindo as melhores praticas de seguranca:
 
-- Pagina de login em `/admin/login` com email + password
-- Componente `ProtectedRoute` que redireciona para login se nao autenticado
-- Rota `/admin` protegida -- so acessivel apos login
-- Botao de logout no header do dashboard
+- Enum `app_role` com valores: `admin`, `moderator`, `user`
+- Tabela `user_roles` com RLS ativado
+- Funcao `has_role()` como `SECURITY DEFINER` para evitar recursao RLS
+- Atualizar as policies das tabelas `projects`, `leads` e `payments` para usar `has_role(auth.uid(), 'admin')` em vez de apenas `authenticated`
 
-**Nota:** Sera necessario criar um utilizador admin manualmente no painel do Supabase (Authentication > Users > Add User).
+### 2. Criar Utilizador Admin
 
-#### 2. Vistas da Sidebar funcionais
+Usar a API do Supabase para criar o utilizador:
+- Email: `felipe@lipe.com`
+- Password: `Formula1#`
+- Inserir registo na tabela `user_roles` com role `admin`
 
-Cada item da sidebar mostrara uma vista diferente:
+**Nota:** O utilizador sera criado via o painel do Supabase (Authentication > Users > Add User). A role sera atribuida via migracao SQL apos o utilizador ser criado. Alternativamente, podemos criar um trigger que atribui a role automaticamente.
 
-| Vista | Funcionalidade |
-|-------|----------------|
-| **Dashboard** | KPIs, grafico, atividade recente, tabela resumo (ja existe) |
-| **Projetos** | Tabela completa com CRUD -- adicionar, editar estado/progresso, eliminar |
-| **Clientes (Leads)** | Lista de leads recebidos, alterar status (novo/contactado/convertido/perdido), ver detalhes |
-| **Financeiro** | Lista de pagamentos, adicionar novo pagamento associado a projeto, total acumulado |
-| **Analytics** | Placeholder com mensagem "Em breve" |
-| **Mensagens** | Placeholder com mensagem "Em breve" |
-| **Configuracoes** | Placeholder com mensagem "Em breve" |
+**Abordagem escolhida:** Criar um trigger `on_auth_user_created` que verifica se o email e `felipe@lipe.com` e atribui automaticamente a role `admin`. Para outros utilizadores, nao atribui role nenhuma.
 
-#### 3. CRUD de Projetos
+### 3. Atualizar ProtectedRoute
 
-- Dialogo modal para criar novo projeto (nome, cliente, receita, status)
-- Edicao inline ou modal para atualizar progresso e status
-- Botao de eliminar com confirmacao
+O componente `ProtectedRoute` passara a verificar se o utilizador autenticado tem a role `admin` na tabela `user_roles`, em vez de apenas verificar se esta autenticado.
 
-#### 4. Gestao de Leads
+### 4. Atualizar RLS Policies
 
-- Tabela com todos os leads (nome, email, empresa, orcamento, status, data)
-- Dropdown para alterar status do lead
-- Ver mensagem completa do lead
-
-#### 5. Gestao Financeira
-
-- Tabela de pagamentos com projeto associado, valor, descricao, data
-- Formulario para registar novo pagamento
-- Total acumulado no topo
-
-### Alteracoes na base de dados
-
-- Adicionar policy DELETE para `projects` e `payments` (apenas `authenticated`)
-- Sem alteracoes de schema
+Substituir todas as policies que usam `auth.role() = 'authenticated'` por `has_role(auth.uid(), 'admin')`:
+- `projects`: SELECT, INSERT, UPDATE, DELETE
+- `payments`: SELECT, INSERT, UPDATE, DELETE  
+- `leads`: SELECT, UPDATE, DELETE (INSERT mantem para anon -- formulario de contacto)
 
 ### Ficheiros afetados
 
 | Ficheiro | Acao |
 |----------|------|
-| Migracao SQL (DELETE policies) | Nova |
-| `src/pages/AdminLoginPage.tsx` | Novo -- pagina de login |
-| `src/components/admin/ProtectedRoute.tsx` | Novo -- guard de autenticacao |
-| `src/components/admin/AdminDashboard.tsx` | Atualizado -- renderizar vistas por selecao da sidebar |
-| `src/components/admin/ProjectsView.tsx` | Novo -- CRUD de projetos |
-| `src/components/admin/LeadsView.tsx` | Novo -- gestao de leads |
-| `src/components/admin/FinanceView.tsx` | Novo -- gestao financeira |
-| `src/components/admin/PlaceholderView.tsx` | Novo -- vista placeholder para seccoes futuras |
-| `src/hooks/use-admin-data.ts` | Atualizado -- adicionar mutations (create, update, delete) |
-| `src/App.tsx` | Atualizado -- adicionar rota `/admin/login` e proteger `/admin` |
+| Migracao SQL (roles + policies) | Nova |
+| `src/components/admin/ProtectedRoute.tsx` | Atualizado -- verificar role admin |
+| `src/pages/AdminLoginPage.tsx` | Sem alteracoes (login ja funciona) |
 
-### Detalhes tecnicos
+### Nota importante
 
-- Login via `supabase.auth.signInWithPassword()`
-- `ProtectedRoute` usa `supabase.auth.onAuthStateChange()` para monitorizar sessao
-- Mutations com `useMutation` do `@tanstack/react-query` com `invalidateQueries` para atualizar dados automaticamente
-- Dialogos de criacao/edicao usando `@radix-ui/react-dialog` (ja instalado)
-- Confirmacao de eliminacao com `@radix-ui/react-alert-dialog`
-- Toda a UI mantendo o design system LIPE (glass, gradient-text, cores primary/secondary)
+Apos a implementacao, sera necessario registar o utilizador `felipe@lipe.com` com a password `Formula1#` atraves do painel do Supabase (Authentication > Users > Add User) ou diretamente pela pagina de login se adicionarmos signup. O trigger atribuira automaticamente a role admin.
 
