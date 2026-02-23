@@ -1,38 +1,61 @@
 
 
-## Limpar Dados Fictícios do Dashboard
+## Idioma padrao por regiao + Precos em Real com seletor de moeda
 
-### Problema
+### 1. Detecao de idioma por regiao
 
-Os dados que aparecem no dashboard nao sao hardcoded no codigo -- vem do Supabase. Porem, foram inseridos como dados de exemplo (seed data) na migracao inicial para que o dashboard tivesse conteudo desde o inicio. Agora que o dashboard esta funcional, esses dados devem ser removidos para comecar com dados reais.
+Atualizar `src/i18n/config.ts` para:
+- Mapear `pt-BR` e `pt` para portugues automaticamente
+- Qualquer outro locale abre em ingles por padrao
+- Manter os outros idiomas (ES, IT) disponiveis apenas via seletor manual
 
-### O que sera feito
+Configuracao: usar `navigator` como primeira opcao de detecao (antes do `localStorage`) na primeira visita, e `localStorage` para lembrar a escolha manual.
 
-Executar comandos SQL para eliminar todos os dados de exemplo das 3 tabelas:
+### 2. Precos em Real (R$) como moeda principal
 
-1. **Eliminar pagamentos** (primeiro, porque referenciam projetos)
-2. **Eliminar projetos** (EasyLine, Plate Boutique, Sistema de Agendamento, Milan Couture)
-3. **Eliminar leads de teste** (Joao Silva, Maria Santos, Carlos Mendes, Ana Ferreira)
+Atualizar os precos em todos os 4 ficheiros de traducao:
+- **PT**: R$ 4.500 (Starter), A partir de R$ 18.000 (Growth), Sob consulta (Premium)
+- **EN/ES/IT**: Manter os mesmos valores em R$ como padrao
 
-### Detalhes tecnicos
+Os valores em R$ serao os valores base exibidos. O seletor de moeda permitira ver em EUR e USD.
 
-Sera executado via SQL no Supabase:
+### 3. Seletor de moeda na PricingPage
 
-```sql
-DELETE FROM payments;
-DELETE FROM projects;
-DELETE FROM leads;
-```
+Criar um componente `CurrencySwitcher` com 3 opcoes: **BRL (R$)**, **EUR**, **USD**.
 
-Isto apaga todos os registos de exemplo. O dashboard ficara vazio e pronto para receber dados reais:
-- Leads reais via formulario de contacto do site
-- Projetos e pagamentos criados manualmente no painel admin
+Logica de conversao (taxas fixas exibidas como referencia):
+- BRL e a moeda base
+- EUR: valor / 6 (taxa aproximada)
+- USD: valor / 5.5 (taxa aproximada)
+
+O seletor aparecera acima dos cards de precos como botoes pill (similar ao language switcher).
+
+Os precos serao armazenados como valores numericos no codigo do componente (nao nos JSON de traducao), e formatados dinamicamente conforme a moeda selecionada.
+
+### 4. Atualizar orcamentos no formulario de contacto
+
+Atualizar `budgetOptions` nos 4 JSONs para usar R$:
+- PT: "R$ 10.000-30.000", "R$ 30.000-60.000", "R$ 60.000+", "Ainda nao sei"
+- EN: "R$ 10,000-30,000", "R$ 30,000-60,000", "R$ 60,000+", "Not sure yet"
+- ES/IT: equivalente
 
 ### Ficheiros afetados
 
-Nenhum ficheiro de codigo sera alterado -- apenas dados na base de dados.
+| Ficheiro | Acao |
+|----------|------|
+| `src/i18n/config.ts` | Atualizar detecao de idioma |
+| `src/i18n/locales/pt.json` | Precos em R$, budgets em R$ |
+| `src/i18n/locales/en.json` | Precos em R$, budgets em R$ |
+| `src/i18n/locales/es.json` | Precos em R$, budgets em R$ |
+| `src/i18n/locales/it.json` | Precos em R$, budgets em R$ |
+| `src/components/CurrencySwitcher.tsx` | Novo -- seletor de moeda |
+| `src/pages/PricingPage.tsx` | Integrar seletor de moeda e conversao dinamica |
 
-### Alternativa
+### Detalhes tecnicos
 
-Se preferires manter alguns dados e apenas atualizar para dados reais, diz-me quais projetos/leads queres manter ou adicionar.
+- A conversao de moeda usa taxas fixas hardcoded (nao API em tempo real) com nota "valores aproximados"
+- O seletor de moeda salva a preferencia em `localStorage`
+- Os precos nos JSONs ficam como strings formatadas em R$ (moeda base)
+- A `PricingPage` extrai o valor numerico do preco, aplica a conversao e formata com o simbolo correto
+- O plano "Premium" / "Sob consulta" nao sofre conversao (fica como texto)
 
