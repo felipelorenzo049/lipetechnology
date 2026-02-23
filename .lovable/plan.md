@@ -1,61 +1,57 @@
 
 
-## Idioma padrao por regiao + Precos em Real com seletor de moeda
+## Corrigir navegacao dos dropdowns Servicos e Portfolio
 
-### 1. Detecao de idioma por regiao
+### Problema
 
-Atualizar `src/i18n/config.ts` para:
-- Mapear `pt-BR` e `pt` para portugues automaticamente
-- Qualquer outro locale abre em ingles por padrao
-- Manter os outros idiomas (ES, IT) disponiveis apenas via seletor manual
+Os links dentro dos menus dropdown "Servicos" e "Portfolio" na navbar nao funcionam corretamente porque:
 
-Configuracao: usar `navigator` como primeira opcao de detecao (antes do `localStorage`) na primeira visita, e `localStorage` para lembrar a escolha manual.
+1. O `<a href="#servicos">` dispara a navegacao padrao do browser (jump instantaneo) ao mesmo tempo que o `onClick` tenta fazer scroll suave -- conflito
+2. O `onClick` nao chama `e.preventDefault()`, entao o comportamento padrao do link interfere
+3. O dropdown nao fecha apos o clique (falta chamar `setActive(null)`)
+4. Quando o utilizador esta numa pagina diferente (ex: `/pricing`), os links `#servicos` nao funcionam porque as secoes so existem na pagina inicial (`/`)
 
-### 2. Precos em Real (R$) como moeda principal
+### Solucao
 
-Atualizar os precos em todos os 4 ficheiros de traducao:
-- **PT**: R$ 4.500 (Starter), A partir de R$ 18.000 (Growth), Sob consulta (Premium)
-- **EN/ES/IT**: Manter os mesmos valores em R$ como padrao
+**1. Atualizar `scrollTo` no `Navbar.tsx`:**
+- Adicionar `e.preventDefault()` nos handlers
+- Fechar o dropdown (`setActive(null)`) ao clicar
+- Detetar se o utilizador esta na pagina inicial:
+  - Se sim: scroll suave para a secao
+  - Se nao: navegar para `/#servicos` (redirecionar para home com ancora)
 
-Os valores em R$ serao os valores base exibidos. O seletor de moeda permitira ver em EUR e USD.
+**2. Atualizar `HoveredLink` no `navbar-menu.tsx`:**
+- Passar `setActive` como prop opcional para poder fechar o dropdown ao clicar
+- Ou alternativamente, alterar os links do Navbar para usarem `onClick` com `e.preventDefault()` e tratarem a navegacao manualmente
 
-### 3. Seletor de moeda na PricingPage
-
-Criar um componente `CurrencySwitcher` com 3 opcoes: **BRL (R$)**, **EUR**, **USD**.
-
-Logica de conversao (taxas fixas exibidas como referencia):
-- BRL e a moeda base
-- EUR: valor / 6 (taxa aproximada)
-- USD: valor / 5.5 (taxa aproximada)
-
-O seletor aparecera acima dos cards de precos como botoes pill (similar ao language switcher).
-
-Os precos serao armazenados como valores numericos no codigo do componente (nao nos JSON de traducao), e formatados dinamicamente conforme a moeda selecionada.
-
-### 4. Atualizar orcamentos no formulario de contacto
-
-Atualizar `budgetOptions` nos 4 JSONs para usar R$:
-- PT: "R$ 10.000-30.000", "R$ 30.000-60.000", "R$ 60.000+", "Ainda nao sei"
-- EN: "R$ 10,000-30,000", "R$ 30,000-60,000", "R$ 60,000+", "Not sure yet"
-- ES/IT: equivalente
+**3. Abordagem tecnica escolhida:**
+- No `Navbar.tsx`, usar `useNavigate` e `useLocation` do react-router-dom
+- Substituir os `HoveredLink` por wrappers que:
+  - Chamam `e.preventDefault()`
+  - Fecham o dropdown (`setActive(null)`)
+  - Se estiverem em `/`, fazem scroll suave
+  - Se estiverem noutra pagina, usam `navigate("/#servicos")` e apos carregar fazem scroll
 
 ### Ficheiros afetados
 
-| Ficheiro | Acao |
-|----------|------|
-| `src/i18n/config.ts` | Atualizar detecao de idioma |
-| `src/i18n/locales/pt.json` | Precos em R$, budgets em R$ |
-| `src/i18n/locales/en.json` | Precos em R$, budgets em R$ |
-| `src/i18n/locales/es.json` | Precos em R$, budgets em R$ |
-| `src/i18n/locales/it.json` | Precos em R$, budgets em R$ |
-| `src/components/CurrencySwitcher.tsx` | Novo -- seletor de moeda |
-| `src/pages/PricingPage.tsx` | Integrar seletor de moeda e conversao dinamica |
+| Ficheiro | Alteracao |
+|----------|-----------|
+| `src/components/Navbar.tsx` | Adicionar `useNavigate`, `useLocation`; criar funcao `handleNavClick` que trata navegacao cross-page e fecha dropdown |
+| `src/components/ui/navbar-menu.tsx` | Nao precisa mudar -- o `...rest` ja passa o `onClick` com `preventDefault` |
 
 ### Detalhes tecnicos
 
-- A conversao de moeda usa taxas fixas hardcoded (nao API em tempo real) com nota "valores aproximados"
-- O seletor de moeda salva a preferencia em `localStorage`
-- Os precos nos JSONs ficam como strings formatadas em R$ (moeda base)
-- A `PricingPage` extrai o valor numerico do preco, aplica a conversao e formata com o simbolo correto
-- O plano "Premium" / "Sob consulta" nao sofre conversao (fica como texto)
+A funcao `handleNavClick` no Navbar ficara assim:
+
+```text
+handleNavClick(href, e):
+  e.preventDefault()
+  setActive(null)           // fecha dropdown
+  se location.pathname === "/":
+    scrollTo(href)          // scroll suave
+  senao:
+    navigate("/" + href)    // navega para home com ancora
+```
+
+Para garantir que o scroll funcione apos navegacao cross-page, o Index.tsx verificara se ha um hash na URL ao montar e fara scroll para a secao correspondente.
 
