@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Menu, X, Globe, MessageSquare, LayoutDashboard, TrendingUp, ShoppingCart, AppWindow, FileText, Bot } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   Menu as NavMenu,
   MenuItem,
@@ -15,6 +15,8 @@ const Navbar = () => {
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [active, setActive] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const navLinks = [
     { label: t("nav.services"), href: "#servicos" },
@@ -32,6 +34,16 @@ const Navbar = () => {
     }, 350);
   };
 
+  const handleNavClick = (href: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setActive(null);
+    if (location.pathname === "/") {
+      scrollTo(href);
+    } else {
+      navigate("/" + href);
+    }
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Desktop */}
@@ -47,16 +59,16 @@ const Navbar = () => {
 
           <MenuItem setActive={setActive} active={active} item={t("nav.services")}>
             <div className="flex flex-col space-y-1 min-w-[240px]">
-              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")} icon={Globe} description={t("nav.customWebsitesDesc")}>
+              <HoveredLink href="#servicos" onClick={(e: React.MouseEvent) => handleNavClick("#servicos", e)} icon={Globe} description={t("nav.customWebsitesDesc")}>
                 {t("nav.customWebsites")}
               </HoveredLink>
-              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")} icon={MessageSquare} description={t("nav.consultativeChatbotsDesc")}>
+              <HoveredLink href="#servicos" onClick={(e: React.MouseEvent) => handleNavClick("#servicos", e)} icon={MessageSquare} description={t("nav.consultativeChatbotsDesc")}>
                 {t("nav.consultativeChatbots")}
               </HoveredLink>
-              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")} icon={LayoutDashboard} description={t("nav.saasDesc")}>
+              <HoveredLink href="#servicos" onClick={(e: React.MouseEvent) => handleNavClick("#servicos", e)} icon={LayoutDashboard} description={t("nav.saasDesc")}>
                 {t("nav.saasTitle")}
               </HoveredLink>
-              <HoveredLink href="#servicos" onClick={() => scrollTo("#servicos")} icon={TrendingUp} description={t("nav.digitalMarketingDesc")}>
+              <HoveredLink href="#servicos" onClick={(e: React.MouseEvent) => handleNavClick("#servicos", e)} icon={TrendingUp} description={t("nav.digitalMarketingDesc")}>
                 {t("nav.digitalMarketing")}
               </HoveredLink>
             </div>
@@ -64,16 +76,16 @@ const Navbar = () => {
 
           <MenuItem setActive={setActive} active={active} item={t("nav.portfolio")}>
             <div className="flex flex-col space-y-1 min-w-[240px]">
-              <HoveredLink href="#portfolio" onClick={() => scrollTo("#portfolio")} icon={ShoppingCart} description={t("nav.premiumEcommerceDesc")}>
+              <HoveredLink href="#portfolio" onClick={(e: React.MouseEvent) => handleNavClick("#portfolio", e)} icon={ShoppingCart} description={t("nav.premiumEcommerceDesc")}>
                 {t("nav.premiumEcommerce")}
               </HoveredLink>
-              <HoveredLink href="#portfolio" onClick={() => scrollTo("#portfolio")} icon={AppWindow} description={t("nav.saasAppDesc")}>
+              <HoveredLink href="#portfolio" onClick={(e: React.MouseEvent) => handleNavClick("#portfolio", e)} icon={AppWindow} description={t("nav.saasAppDesc")}>
                 {t("nav.saasApp")}
               </HoveredLink>
-              <HoveredLink href="#portfolio" onClick={() => scrollTo("#portfolio")} icon={FileText} description={t("nav.landingPageDesc")}>
+              <HoveredLink href="#portfolio" onClick={(e: React.MouseEvent) => handleNavClick("#portfolio", e)} icon={FileText} description={t("nav.landingPageDesc")}>
                 {t("nav.landingPage")}
               </HoveredLink>
-              <HoveredLink href="#portfolio" onClick={() => scrollTo("#portfolio")} icon={Bot} description={t("nav.aiChatbotDesc")}>
+              <HoveredLink href="#portfolio" onClick={(e: React.MouseEvent) => handleNavClick("#portfolio", e)} icon={Bot} description={t("nav.aiChatbotDesc")}>
                 {t("nav.aiChatbot")}
               </HoveredLink>
             </div>

@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Manifesto from "@/components/Manifesto";
@@ -15,6 +17,17 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { GradientBackground } from "@/components/ui/gradient-background";
 
 const Index = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      setTimeout(() => {
+        const el = document.querySelector(location.hash);
+        el?.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
+  }, [location.hash]);
+
   return (
     <GradientBackground
       className="min-h-screen text-foreground overflow-x-hidden"
