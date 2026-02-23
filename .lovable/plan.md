@@ -1,64 +1,85 @@
 
 
-## Dashboard Admin LIPE Technology
+## Conectar Dashboard Admin ao Supabase
 
 ### Resumo
 
-Criar um painel administrativo completo para a LIPE Technology, usando o componente de sidebar colapsavel fornecido como base, mas totalmente adaptado a identidade visual da LIPE (tema escuro, cores primary/secondary/accent, fontes Syne + DM Sans, efeitos glass e gradient).
+Criar 3 tabelas no Supabase (projetos, leads, pagamentos) e atualizar o dashboard para buscar dados reais em vez de dados mocados. Tambem sera necessario implementar autenticacao admin para proteger o acesso.
 
-### Estrutura de ficheiros
+### 1. Criar tabelas no Supabase (migracoes SQL)
+
+**Tabela `projects`:**
+- `id` (uuid, PK)
+- `name` (text, not null)
+- `client` (text)
+- `status` (text: 'em_progresso', 'concluido', 'pendente')
+- `progress` (integer, 0-100)
+- `revenue` (numeric) - valor do projeto
+- `created_at` (timestamptz)
+- `updated_at` (timestamptz)
+
+**Tabela `leads`:**
+- `id` (uuid, PK)
+- `name` (text, not null)
+- `email` (text, not null)
+- `phone` (text)
+- `company` (text)
+- `budget` (text)
+- `message` (text)
+- `status` (text: 'novo', 'contactado', 'convertido', 'perdido')
+- `created_at` (timestamptz)
+
+**Tabela `payments`:**
+- `id` (uuid, PK)
+- `project_id` (uuid, FK para projects)
+- `amount` (numeric, not null)
+- `description` (text)
+- `paid_at` (timestamptz)
+- `created_at` (timestamptz)
+
+### 2. Politicas RLS
+
+Todas as tabelas terao RLS ativado. As politicas permitirao apenas leitura/escrita para utilizadores autenticados (admin). Inicialmente, qualquer utilizador autenticado pode aceder -- depois pode-se restringir com roles.
+
+- `SELECT`, `INSERT`, `UPDATE` para `authenticated` em todas as tabelas
+
+### 3. Inserir dados iniciais
+
+Inserir os projetos atuais (EasyLine, Plate Boutique, Sistema de Agendamento, Milan Couture) e alguns pagamentos de exemplo para o dashboard ter dados desde o inicio.
+
+### 4. Atualizar formulario de contacto
+
+Modificar `src/components/Contact.tsx` para guardar os leads na tabela `leads` do Supabase ao submeter o formulario (alem de eventualmente enviar email).
+
+### 5. Atualizar AdminDashboard.tsx
+
+Substituir todos os dados mocados por queries ao Supabase usando `@tanstack/react-query`:
+
+- **KPIs**: contar projetos ativos, somar receita do mes, contar leads, calcular taxa de conversao
+- **Grafico**: agregar pagamentos por mes para o grafico de receita
+- **Atividade recente**: combinar ultimos leads + pagamentos ordenados por data
+- **Tabela de projetos**: buscar projetos reais da tabela `projects`
+
+Criar hooks customizados:
+- `useProjects()` - buscar projetos
+- `useLeads()` - buscar leads
+- `usePayments()` - buscar pagamentos
+- `useDashboardKPIs()` - calcular KPIs agregados
+
+### 6. Adicionar estados de loading
+
+Usar o componente `Skeleton` existente para mostrar placeholders enquanto os dados carregam.
+
+### Ficheiros afetados
 
 | Ficheiro | Acao |
 |----------|------|
-| `src/components/ui/dashboard-with-collapsible-sidebar.tsx` | Novo - componente base adaptado a LIPE |
-| `src/components/admin/AdminDashboard.tsx` | Novo - pagina principal do dashboard |
-| `src/pages/AdminPage.tsx` | Novo - rota `/admin` |
-| `src/App.tsx` | Atualizado - adicionar rota `/admin` |
+| Migracao SQL (3 tabelas + RLS) | Nova |
+| `src/components/Contact.tsx` | Atualizado - guardar lead no Supabase |
+| `src/hooks/use-admin-data.ts` | Novo - hooks para buscar dados |
+| `src/components/admin/AdminDashboard.tsx` | Atualizado - dados reais |
 
-### Design e adaptacoes
+### Nota importante
 
-O componente fornecido sera reescrito para seguir o design system da LIPE:
-
-**Sidebar:**
-- Fundo `bg-background` (216 33% 7%) com borda `border-border`
-- Logo LIPE com `gradient-text` no topo
-- Items da sidebar usando cores `primary`, `secondary` e `muted`
-- Efeito `glass` nos elementos interativos
-- Icones: Dashboard, Projetos, Clientes, Financeiro, Analytics, Mensagens, Configuracoes
-
-**Conteudo principal:**
-
-1. **Header** com saudacao "Bem-vindo, Admin" (font-headline Syne) e acoes rapidas
-2. **KPI Cards** (4 cards glass com gradientes):
-   - Projetos Ativos (com icone e variacao %)
-   - Receita Mensal (em EUR)
-   - Leads / Contactos recebidos
-   - Taxa de Conversao
-3. **Grafico de receita** usando Recharts (ja instalado) com cores primary/secondary
-4. **Atividade recente** - lista de ultimas acoes (novos contactos, projetos, pagamentos)
-5. **Projetos em andamento** - tabela simples com estado (em progresso, concluido, pendente)
-
-### Detalhes tecnicos
-
-- Sem dark/light toggle (o site LIPE ja e totalmente dark)
-- Sidebar colapsavel com animacao suave via estado local
-- Usa classes utilitarias existentes: `glass`, `gradient-text`, `glow-primary`, `font-headline`, `font-body`, `font-mono`
-- KPI cards com o mesmo estilo dos cards do portfolio (glass + rounded-2xl)
-- Recharts `AreaChart` com `fill` usando `hsl(var(--primary))` e `hsl(var(--secondary))`
-- Dados mocados (estaticos) para demonstracao - podem ser conectados ao Supabase depois
-- Responsivo: sidebar colapsa automaticamente em mobile
-
-### Navegacao da sidebar
-
-| Item | Icone |
-|------|-------|
-| Dashboard | LayoutDashboard |
-| Projetos | Layers |
-| Clientes | Users |
-| Financeiro | DollarSign |
-| Analytics | BarChart3 |
-| Mensagens | MessageSquare |
-| Configuracoes | Settings |
-
-Inicialmente apenas a vista "Dashboard" tera conteudo real. Os restantes items serao placeholders preparados para expansao futura.
+Como ainda nao existe autenticacao implementada, o dashboard ficara acessivel publicamente. Sera necessario implementar autenticacao (login) numa fase posterior para proteger a rota `/admin`. As politicas RLS exigirao um utilizador autenticado para aceder aos dados.
 
