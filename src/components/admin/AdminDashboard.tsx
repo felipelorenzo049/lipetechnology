@@ -5,11 +5,8 @@ import {
   Users,
   TrendingUp,
   ArrowUpRight,
-  ArrowDownRight,
-  Clock,
   CreditCard,
   UserPlus,
-  CheckCircle2,
 } from "lucide-react";
 import {
   AreaChart,
@@ -21,38 +18,21 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { AdminSidebar } from "@/components/ui/dashboard-with-collapsible-sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useDashboardKPIs } from "@/hooks/use-admin-data";
+import { formatDistanceToNow } from "date-fns";
+import { pt } from "date-fns/locale";
 
-/* ── Mock data ── */
-const revenueData = [
-  { month: "Jan", receita: 4200, projetos: 2 },
-  { month: "Fev", receita: 5800, projetos: 3 },
-  { month: "Mar", receita: 4900, projetos: 2 },
-  { month: "Abr", receita: 7200, projetos: 4 },
-  { month: "Mai", receita: 6800, projetos: 3 },
-  { month: "Jun", receita: 9100, projetos: 5 },
-  { month: "Jul", receita: 8400, projetos: 4 },
-  { month: "Ago", receita: 10200, projetos: 6 },
-];
-
-const activities = [
-  { icon: UserPlus, label: "Novo lead recebido", desc: "Restaurante Bistrô — website + branding", time: "Há 12 min", color: "text-secondary" },
-  { icon: CreditCard, label: "Pagamento recebido", desc: "EasyLine — €2.400,00", time: "Há 2h", color: "text-primary" },
-  { icon: CheckCircle2, label: "Projeto concluído", desc: "Plate Boutique — entrega final", time: "Há 5h", color: "text-secondary" },
-  { icon: UserPlus, label: "Novo lead recebido", desc: "Clínica Dental Plus — landing page", time: "Há 1 dia", color: "text-accent" },
-  { icon: CreditCard, label: "Pagamento recebido", desc: "Milan Couture — €1.800,00", time: "Há 2 dias", color: "text-primary" },
-];
-
-const projects = [
-  { name: "EasyLine – The Way", status: "Em progresso", progress: 75 },
-  { name: "Plate Boutique", status: "Concluído", progress: 100 },
-  { name: "Sistema de Agendamento", status: "Em progresso", progress: 40 },
-  { name: "Milan Couture", status: "Pendente", progress: 10 },
-];
+const statusLabels: Record<string, string> = {
+  em_progresso: "Em progresso",
+  concluido: "Concluído",
+  pendente: "Pendente",
+};
 
 const statusColor: Record<string, string> = {
-  "Em progresso": "bg-primary/20 text-primary",
-  "Concluído": "bg-secondary/20 text-secondary",
-  "Pendente": "bg-accent/20 text-accent",
+  em_progresso: "bg-primary/20 text-primary",
+  concluido: "bg-secondary/20 text-secondary",
+  pendente: "bg-accent/20 text-accent",
 };
 
 /* ── KPI Card ── */
@@ -60,30 +40,25 @@ const KPICard = ({
   icon: Icon,
   label,
   value,
-  change,
-  positive,
+  loading,
 }: {
   icon: React.ElementType;
   label: string;
   value: string;
-  change: string;
-  positive: boolean;
+  loading?: boolean;
 }) => (
   <div className="glass rounded-2xl p-5 transition-all hover:glow-primary">
     <div className="flex items-center justify-between">
       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
         <Icon className="h-5 w-5 text-primary" />
       </div>
-      <span
-        className={`flex items-center gap-1 text-xs font-medium ${
-          positive ? "text-secondary" : "text-destructive"
-        }`}
-      >
-        {positive ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
-        {change}
-      </span>
+      <ArrowUpRight className="h-4 w-4 text-secondary" />
     </div>
-    <p className="mt-3 text-2xl font-bold font-headline text-foreground">{value}</p>
+    {loading ? (
+      <Skeleton className="mt-3 h-8 w-24" />
+    ) : (
+      <p className="mt-3 text-2xl font-bold font-headline text-foreground">{value}</p>
+    )}
     <p className="text-sm text-muted-foreground">{label}</p>
   </div>
 );
@@ -99,9 +74,27 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   );
 };
 
+const timeAgo = (date: string) => {
+  try {
+    return formatDistanceToNow(new Date(date), { addSuffix: true, locale: pt });
+  } catch {
+    return "";
+  }
+};
+
 /* ── Main Dashboard ── */
 const AdminDashboard = () => {
   const [selected, setSelected] = useState("Dashboard");
+  const {
+    isLoading,
+    activeProjects,
+    monthlyRevenue,
+    totalLeads,
+    conversionRate,
+    chartData,
+    recentActivity,
+    projects,
+  } = useDashboardKPIs();
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -121,10 +114,10 @@ const AdminDashboard = () => {
         <div className="space-y-6 p-6 lg:p-8">
           {/* KPIs */}
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <KPICard icon={Layers} label="Projetos Ativos" value="6" change="+2 este mês" positive />
-            <KPICard icon={DollarSign} label="Receita Mensal" value="€10.200" change="+21%" positive />
-            <KPICard icon={Users} label="Leads Recebidos" value="18" change="+33%" positive />
-            <KPICard icon={TrendingUp} label="Taxa de Conversão" value="44%" change="-3%" positive={false} />
+            <KPICard icon={Layers} label="Projetos Ativos" value={String(activeProjects)} loading={isLoading} />
+            <KPICard icon={DollarSign} label="Receita Mensal" value={`€${monthlyRevenue.toLocaleString()}`} loading={isLoading} />
+            <KPICard icon={Users} label="Leads Recebidos" value={String(totalLeads)} loading={isLoading} />
+            <KPICard icon={TrendingUp} label="Taxa de Conversão" value={`${conversionRate}%`} loading={isLoading} />
           </div>
 
           {/* Chart + Activity */}
@@ -135,27 +128,25 @@ const AdminDashboard = () => {
                 Receita Mensal
               </h2>
               <div className="h-[280px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={revenueData}>
-                    <defs>
-                      <linearGradient id="gradientReceita" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="hsl(220 78% 57%)" stopOpacity={0.3} />
-                        <stop offset="100%" stopColor="hsl(220 78% 57%)" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(218 25% 18%)" />
-                    <XAxis dataKey="month" tick={{ fill: "hsl(215 20% 55%)", fontSize: 12 }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fill: "hsl(215 20% 55%)", fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v) => `€${v / 1000}k`} />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Area
-                      type="monotone"
-                      dataKey="receita"
-                      stroke="hsl(220 78% 57%)"
-                      strokeWidth={2}
-                      fill="url(#gradientReceita)"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+                {isLoading ? (
+                  <Skeleton className="h-full w-full rounded-xl" />
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={chartData}>
+                      <defs>
+                        <linearGradient id="gradientReceita" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="hsl(220 78% 57%)" stopOpacity={0.3} />
+                          <stop offset="100%" stopColor="hsl(220 78% 57%)" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(218 25% 18%)" />
+                      <XAxis dataKey="month" tick={{ fill: "hsl(215 20% 55%)", fontSize: 12 }} axisLine={false} tickLine={false} />
+                      <YAxis tick={{ fill: "hsl(215 20% 55%)", fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v) => `€${v / 1000}k`} />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Area type="monotone" dataKey="receita" stroke="hsl(220 78% 57%)" strokeWidth={2} fill="url(#gradientReceita)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                )}
               </div>
             </div>
 
@@ -165,18 +156,34 @@ const AdminDashboard = () => {
                 Atividade Recente
               </h2>
               <div className="space-y-4">
-                {activities.map((a, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted ${a.color}`}>
-                      <a.icon className="h-4 w-4" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-foreground">{a.label}</p>
-                      <p className="truncate text-xs text-muted-foreground">{a.desc}</p>
-                    </div>
-                    <span className="shrink-0 text-[11px] text-muted-foreground">{a.time}</span>
-                  </div>
-                ))}
+                {isLoading
+                  ? Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <Skeleton className="h-8 w-8 rounded-lg" />
+                        <div className="flex-1 space-y-1">
+                          <Skeleton className="h-4 w-32" />
+                          <Skeleton className="h-3 w-48" />
+                        </div>
+                      </div>
+                    ))
+                  : recentActivity.map((a, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div
+                          className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted ${
+                            a.type === "lead" ? "text-secondary" : "text-primary"
+                          }`}
+                        >
+                          {a.type === "lead" ? <UserPlus className="h-4 w-4" /> : <CreditCard className="h-4 w-4" />}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium text-foreground">{a.label}</p>
+                          <p className="truncate text-xs text-muted-foreground">{a.desc}</p>
+                        </div>
+                        <span className="shrink-0 text-[11px] text-muted-foreground">
+                          {timeAgo(a.created_at)}
+                        </span>
+                      </div>
+                    ))}
               </div>
             </div>
           </div>
@@ -191,32 +198,45 @@ const AdminDashboard = () => {
                 <thead>
                   <tr className="border-b border-border text-left text-muted-foreground">
                     <th className="pb-3 pr-4 font-medium">Projeto</th>
+                    <th className="pb-3 pr-4 font-medium">Cliente</th>
                     <th className="pb-3 pr-4 font-medium">Estado</th>
+                    <th className="pb-3 pr-4 font-medium">Receita</th>
                     <th className="pb-3 font-medium">Progresso</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {projects.map((p, i) => (
-                    <tr key={i} className="border-b border-border/50 last:border-0">
-                      <td className="py-3 pr-4 font-medium text-foreground">{p.name}</td>
-                      <td className="py-3 pr-4">
-                        <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColor[p.status]}`}>
-                          {p.status}
-                        </span>
-                      </td>
-                      <td className="py-3">
-                        <div className="flex items-center gap-3">
-                          <div className="h-2 w-24 overflow-hidden rounded-full bg-muted">
-                            <div
-                              className="h-full rounded-full bg-primary transition-all"
-                              style={{ width: `${p.progress}%` }}
-                            />
-                          </div>
-                          <span className="text-xs text-muted-foreground font-mono">{p.progress}%</span>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                  {isLoading
+                    ? Array.from({ length: 4 }).map((_, i) => (
+                        <tr key={i} className="border-b border-border/50">
+                          <td className="py-3 pr-4"><Skeleton className="h-4 w-32" /></td>
+                          <td className="py-3 pr-4"><Skeleton className="h-4 w-20" /></td>
+                          <td className="py-3 pr-4"><Skeleton className="h-5 w-24 rounded-full" /></td>
+                          <td className="py-3 pr-4"><Skeleton className="h-4 w-16" /></td>
+                          <td className="py-3"><Skeleton className="h-2 w-24 rounded-full" /></td>
+                        </tr>
+                      ))
+                    : projects.map((p) => (
+                        <tr key={p.id} className="border-b border-border/50 last:border-0">
+                          <td className="py-3 pr-4 font-medium text-foreground">{p.name}</td>
+                          <td className="py-3 pr-4 text-muted-foreground">{p.client ?? "—"}</td>
+                          <td className="py-3 pr-4">
+                            <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColor[p.status] ?? ""}`}>
+                              {statusLabels[p.status] ?? p.status}
+                            </span>
+                          </td>
+                          <td className="py-3 pr-4 font-mono text-sm text-foreground">
+                            €{Number(p.revenue).toLocaleString()}
+                          </td>
+                          <td className="py-3">
+                            <div className="flex items-center gap-3">
+                              <div className="h-2 w-24 overflow-hidden rounded-full bg-muted">
+                                <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${p.progress}%` }} />
+                              </div>
+                              <span className="text-xs text-muted-foreground font-mono">{p.progress}%</span>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                 </tbody>
               </table>
             </div>

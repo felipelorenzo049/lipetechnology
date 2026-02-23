@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Select,
   SelectContent,
@@ -26,14 +27,32 @@ const Contact = () => {
     orcamento: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.nome || !form.email) {
       toast({ title: t("contact.fillRequired"), variant: "destructive" });
       return;
     }
-    toast({ title: t("contact.successTitle"), description: t("contact.successDesc") });
-    setForm({ nome: "", email: "", telefone: "", empresa: "", mensagem: "", orcamento: "" });
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.from("leads").insert({
+        name: form.nome,
+        email: form.email,
+        phone: form.telefone || null,
+        company: form.empresa || null,
+        budget: form.orcamento || null,
+        message: form.mensagem || null,
+      });
+      if (error) throw error;
+      toast({ title: t("contact.successTitle"), description: t("contact.successDesc") });
+      setForm({ nome: "", email: "", telefone: "", empresa: "", mensagem: "", orcamento: "" });
+    } catch {
+      toast({ title: "Erro ao enviar", description: "Tente novamente mais tarde.", variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const update = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
@@ -130,10 +149,11 @@ const Contact = () => {
 
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+            disabled={submitting}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
           >
             <Send size={18} />
-            {t("contact.submit")}
+            {submitting ? "A enviar..." : t("contact.submit")}
           </button>
         </motion.form>
 
