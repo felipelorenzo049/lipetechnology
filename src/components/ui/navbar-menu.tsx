@@ -108,17 +108,25 @@ export const HoveredLink = ({
   href,
   icon: Icon,
   description,
+  onClick,
   ...rest
-}: React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+}: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'onClick'> & {
   children: React.ReactNode;
   icon?: React.ComponentType<{ className?: string }>;
   description?: string;
+  onClick?: (e: React.MouseEvent) => void;
 }) => {
+  const handleClick = onClick
+    ? (e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); onClick(e); }
+    : undefined;
+
   if (Icon) {
     return (
-      <a
-        href={href}
-        {...rest}
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={handleClick}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick?.(e as unknown as React.MouseEvent); }}
         className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer group"
       >
         <Icon className="w-5 h-5 text-primary mt-0.5 shrink-0" />
@@ -132,13 +140,14 @@ export const HoveredLink = ({
             </p>
           )}
         </div>
-      </a>
+      </div>
     );
   }
 
   return (
     <a
       href={href}
+      onClick={handleClick}
       {...rest}
       className="text-muted-foreground hover:text-primary transition-colors text-sm font-body py-1 block"
     >

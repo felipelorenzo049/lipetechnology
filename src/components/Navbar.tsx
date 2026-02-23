@@ -26,19 +26,24 @@ const Navbar = () => {
     { label: t("nav.contact"), href: "#contato" },
   ];
 
-  const scrollTo = (href: string) => {
+  const scrollToImmediate = (href: string) => {
+    const el = document.querySelector(href);
+    el?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToMobile = (href: string) => {
     setMobileOpen(false);
     setTimeout(() => {
-      const el = document.querySelector(href);
-      el?.scrollIntoView({ behavior: "smooth" });
+      scrollToImmediate(href);
     }, 350);
   };
 
   const handleNavClick = (href: string, e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setActive(null);
     if (location.pathname === "/") {
-      scrollTo(href);
+      scrollToImmediate(href);
     } else {
       navigate("/" + href);
     }
@@ -92,7 +97,7 @@ const Navbar = () => {
           </MenuItem>
 
           <button
-            onClick={() => scrollTo("#processo")}
+            onClick={() => { setActive(null); if (location.pathname === "/") { scrollToImmediate("#processo"); } else { navigate("/#processo"); } }}
             className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors tracking-wide uppercase cursor-pointer"
           >
             {t("nav.process")}
@@ -108,7 +113,7 @@ const Navbar = () => {
           <LanguageSwitcher />
 
           <button
-            onClick={() => scrollTo("#contato")}
+            onClick={() => { setActive(null); if (location.pathname === "/") { scrollToImmediate("#contato"); } else { navigate("/#contato"); } }}
             className="ml-4 px-5 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm font-semibold font-body hover:bg-secondary/90 transition-all hover:shadow-[0_0_20px_-4px_hsl(168_55%_44%/0.4)] uppercase tracking-wide"
           >
             {t("nav.talkToUs")}
@@ -153,7 +158,7 @@ const Navbar = () => {
                   ) : (
                     <button
                       key={link.href}
-                      onClick={() => scrollTo(link.href)}
+                      onClick={() => scrollToMobile(link.href)}
                       className="text-left text-foreground font-body hover:text-primary transition-colors"
                     >
                       {link.label}
@@ -161,7 +166,7 @@ const Navbar = () => {
                   )
                 ))}
                 <button
-                  onClick={() => scrollTo("#contato")}
+                  onClick={() => scrollToMobile("#contato")}
                   className="mt-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium"
                 >
                   {t("nav.talkToUs")}
