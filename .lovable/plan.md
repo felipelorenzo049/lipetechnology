@@ -1,51 +1,38 @@
 
 
-## Criar Admin felipe@lipe.com com Sistema de Roles
+## Limpar Dados Fictícios do Dashboard
 
-### Resumo
+### Problema
 
-Criar o utilizador admin no Supabase Auth, implementar um sistema de roles seguro (tabela `user_roles` com funcao `has_role`), e atualizar o `ProtectedRoute` para verificar a role `admin` no servidor.
+Os dados que aparecem no dashboard nao sao hardcoded no codigo -- vem do Supabase. Porem, foram inseridos como dados de exemplo (seed data) na migracao inicial para que o dashboard tivesse conteudo desde o inicio. Agora que o dashboard esta funcional, esses dados devem ser removidos para comecar com dados reais.
 
-### 1. Migracao SQL - Sistema de Roles
+### O que sera feito
 
-Criar a infraestrutura de roles seguindo as melhores praticas de seguranca:
+Executar comandos SQL para eliminar todos os dados de exemplo das 3 tabelas:
 
-- Enum `app_role` com valores: `admin`, `moderator`, `user`
-- Tabela `user_roles` com RLS ativado
-- Funcao `has_role()` como `SECURITY DEFINER` para evitar recursao RLS
-- Atualizar as policies das tabelas `projects`, `leads` e `payments` para usar `has_role(auth.uid(), 'admin')` em vez de apenas `authenticated`
+1. **Eliminar pagamentos** (primeiro, porque referenciam projetos)
+2. **Eliminar projetos** (EasyLine, Plate Boutique, Sistema de Agendamento, Milan Couture)
+3. **Eliminar leads de teste** (Joao Silva, Maria Santos, Carlos Mendes, Ana Ferreira)
 
-### 2. Criar Utilizador Admin
+### Detalhes tecnicos
 
-Usar a API do Supabase para criar o utilizador:
-- Email: `felipe@lipe.com`
-- Password: `Formula1#`
-- Inserir registo na tabela `user_roles` com role `admin`
+Sera executado via SQL no Supabase:
 
-**Nota:** O utilizador sera criado via o painel do Supabase (Authentication > Users > Add User). A role sera atribuida via migracao SQL apos o utilizador ser criado. Alternativamente, podemos criar um trigger que atribui a role automaticamente.
+```sql
+DELETE FROM payments;
+DELETE FROM projects;
+DELETE FROM leads;
+```
 
-**Abordagem escolhida:** Criar um trigger `on_auth_user_created` que verifica se o email e `felipe@lipe.com` e atribui automaticamente a role `admin`. Para outros utilizadores, nao atribui role nenhuma.
-
-### 3. Atualizar ProtectedRoute
-
-O componente `ProtectedRoute` passara a verificar se o utilizador autenticado tem a role `admin` na tabela `user_roles`, em vez de apenas verificar se esta autenticado.
-
-### 4. Atualizar RLS Policies
-
-Substituir todas as policies que usam `auth.role() = 'authenticated'` por `has_role(auth.uid(), 'admin')`:
-- `projects`: SELECT, INSERT, UPDATE, DELETE
-- `payments`: SELECT, INSERT, UPDATE, DELETE  
-- `leads`: SELECT, UPDATE, DELETE (INSERT mantem para anon -- formulario de contacto)
+Isto apaga todos os registos de exemplo. O dashboard ficara vazio e pronto para receber dados reais:
+- Leads reais via formulario de contacto do site
+- Projetos e pagamentos criados manualmente no painel admin
 
 ### Ficheiros afetados
 
-| Ficheiro | Acao |
-|----------|------|
-| Migracao SQL (roles + policies) | Nova |
-| `src/components/admin/ProtectedRoute.tsx` | Atualizado -- verificar role admin |
-| `src/pages/AdminLoginPage.tsx` | Sem alteracoes (login ja funciona) |
+Nenhum ficheiro de codigo sera alterado -- apenas dados na base de dados.
 
-### Nota importante
+### Alternativa
 
-Apos a implementacao, sera necessario registar o utilizador `felipe@lipe.com` com a password `Formula1#` atraves do painel do Supabase (Authentication > Users > Add User) ou diretamente pela pagina de login se adicionarmos signup. O trigger atribuira automaticamente a role admin.
+Se preferires manter alguns dados e apenas atualizar para dados reais, diz-me quais projetos/leads queres manter ou adicionar.
 
