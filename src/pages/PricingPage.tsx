@@ -7,12 +7,22 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { GradientBackground } from "@/components/ui/gradient-background";
 import { Badge } from "@/components/ui/badge";
+import CurrencySwitcher, { useCurrency } from "@/components/CurrencySwitcher";
+
+// Base prices in BRL
+const BASE_PRICES: Record<string, number | null> = {
+  Starter: 4500,
+  Growth: 18000,
+  Premium: null, // custom quote — no conversion
+};
 
 const PricingPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const plans = t("pricing.plans", { returnObjects: true }) as Array<{
+  const { currency, setCurrency, formatPrice } = useCurrency();
+
+  const plans = t("pricing.plans", { returnObjects: true, lng: i18n.resolvedLanguage }) as Array<{
     name: string;
     price: string;
     description: string;
@@ -23,6 +33,24 @@ const PricingPage = () => {
 
   const scrollToContact = () => {
     window.location.href = "/#contato";
+  };
+
+  const getDisplayPrice = (plan: { name: string; price: string }) => {
+    const baseValue = BASE_PRICES[plan.name];
+    if (baseValue === null || baseValue === undefined) {
+      return plan.price; // "Sob consulta" / "Custom quote" — keep as-is
+    }
+    if (currency === "BRL") return plan.price; // use the translated string directly
+
+    const converted = formatPrice(baseValue);
+    // Handle "A partir de" / "From" / "Desde" / "Da" prefix
+    const prefixes = ["A partir de ", "From ", "Desde ", "Da "];
+    for (const prefix of prefixes) {
+      if (plan.price.startsWith(prefix)) {
+        return `${prefix}${converted}`;
+      }
+    }
+    return converted;
   };
 
   return (
@@ -50,6 +78,15 @@ const PricingPage = () => {
             <p className="text-muted-foreground font-body mt-4 max-w-xl mx-auto">
               {t("pricing.subtitle")}
             </p>
+
+            <div className="flex justify-center mt-8">
+              <CurrencySwitcher currency={currency} setCurrency={setCurrency} />
+            </div>
+            {currency !== "BRL" && (
+              <p className="text-muted-foreground/60 text-xs font-mono mt-2">
+                * {t("pricing.approxNote", { defaultValue: "Approximate values for reference" })}
+              </p>
+            )}
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -79,7 +116,7 @@ const PricingPage = () => {
 
                 <div className="mt-6 mb-6">
                   <span className="font-headline text-3xl font-bold gradient-text">
-                    {plan.price}
+                    {getDisplayPrice(plan)}
                   </span>
                 </div>
 

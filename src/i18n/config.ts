@@ -7,8 +7,21 @@ import pt from "./locales/pt.json";
 import es from "./locales/es.json";
 import it from "./locales/it.json";
 
+const customLanguageDetector = {
+  name: "customNavigator",
+  lookup() {
+    const browserLang = navigator.language || "";
+    const primary = browserLang.split("-")[0];
+    // Portuguese speakers → pt, everyone else → en
+    return primary === "pt" ? "pt" : "en";
+  },
+};
+
+const languageDetector = new LanguageDetector();
+languageDetector.addDetector(customLanguageDetector);
+
 i18n
-  .use(LanguageDetector)
+  .use(languageDetector)
   .use(initReactI18next)
   .init({
     resources: {
@@ -23,7 +36,7 @@ i18n
       escapeValue: false,
     },
     detection: {
-      order: ["localStorage", "navigator"],
+      order: ["localStorage", "customNavigator"],
       caches: ["localStorage"],
     },
   });
