@@ -182,7 +182,7 @@
     "companyPlaceholder": "Nome dell'azienda",
     "budget": "Budget stimato",
     "budgetSelect": "Seleziona...",
-    "budgetOptions": ["€2.000–5.000", "€5.000–10.000", "€10.000+", "Non so ancora"],
+    "budgetOptions": ["R$ 10.000–30.000", "R$ 30.000–60.000", "R$ 60.000+", "Non so ancora"],
     "message": "Messaggio (opzionale)",
     "messagePlaceholder": "Raccontaci del tuo progetto...",
     "submit": "Invia messaggio",
@@ -218,7 +218,7 @@
     "titleHighlight": "frequenti",
     "items": [
       { "q": "Quanto tempo ci vuole per un progetto?", "a": "Dipende dalla complessità, ma la maggior parte dei siti web viene consegnata in 3-6 settimane. Le piattaforme SaaS e i chatbot possono richiedere 6-12 settimane." },
-      { "q": "Quanto costa?", "a": "I nostri progetti partono da 750€ per le landing page. Il piano Growth parte da 3.000€ e il Premium è su preventivo. Forniamo sempre un preventivo dettagliato prima di iniziare." },
+      { "q": "Quanto costa?", "a": "I nostri progetti partono da R$ 4.500 per le landing page. Il piano Growth parte da R$ 18.000 e il Premium è su preventivo. Forniamo sempre un preventivo dettagliato prima di iniziare." },
       { "q": "Lavorate con aziende fuori dal Portogallo?", "a": "Sì! Lavoriamo da remoto con aziende di qualsiasi località. Tutta la comunicazione e la gestione del progetto avviene online con videochiamate settimanali." },
       { "q": "Cosa succede dopo il lancio?", "a": "Offriamo piani di manutenzione e supporto continuo. Monitoriamo le prestazioni, risolviamo problemi e aiutiamo a far evolvere la tua piattaforma." },
       { "q": "Posso aggiornare i contenuti da solo?", "a": "Assolutamente. Costruiamo con integrazione CMS così puoi aggiornare testi, immagini e prodotti senza bisogno di uno sviluppatore." },
@@ -233,8 +233,8 @@
     "popular": "Più popolare",
     "note": "Tutti i piani includono una call di scoperta gratuita. Preventivi personalizzati disponibili per progetti complessi.",
     "plans": [
-      { "name": "Starter", "price": "750€", "description": "Perfetto per piccole attività che muovono i primi passi online.", "features": ["Landing page o sito semplice", "Design responsivo mobile", "SEO base configurato", "Integrazione modulo contatto", "1 mese di supporto incluso"], "cta": "Inizia" },
-      { "name": "Growth", "price": "Da €3.000", "description": "Per attività pronte a scalare la propria presenza digitale.", "popular": true, "features": ["Sito multi-pagina o e-commerce", "CMS per aggiornamenti facili", "SEO avanzato & analytics", "Integrazione chatbot", "3 mesi di supporto incluso", "Ottimizzazione prestazioni"], "cta": "Inizia a crescere" },
+      { "name": "Starter", "price": "R$ 4.500", "description": "Perfetto per piccole attività che muovono i primi passi online.", "features": ["Landing page o sito semplice", "Design responsivo mobile", "SEO base configurato", "Integrazione modulo contatto", "1 mese di supporto incluso"], "cta": "Inizia" },
+      { "name": "Growth", "price": "Da R$ 18.000", "description": "Per attività pronte a scalare la propria presenza digitale.", "popular": true, "features": ["Sito multi-pagina o e-commerce", "CMS per aggiornamenti facili", "SEO avanzato & analytics", "Integrazione chatbot", "3 mesi di supporto incluso", "Ottimizzazione prestazioni"], "cta": "Inizia a crescere" },
       { "name": "Premium", "price": "Su preventivo", "description": "Trasformazione digitale completa per attività ambiziose.", "features": ["SaaS o piattaforma personalizzata", "Funzionalità con AI", "Branding & UX completo", "Integrazioni API", "6 mesi di supporto prioritario", "Project manager dedicato"], "cta": "Parliamone" }
     ]
   },
