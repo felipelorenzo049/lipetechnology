@@ -279,11 +279,11 @@ const TechStack = () => {
             <thead>
               <tr className="border-b border-border/50">
                 <th className="text-left py-4 px-5 font-body text-sm text-muted-foreground font-medium">{t("techstack.criteria")}</th>
-                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.diyBuilders")}</th>
-                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.tradAgency")}</th>
                 <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium bg-primary/5 border-l border-primary/10">
                   <span className="gradient-text font-bold">LIPE</span>
                 </th>
+                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.diyBuilders")}</th>
+                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.tradAgency")}</th>
               </tr>
             </thead>
             <tbody>
@@ -292,9 +292,9 @@ const TechStack = () => {
                 return (
                   <tr key={key} className="border-b border-border/30 transition-colors hover:bg-primary/[0.03]">
                     <td className="py-3.5 px-5 text-sm font-body font-medium">{t(`techstack.${key}`)}</td>
+                    <td className="py-3.5 px-4 text-center bg-primary/5 border-l border-primary/10"><div className="flex justify-center"><Stars count={row.lipe} /></div></td>
                     <td className="py-3.5 px-4 text-center"><div className="flex justify-center"><Stars count={row.diy} /></div></td>
                     <td className="py-3.5 px-4 text-center"><div className="flex justify-center"><Stars count={row.agency} /></div></td>
-                    <td className="py-3.5 px-4 text-center bg-primary/5 border-l border-primary/10"><div className="flex justify-center"><Stars count={row.lipe} /></div></td>
                   </tr>
                 );
               })}
