@@ -292,9 +292,9 @@ const TechStack = () => {
                 return (
                   <tr key={key} className="border-b border-border/30 transition-colors hover:bg-primary/[0.03]">
                     <td className="py-3.5 px-5 text-sm font-body font-medium">{t(`techstack.${key}`)}</td>
+                    <td className="py-3.5 px-4 text-center bg-primary/5 border-l border-primary/10"><div className="flex justify-center"><Stars count={row.lipe} /></div></td>
                     <td className="py-3.5 px-4 text-center"><div className="flex justify-center"><Stars count={row.diy} /></div></td>
                     <td className="py-3.5 px-4 text-center"><div className="flex justify-center"><Stars count={row.agency} /></div></td>
-                    <td className="py-3.5 px-4 text-center bg-primary/5 border-l border-primary/10"><div className="flex justify-center"><Stars count={row.lipe} /></div></td>
                   </tr>
                 );
               })}
