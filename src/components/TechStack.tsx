@@ -279,11 +279,11 @@ const TechStack = () => {
             <thead>
               <tr className="border-b border-border/50">
                 <th className="text-left py-4 px-5 font-body text-sm text-muted-foreground font-medium">{t("techstack.criteria")}</th>
-                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.diyBuilders")}</th>
-                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.tradAgency")}</th>
                 <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium bg-primary/5 border-l border-primary/10">
                   <span className="gradient-text font-bold">LIPE</span>
                 </th>
+                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.diyBuilders")}</th>
+                <th className="text-center py-4 px-4 font-body text-sm text-muted-foreground font-medium">{t("techstack.tradAgency")}</th>
               </tr>
             </thead>
             <tbody>
