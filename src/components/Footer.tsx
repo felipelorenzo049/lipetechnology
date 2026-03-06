@@ -44,7 +44,7 @@ const Footer = () => {
 
           <div className="flex gap-4">
             {[
-              { icon: Linkedin, href: "https://linkedin.com/company/lipetechnology" },
+              { icon: Linkedin, href: "https://www.linkedin.com/company/lipe-technology/?viewAsMember=true" },
               { icon: Instagram, href: "https://instagram.com/lipetechnology" },
             ].map(({ icon: Icon, href }, i) => (
               <a
