@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  Layers, DollarSign, Users, TrendingUp, ArrowUpRight, CreditCard, UserPlus, LogOut,
+  Layers, DollarSign, Users, TrendingUp, ArrowUpRight, CreditCard, UserPlus, LogOut, Wallet, Inbox,
 } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -42,12 +42,14 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 const timeAgo = (date: string) => { try { return formatDistanceToNow(new Date(date), { addSuffix: true, locale: pt }); } catch { return ""; } };
 
 const DashboardView = () => {
-  const { isLoading, activeProjects, monthlyRevenue, totalLeads, conversionRate, chartData, recentActivity, projects } = useDashboardKPIs();
+  const { isLoading, activeProjects, monthlyRevenue, totalRevenue, totalLeads, conversionRate, chartData, recentActivity, projects } = useDashboardKPIs();
+  const activeOrPendingProjects = projects.filter((p) => p.status === "em_progresso" || p.status === "pendente");
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         <KPICard icon={Layers} label="Projetos Ativos" value={String(activeProjects)} loading={isLoading} />
         <KPICard icon={DollarSign} label="Receita Mensal" value={`€${monthlyRevenue.toLocaleString()}`} loading={isLoading} />
+        <KPICard icon={Wallet} label="Receita Total" value={`€${totalRevenue.toLocaleString()}`} loading={isLoading} />
         <KPICard icon={Users} label="Leads Recebidos" value={String(totalLeads)} loading={isLoading} />
         <KPICard icon={TrendingUp} label="Taxa de Conversão" value={`${conversionRate}%`} loading={isLoading} />
       </div>
@@ -78,7 +80,12 @@ const DashboardView = () => {
               ? Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="flex items-start gap-3"><Skeleton className="h-8 w-8 rounded-lg" /><div className="flex-1 space-y-1"><Skeleton className="h-4 w-32" /><Skeleton className="h-3 w-48" /></div></div>
                 ))
-              : recentActivity.map((a, i) => (
+              : recentActivity.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-8 text-center">
+                    <Inbox className="h-8 w-8 text-muted-foreground/50 mb-2" />
+                    <p className="text-sm text-muted-foreground">Sem atividade recente</p>
+                  </div>
+                ) : recentActivity.map((a, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted ${a.type === "lead" ? "text-secondary" : "text-primary"}`}>
                       {a.type === "lead" ? <UserPlus className="h-4 w-4" /> : <CreditCard className="h-4 w-4" />}
@@ -101,7 +108,9 @@ const DashboardView = () => {
                 ? Array.from({ length: 4 }).map((_, i) => (
                     <tr key={i} className="border-b border-border/50"><td className="py-3 pr-4"><Skeleton className="h-4 w-32" /></td><td className="py-3 pr-4"><Skeleton className="h-4 w-20" /></td><td className="py-3 pr-4"><Skeleton className="h-5 w-24 rounded-full" /></td><td className="py-3 pr-4"><Skeleton className="h-4 w-16" /></td><td className="py-3"><Skeleton className="h-2 w-24 rounded-full" /></td></tr>
                   ))
-                : projects.map((p) => (
+                : activeOrPendingProjects.length === 0 ? (
+                    <tr><td colSpan={5} className="py-8 text-center text-muted-foreground">Nenhum projeto em andamento de momento</td></tr>
+                  ) : activeOrPendingProjects.map((p) => (
                     <tr key={p.id} className="border-b border-border/50 last:border-0">
                       <td className="py-3 pr-4 font-medium text-foreground">{p.name}</td>
                       <td className="py-3 pr-4 text-muted-foreground">{p.client ?? "—"}</td>
@@ -130,8 +139,18 @@ const viewMap: Record<string, React.ReactNode> = {
 
 const AdminDashboard = () => {
   const [selected, setSelected] = useState("Dashboard");
+  const [adminName, setAdminName] = useState("Admin");
   const navigate = useNavigate();
   const { data: unreadCount } = useUnreadMessages();
+
+  React.useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user?.email) {
+        const name = data.user.email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+        setAdminName(name);
+      }
+    });
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -145,7 +164,7 @@ const AdminDashboard = () => {
         <header className="flex items-center justify-between border-b border-border px-6 py-5 lg:px-8">
           <div>
             <h1 className="text-2xl font-bold font-headline text-foreground">
-              Bem-vindo, <span className="gradient-text">Admin</span>
+              Bem-vindo, <span className="gradient-text">{adminName}</span>
             </h1>
             <p className="text-sm text-muted-foreground">Painel de controlo — LIPE Technology</p>
           </div>
