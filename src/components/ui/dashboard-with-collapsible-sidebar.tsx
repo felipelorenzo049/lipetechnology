@@ -88,7 +88,7 @@ const SidebarOption = ({ Icon, title, selected, setSelected, open, notifs }: Opt
       {open && (
         <span className="ml-3 text-sm font-medium">{title}</span>
       )}
-      {notifs && open && (
+      {(notifs ?? 0) > 0 && open && (
         <span className="ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-bold text-accent-foreground">
           {notifs}
         </span>

@@ -156,7 +156,7 @@ export const useDashboardKPIs = () => {
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
   const monthlyRevenue = payments?.filter((p) => p.paid_at && p.paid_at >= startOfMonth).reduce((sum, p) => sum + Number(p.amount), 0) ?? 0;
-
+  const totalRevenue = payments?.reduce((sum, p) => sum + Number(p.amount), 0) ?? 0;
   const totalLeads = leads?.length ?? 0;
   const convertedLeads = leads?.filter((l) => l.status === "convertido").length ?? 0;
   const conversionRate = totalLeads > 0 ? Math.round((convertedLeads / totalLeads) * 100) : 0;
@@ -184,5 +184,5 @@ export const useDashboardKPIs = () => {
     return items.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()).slice(0, 6);
   })();
 
-  return { isLoading, activeProjects, monthlyRevenue, totalLeads, conversionRate, chartData, recentActivity, projects: projects ?? [] };
+  return { isLoading, activeProjects, monthlyRevenue, totalRevenue, totalLeads, conversionRate, chartData, recentActivity, projects: projects ?? [] };
 };
