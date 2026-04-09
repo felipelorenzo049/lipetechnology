@@ -1,65 +1,63 @@
 
 
-## Corrigir navegacao dos dropdowns + melhorias
+## Dashboard Admin 100% Funcional — Plano Completo
 
-### Problema identificado
+### Diagnóstico atual
 
-Os links dos dropdowns "Servicos" e "Portfolio" nao direcionam corretamente por dois motivos:
+| Secção | Estado | Problema |
+|--------|--------|----------|
+| Dashboard | Funcional | OK — KPIs, gráfico e atividade recente já ligados ao DB |
+| Projetos | Funcional | CRUD completo já implementado |
+| Clientes (Leads) | Funcional | Listagem + mudança de estado + detalhe OK |
+| Financeiro | Funcional | Criar pagamentos + listagem OK |
+| **Mensagens** | **Placeholder** | Mostra "em breve" — badge hardcoded `notifs={3}` |
+| **Analytics** | **Placeholder** | Mostra "em breve" |
+| **Configurações** | **Placeholder** | Mostra "em breve" |
+| Sidebar badge | Bug | `notifs={3}` é estático, não reflete dados reais |
 
-1. **Race condition com o dropdown**: Ao clicar, `setActive(null)` fecha o dropdown imediatamente, o que dispara `onMouseLeave` no `<nav>`, criando um conflito de timing com o scroll
-2. **Delay desnecessario no `scrollTo`**: A funcao `scrollTo` tem um `setTimeout` de 350ms (pensado para o menu mobile fechar antes), mas no desktop isso causa lag e potenciais conflitos
-3. **Tag `<a>` com href e onClick**: Mesmo com `preventDefault`, o browser pode processar o `href="#servicos"` antes do React handler em certos casos
+### O que vou implementar
 
-### Solucao
+#### 1. Mensagens — view funcional com leads como inbox
+Em vez de criar uma tabela separada de mensagens (o formulário de contacto já grava em `leads` com campo `message`), a secção "Mensagens" vai mostrar os leads que têm mensagem, como um inbox:
+- Lista de leads com mensagem, ordenados por data
+- Badge na sidebar mostra contagem real de leads com status `novo` que têm mensagem
+- Marcar como lido (muda status de `novo` para `contactado`)
+- Visualizar mensagem completa inline
+- Responder via link mailto (abre email)
 
-**1. Separar logica desktop/mobile no `scrollTo`:**
-- No desktop (dropdown), fazer scroll imediato sem delay
-- No mobile, manter o delay de 350ms para o menu animar antes do scroll
+#### 2. Analytics — métricas reais a partir dos dados existentes
+Vista com gráficos e estatísticas calculadas a partir de projects, leads e payments:
+- Gráfico de leads por mês (bar chart)
+- Gráfico de receita acumulada (area chart)
+- Taxa de conversão ao longo do tempo
+- Distribuição de leads por status (pie/donut)
+- Distribuição de projetos por status
 
-**2. Usar `<button>` em vez de `<a>` nos HoveredLink do Navbar:**
-- Evita conflitos entre `href` nativo e `onClick` do React
-- Alternativa: manter `<a>` mas garantir que `preventDefault` funciona antes de qualquer acao
+#### 3. Configurações — perfil admin básico
+- Exibir email do admin logado
+- Botão de alterar password (via `supabase.auth.updateUser`)
+- Botão de logout
 
-**3. Melhorar o `handleNavClick`:**
-- Remover o `setTimeout` no fluxo desktop
-- Adicionar `window.scrollTo` como fallback se `querySelector` nao encontrar o elemento
-
-**4. Melhorias sugeridas:**
-- Cada item do dropdown Portfolio pode linkar para a pagina `/portfolio` com filtro do tipo de projeto (ex: `/portfolio?type=ecommerce`)
-- Cada item do dropdown Servicos pode linkar diretamente para o card correspondente na secao servicos (usar IDs individuais nos cards)
-- Adicionar feedback visual (highlight) na secao de destino apos o scroll
+#### 4. Sidebar — badge dinâmico
+- Passar contagem real de leads `novo` com mensagem para a sidebar
+- Remover o `notifs={3}` hardcoded
 
 ### Ficheiros afetados
 
-| Ficheiro | Alteracao |
-|----------|-----------|
-| `src/components/Navbar.tsx` | Refatorar `scrollTo` e `handleNavClick` para scroll imediato no desktop; adicionar IDs especificos para cada servico/portfolio item |
-| `src/components/ui/navbar-menu.tsx` | Adicionar suporte a `onClick` como `<button>` alternativo no `HoveredLink` para evitar conflito com `<a href>` |
-| `src/components/Services.tsx` | Adicionar IDs individuais aos cards de servico (ex: `id="servico-websites"`) |
+| Ficheiro | Ação |
+|----------|------|
+| `src/components/admin/MessagesView.tsx` | **Criar** — inbox de mensagens dos leads |
+| `src/components/admin/AnalyticsView.tsx` | **Criar** — dashboards analíticos |
+| `src/components/admin/SettingsView.tsx` | **Criar** — configurações do admin |
+| `src/components/admin/AdminDashboard.tsx` | **Editar** — substituir PlaceholderViews, passar contagem de notificações à sidebar |
+| `src/components/ui/dashboard-with-collapsible-sidebar.tsx` | **Editar** — aceitar `notifCount` como prop dinâmico em vez de hardcoded |
+| `src/hooks/use-admin-data.ts` | **Editar** — adicionar hook `useUnreadMessages` para contagem de leads novos com mensagem |
 
-### Detalhes tecnicos
+### Detalhes técnicos
 
-A funcao `handleNavClick` refatorada:
+- Sem alterações na base de dados — todos os dados já existem nas tabelas `leads`, `projects` e `payments`
+- Analytics usa Recharts (já instalado) com `BarChart`, `PieChart` e `AreaChart`
+- Mensagens reutiliza a query de leads com filtro `message IS NOT NULL`
+- Badge da sidebar recebe prop dinâmico do `AdminDashboard` via query em tempo real
+- Configurações usa `supabase.auth.getUser()` e `supabase.auth.updateUser()`
 
-```text
-handleNavClick(href, e):
-  e.preventDefault()
-  e.stopPropagation()
-  setActive(null)
-  se location.pathname === "/":
-    const el = document.querySelector(href)
-    el?.scrollIntoView({ behavior: "smooth" })
-  senao:
-    navigate("/" + href)
-```
-
-No `HoveredLink`, quando receber `onClick`, renderizar como `<div role="button">` em vez de `<a>` para evitar conflito com o href nativo:
-
-```text
-se onClick fornecido:
-  renderizar <div role="button" tabIndex={0} onClick={onClick}>
-senao:
-  renderizar <a href={href}>
-```
-
-Isto elimina completamente o conflito entre navegacao nativa do browser e o handler React.
