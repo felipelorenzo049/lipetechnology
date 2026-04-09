@@ -10,147 +10,20 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.1"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
-      leads: {
-        Row: {
-          budget: string | null
-          company: string | null
-          created_at: string
-          email: string
-          id: string
-          message: string | null
-          name: string
-          phone: string | null
-          status: string
-        }
-        Insert: {
-          budget?: string | null
-          company?: string | null
-          created_at?: string
-          email: string
-          id?: string
-          message?: string | null
-          name: string
-          phone?: string | null
-          status?: string
-        }
-        Update: {
-          budget?: string | null
-          company?: string | null
-          created_at?: string
-          email?: string
-          id?: string
-          message?: string | null
-          name?: string
-          phone?: string | null
-          status?: string
-        }
-        Relationships: []
-      }
-      payments: {
-        Row: {
-          amount: number
-          created_at: string
-          description: string | null
-          id: string
-          paid_at: string | null
-          project_id: string | null
-        }
-        Insert: {
-          amount: number
-          created_at?: string
-          description?: string | null
-          id?: string
-          paid_at?: string | null
-          project_id?: string | null
-        }
-        Update: {
-          amount?: number
-          created_at?: string
-          description?: string | null
-          id?: string
-          paid_at?: string | null
-          project_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "payments_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "projects"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      projects: {
-        Row: {
-          client: string | null
-          created_at: string
-          id: string
-          name: string
-          progress: number
-          revenue: number | null
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          client?: string | null
-          created_at?: string
-          id?: string
-          name: string
-          progress?: number
-          revenue?: number | null
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          client?: string | null
-          created_at?: string
-          id?: string
-          name?: string
-          progress?: number
-          revenue?: number | null
-          status?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
-      app_role: "admin" | "moderator" | "user"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -277,8 +150,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      app_role: ["admin", "moderator", "user"],
-    },
+    Enums: {},
   },
 } as const
