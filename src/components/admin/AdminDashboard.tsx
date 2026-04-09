@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  Layers, DollarSign, Users, TrendingUp, ArrowUpRight, CreditCard, UserPlus, LogOut,
+  Layers, DollarSign, Users, TrendingUp, ArrowUpRight, CreditCard, UserPlus, LogOut, Wallet, Inbox,
 } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
