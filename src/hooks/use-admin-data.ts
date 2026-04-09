@@ -126,6 +126,23 @@ export const useCreatePayment = () => {
   });
 };
 
+// ── Unread Messages ──
+
+export const useUnreadMessages = () => {
+  return useQuery({
+    queryKey: ["admin-unread-messages"],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("leads")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "novo")
+        .not("message", "is", null);
+      if (error) throw error;
+      return count ?? 0;
+    },
+  });
+};
+
 // ── Dashboard KPIs ──
 
 export const useDashboardKPIs = () => {

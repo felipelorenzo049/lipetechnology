@@ -14,9 +14,10 @@ import {
 interface SidebarProps {
   selected: string;
   setSelected: (s: string) => void;
+  unreadCount?: number;
 }
 
-export const AdminSidebar = ({ selected, setSelected }: SidebarProps) => {
+export const AdminSidebar = ({ selected, setSelected, unreadCount }: SidebarProps) => {
   const [open, setOpen] = useState(true);
 
   return (
@@ -44,7 +45,7 @@ export const AdminSidebar = ({ selected, setSelected }: SidebarProps) => {
         <SidebarOption Icon={Users} title="Clientes" selected={selected} setSelected={setSelected} open={open} />
         <SidebarOption Icon={DollarSign} title="Financeiro" selected={selected} setSelected={setSelected} open={open} />
         <SidebarOption Icon={BarChart3} title="Analytics" selected={selected} setSelected={setSelected} open={open} />
-        <SidebarOption Icon={MessageSquare} title="Mensagens" selected={selected} setSelected={setSelected} open={open} notifs={3} />
+        <SidebarOption Icon={MessageSquare} title="Mensagens" selected={selected} setSelected={setSelected} open={open} notifs={unreadCount} />
         <SidebarOption Icon={Settings} title="Configurações" selected={selected} setSelected={setSelected} open={open} />
       </div>
 

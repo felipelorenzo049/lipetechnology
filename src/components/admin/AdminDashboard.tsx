@@ -7,7 +7,7 @@ import {
 } from "recharts";
 import { AdminSidebar } from "@/components/ui/dashboard-with-collapsible-sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useDashboardKPIs } from "@/hooks/use-admin-data";
+import { useDashboardKPIs, useUnreadMessages } from "@/hooks/use-admin-data";
 import { formatDistanceToNow } from "date-fns";
 import { pt } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
@@ -120,14 +120,15 @@ const viewMap: Record<string, React.ReactNode> = {
   Projetos: <ProjectsView />,
   Clientes: <LeadsView />,
   Financeiro: <FinanceView />,
-  Analytics: <PlaceholderView title="Analytics" />,
-  Mensagens: <PlaceholderView title="Mensagens" />,
-  Configurações: <PlaceholderView title="Configurações" />,
+  Analytics: <AnalyticsView />,
+  Mensagens: <MessagesView />,
+  Configurações: <SettingsView />,
 };
 
 const AdminDashboard = () => {
   const [selected, setSelected] = useState("Dashboard");
   const navigate = useNavigate();
+  const { data: unreadCount } = useUnreadMessages();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -136,7 +137,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <AdminSidebar selected={selected} setSelected={setSelected} />
+      <AdminSidebar selected={selected} setSelected={setSelected} unreadCount={unreadCount ?? 0} />
       <main className="flex-1 overflow-y-auto">
         <header className="flex items-center justify-between border-b border-border px-6 py-5 lg:px-8">
           <div>
