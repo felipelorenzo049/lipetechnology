@@ -1,46 +1,36 @@
 
 
-## Plano: Seed de Dados Reais + Refinamentos no Dashboard
+## Limpar Dados Fictícios do Dashboard
 
-### Contexto
-A base de dados está **completamente vazia** — zero projetos, leads e pagamentos. O dashboard funciona mas mostra tudo a zero. Vou inserir dados reais baseados nos projetos do portfólio da LIPE Technology e adicionar melhorias de UX.
+### Problema
+Os 5 leads e respetivas mensagens que aparecem no dashboard são **dados de seed fictícios** inseridos via migração SQL. Nomes como "João Silva", "Maria Costa" não são reais e podem confundir ao misturar-se com leads verdadeiros que chegarem pelo formulário de contacto.
 
-### 1. Seed de dados reais via migração SQL
+### Solução
+Eliminar todos os leads fictícios da base de dados via migração SQL, mantendo apenas os projetos e pagamentos (que representam trabalho real da LIPE).
 
-Inserir registos com dados consistentes com o site público:
+### Migração SQL
 
-**Projetos (4):**
-| Nome | Cliente | Status | Progresso | Receita |
-|------|---------|--------|-----------|---------|
-| EasyLine Platform | EasyLine | concluido | 100 | 4500 |
-| Plate Boutique | LIPE (interno) | concluido | 100 | 0 |
-| Agendamento Inteligente | LIPE (interno) | em_progresso | 65 | 0 |
-| Milan Website | Milan | concluido | 100 | 2800 |
+```sql
+DELETE FROM public.leads
+WHERE email IN (
+  'joao@empresa.pt',
+  'maria.costa@gmail.com',
+  'ricardo@mendesarq.pt',
+  'ana.ferreira@startup.io',
+  'carlos@oliveira.com'
+);
+```
 
-**Pagamentos (3-4):** associados aos projetos com clientes, com datas distribuídas nos últimos meses.
-
-**Leads (4-5):** leads de exemplo com mensagens, distribuídos em datas variadas e com estados mistos (novo, contactado, convertido) para que os gráficos e a inbox tenham dados.
-
-### 2. Refinamentos no Dashboard
-
-- **Header dinâmico**: Mostrar o nome real do admin (extraído do email) em vez de "Admin" hardcoded
-- **KPI extra**: Adicionar "Receita Total" como KPI no Dashboard (não apenas mensal)
-- **Tabela do Dashboard**: Filtrar para mostrar apenas projetos `em_progresso` e `pendente` (não os concluídos)
-- **Empty states**: Adicionar mensagens amigáveis quando não há dados em cada secção (em vez de simplesmente ficar em branco)
-- **Notif badge**: Corrigir para não mostrar badge quando `notifs === 0` (atualmente o `{notifs && ...}` mostra para `0` como falsy mas convém usar `notifs > 0`)
+### Resultado
+- Secção **Mensagens**: ficará vazia até chegarem leads reais pelo formulário
+- Secção **Analytics**: gráficos de leads ficarão a zero (normal — reflete a realidade)
+- **Projetos e Pagamentos**: mantêm-se (EasyLine, Milan, etc. são projetos reais do portfólio)
+- Badge de notificações: mostrará 0
 
 ### Ficheiros afetados
-
 | Ficheiro | Ação |
 |----------|------|
-| `supabase/migrations/seed_data.sql` | **Criar** — migração com INSERT de projetos, pagamentos e leads de exemplo |
-| `src/components/admin/AdminDashboard.tsx` | **Editar** — header dinâmico com nome do admin, filtrar tabela, empty states |
-| `src/components/ui/dashboard-with-collapsible-sidebar.tsx` | **Editar** — corrigir condição do badge para `notifs > 0` |
-| `src/hooks/use-admin-data.ts` | **Editar** — adicionar receita total ao `useDashboardKPIs` |
+| Nova migração SQL | **Criar** — DELETE dos leads fictícios |
 
-### Detalhes técnicos
-
-- A migração usa UUIDs gerados com `gen_random_uuid()` e CTEs para associar pagamentos aos projetos corretos
-- O nome do admin é extraído do email via `supabase.auth.getUser()` já disponível no componente
-- Nenhuma tabela nova — apenas dados inseridos nas existentes
+Nenhuma alteração de código necessária.
 
