@@ -1,63 +1,46 @@
 
 
-## Dashboard Admin 100% Funcional — Plano Completo
+## Plano: Seed de Dados Reais + Refinamentos no Dashboard
 
-### Diagnóstico atual
+### Contexto
+A base de dados está **completamente vazia** — zero projetos, leads e pagamentos. O dashboard funciona mas mostra tudo a zero. Vou inserir dados reais baseados nos projetos do portfólio da LIPE Technology e adicionar melhorias de UX.
 
-| Secção | Estado | Problema |
-|--------|--------|----------|
-| Dashboard | Funcional | OK — KPIs, gráfico e atividade recente já ligados ao DB |
-| Projetos | Funcional | CRUD completo já implementado |
-| Clientes (Leads) | Funcional | Listagem + mudança de estado + detalhe OK |
-| Financeiro | Funcional | Criar pagamentos + listagem OK |
-| **Mensagens** | **Placeholder** | Mostra "em breve" — badge hardcoded `notifs={3}` |
-| **Analytics** | **Placeholder** | Mostra "em breve" |
-| **Configurações** | **Placeholder** | Mostra "em breve" |
-| Sidebar badge | Bug | `notifs={3}` é estático, não reflete dados reais |
+### 1. Seed de dados reais via migração SQL
 
-### O que vou implementar
+Inserir registos com dados consistentes com o site público:
 
-#### 1. Mensagens — view funcional com leads como inbox
-Em vez de criar uma tabela separada de mensagens (o formulário de contacto já grava em `leads` com campo `message`), a secção "Mensagens" vai mostrar os leads que têm mensagem, como um inbox:
-- Lista de leads com mensagem, ordenados por data
-- Badge na sidebar mostra contagem real de leads com status `novo` que têm mensagem
-- Marcar como lido (muda status de `novo` para `contactado`)
-- Visualizar mensagem completa inline
-- Responder via link mailto (abre email)
+**Projetos (4):**
+| Nome | Cliente | Status | Progresso | Receita |
+|------|---------|--------|-----------|---------|
+| EasyLine Platform | EasyLine | concluido | 100 | 4500 |
+| Plate Boutique | LIPE (interno) | concluido | 100 | 0 |
+| Agendamento Inteligente | LIPE (interno) | em_progresso | 65 | 0 |
+| Milan Website | Milan | concluido | 100 | 2800 |
 
-#### 2. Analytics — métricas reais a partir dos dados existentes
-Vista com gráficos e estatísticas calculadas a partir de projects, leads e payments:
-- Gráfico de leads por mês (bar chart)
-- Gráfico de receita acumulada (area chart)
-- Taxa de conversão ao longo do tempo
-- Distribuição de leads por status (pie/donut)
-- Distribuição de projetos por status
+**Pagamentos (3-4):** associados aos projetos com clientes, com datas distribuídas nos últimos meses.
 
-#### 3. Configurações — perfil admin básico
-- Exibir email do admin logado
-- Botão de alterar password (via `supabase.auth.updateUser`)
-- Botão de logout
+**Leads (4-5):** leads de exemplo com mensagens, distribuídos em datas variadas e com estados mistos (novo, contactado, convertido) para que os gráficos e a inbox tenham dados.
 
-#### 4. Sidebar — badge dinâmico
-- Passar contagem real de leads `novo` com mensagem para a sidebar
-- Remover o `notifs={3}` hardcoded
+### 2. Refinamentos no Dashboard
+
+- **Header dinâmico**: Mostrar o nome real do admin (extraído do email) em vez de "Admin" hardcoded
+- **KPI extra**: Adicionar "Receita Total" como KPI no Dashboard (não apenas mensal)
+- **Tabela do Dashboard**: Filtrar para mostrar apenas projetos `em_progresso` e `pendente` (não os concluídos)
+- **Empty states**: Adicionar mensagens amigáveis quando não há dados em cada secção (em vez de simplesmente ficar em branco)
+- **Notif badge**: Corrigir para não mostrar badge quando `notifs === 0` (atualmente o `{notifs && ...}` mostra para `0` como falsy mas convém usar `notifs > 0`)
 
 ### Ficheiros afetados
 
 | Ficheiro | Ação |
 |----------|------|
-| `src/components/admin/MessagesView.tsx` | **Criar** — inbox de mensagens dos leads |
-| `src/components/admin/AnalyticsView.tsx` | **Criar** — dashboards analíticos |
-| `src/components/admin/SettingsView.tsx` | **Criar** — configurações do admin |
-| `src/components/admin/AdminDashboard.tsx` | **Editar** — substituir PlaceholderViews, passar contagem de notificações à sidebar |
-| `src/components/ui/dashboard-with-collapsible-sidebar.tsx` | **Editar** — aceitar `notifCount` como prop dinâmico em vez de hardcoded |
-| `src/hooks/use-admin-data.ts` | **Editar** — adicionar hook `useUnreadMessages` para contagem de leads novos com mensagem |
+| `supabase/migrations/seed_data.sql` | **Criar** — migração com INSERT de projetos, pagamentos e leads de exemplo |
+| `src/components/admin/AdminDashboard.tsx` | **Editar** — header dinâmico com nome do admin, filtrar tabela, empty states |
+| `src/components/ui/dashboard-with-collapsible-sidebar.tsx` | **Editar** — corrigir condição do badge para `notifs > 0` |
+| `src/hooks/use-admin-data.ts` | **Editar** — adicionar receita total ao `useDashboardKPIs` |
 
 ### Detalhes técnicos
 
-- Sem alterações na base de dados — todos os dados já existem nas tabelas `leads`, `projects` e `payments`
-- Analytics usa Recharts (já instalado) com `BarChart`, `PieChart` e `AreaChart`
-- Mensagens reutiliza a query de leads com filtro `message IS NOT NULL`
-- Badge da sidebar recebe prop dinâmico do `AdminDashboard` via query em tempo real
-- Configurações usa `supabase.auth.getUser()` e `supabase.auth.updateUser()`
+- A migração usa UUIDs gerados com `gen_random_uuid()` e CTEs para associar pagamentos aos projetos corretos
+- O nome do admin é extraído do email via `supabase.auth.getUser()` já disponível no componente
+- Nenhuma tabela nova — apenas dados inseridos nas existentes
 
