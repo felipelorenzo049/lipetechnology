@@ -16,6 +16,9 @@ import ProjectsView from "./ProjectsView";
 import LeadsView from "./LeadsView";
 import FinanceView from "./FinanceView";
 import PlaceholderView from "./PlaceholderView";
+import MessagesView from "./MessagesView";
+import AnalyticsView from "./AnalyticsView";
+import SettingsView from "./SettingsView";
 
 const statusLabels: Record<string, string> = { em_progresso: "Em progresso", concluido: "Concluído", pendente: "Pendente" };
 const statusColor: Record<string, string> = { em_progresso: "bg-primary/20 text-primary", concluido: "bg-secondary/20 text-secondary", pendente: "bg-accent/20 text-accent" };
