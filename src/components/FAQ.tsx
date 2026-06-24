@@ -21,6 +21,9 @@ const FAQ = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           className="text-center mb-14"
         >
+          <div className="flex justify-center mb-3">
+            <SectionSignal align="center" width={160} />
+          </div>
           <span className="font-mono text-xs text-accent tracking-[0.2em] uppercase">
             {t("faq.label")}
           </span>
