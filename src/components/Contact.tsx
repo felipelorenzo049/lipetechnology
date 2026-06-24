@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import SectionSignal from "@/components/SectionSignal";
 
 const inputCls =
   "w-full px-4 py-3 rounded-lg bg-background/40 border border-border/60 text-foreground text-sm font-body placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition-colors backdrop-blur-sm";
