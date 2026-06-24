@@ -1,18 +1,19 @@
-import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
-import { forwardRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { forwardRef, type ReactNode } from "react";
 
-type RevealProps = HTMLMotionProps<"div"> & {
+type RevealProps = {
+  children: ReactNode;
   delay?: number;
   y?: number;
-  as?: keyof typeof motion;
+  className?: string;
 };
 
 const Reveal = forwardRef<HTMLDivElement, RevealProps>(
-  ({ children, delay = 0, y = 16, className, ...rest }, ref) => {
+  ({ children, delay = 0, y = 16, className }, ref) => {
     const reduced = useReducedMotion();
     if (reduced) {
       return (
-        <div ref={ref} className={className as string}>
+        <div ref={ref} className={className}>
           {children}
         </div>
       );
@@ -25,7 +26,6 @@ const Reveal = forwardRef<HTMLDivElement, RevealProps>(
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
         className={className}
-        {...rest}
       >
         {children}
       </motion.div>
