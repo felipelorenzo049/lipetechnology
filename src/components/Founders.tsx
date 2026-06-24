@@ -1,25 +1,24 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { animate, stagger } from "animejs";
 
 type FounderKey = "felipe" | "luigi" | "andre";
 
-// Asymmetric triangle positions inside a 100x100 viewBox.
-// (x,y) is the CENTER of each node — cards are positioned at the same %.
-type Node = {
+type Founder = {
   key: FounderKey;
   initial: string;
-  x: number;
-  y: number;
   accent: string;
-  align: "left" | "right" | "center";
+  // Position of the card on the desktop grid (percent of the stage area).
+  // x/y are the top-left of the card; nodes sit at the top-center of the card.
+  col: string; // tailwind col-start / col-span
+  offsetY: string; // tailwind mt-* for vertical stagger
 };
 
-const NODES: Node[] = [
-  { key: "felipe", initial: "F", x: 14, y: 22, accent: "hsl(var(--primary))", align: "left" },
-  { key: "luigi", initial: "L", x: 86, y: 34, accent: "hsl(var(--accent))", align: "right" },
-  { key: "andre", initial: "A", x: 50, y: 82, accent: "hsl(var(--secondary))", align: "center" },
+const FOUNDERS: Founder[] = [
+  { key: "felipe", initial: "F", accent: "hsl(var(--primary))", col: "md:col-start-1 md:col-span-4", offsetY: "md:mt-0" },
+  { key: "luigi",  initial: "L", accent: "hsl(var(--accent))",  col: "md:col-start-8 md:col-span-5", offsetY: "md:mt-24" },
+  { key: "andre",  initial: "A", accent: "hsl(var(--secondary))", col: "md:col-start-4 md:col-span-5", offsetY: "md:mt-16" },
 ];
 
 const EDGES: [FounderKey, FounderKey][] = [
@@ -28,46 +27,80 @@ const EDGES: [FounderKey, FounderKey][] = [
   ["andre", "felipe"],
 ];
 
-const byKey = (k: FounderKey) => NODES.find((n) => n.key === k)!;
-
 const Founders = () => {
   const { t } = useTranslation();
   const reduced = useReducedMotion();
-  const networkRef = useRef<HTMLDivElement>(null);
+
+  const stageRef = useRef<HTMLDivElement>(null);
+  const nodeRefs = useRef<Record<FounderKey, HTMLDivElement | null>>({
+    felipe: null,
+    luigi: null,
+    andre: null,
+  });
   const svgRef = useRef<SVGSVGElement>(null);
-  const inView = useInView(networkRef, { once: true, margin: "-80px" });
+  const inView = useInView(stageRef, { once: true, margin: "-80px" });
 
-  // Build a closed path that traces the triangle perimeter for the traveling signal.
-  const perimeter = (() => {
-    const a = byKey("felipe");
-    const b = byKey("luigi");
-    const c = byKey("andre");
-    return `M ${a.x} ${a.y} L ${b.x} ${b.y} L ${c.x} ${c.y} Z`;
-  })();
+  const [points, setPoints] = useState<Record<FounderKey, { x: number; y: number }> | null>(null);
+  const [stageSize, setStageSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
 
-  // Animate line drawing when in view (anime.js Drawable-style strokeDashoffset).
+  // Measure node positions relative to the stage container.
+  useLayoutEffect(() => {
+    const measure = () => {
+      const stage = stageRef.current;
+      if (!stage) return;
+      const sRect = stage.getBoundingClientRect();
+      setStageSize({ w: sRect.width, h: sRect.height });
+      const next = {} as Record<FounderKey, { x: number; y: number }>;
+      (Object.keys(nodeRefs.current) as FounderKey[]).forEach((k) => {
+        const el = nodeRefs.current[k];
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        next[k] = { x: r.left - sRect.left + r.width / 2, y: r.top - sRect.top + r.height / 2 };
+      });
+      setPoints(next);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (stageRef.current) ro.observe(stageRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  // Animate the edge line draw when in view.
   useEffect(() => {
-    if (!inView || reduced || !svgRef.current) return;
+    if (!points || !svgRef.current) return;
     const lines = svgRef.current.querySelectorAll<SVGLineElement>("line[data-edge]");
     lines.forEach((el) => {
-      const length = (el as any).getTotalLength?.() ?? 100;
+      const length = (el as any).getTotalLength?.() ?? 800;
       el.style.strokeDasharray = `${length}`;
+      el.style.strokeDashoffset = reduced || inView ? "0" : `${length}`;
+    });
+    if (reduced || !inView) return;
+    lines.forEach((el) => {
+      const length = (el as any).getTotalLength?.() ?? 800;
       el.style.strokeDashoffset = `${length}`;
     });
     animate(Array.from(lines) as any, {
       strokeDashoffset: 0,
-      duration: 1200,
-      delay: stagger(140),
+      duration: 1400,
+      delay: stagger(180),
       easing: "easeOutQuad",
     });
-  }, [inView, reduced]);
+  }, [points, inView, reduced]);
+
+  // Build perimeter path for the traveling signal.
+  const perimeter = points
+    ? `M ${points.felipe.x} ${points.felipe.y} L ${points.luigi.x} ${points.luigi.y} L ${points.andre.x} ${points.andre.y} Z`
+    : "";
 
   return (
     <section id="socios" className="relative py-24 md:py-36 overflow-hidden">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Editorial header — asymmetric */}
         <div className="grid grid-cols-12 gap-6 md:gap-10 mb-16 md:mb-24">
-          {/* Left column: kicker + thesis (narrow) */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -86,7 +119,6 @@ const Founders = () => {
             </p>
           </motion.div>
 
-          {/* Right column: oversized asymmetric headline */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -108,100 +140,97 @@ const Founders = () => {
           </motion.div>
         </div>
 
-        {/* Network: triangle of 3 nodes */}
+        {/* Desktop: staggered asymmetric circuit */}
         <div
-          ref={networkRef}
-          className="relative w-full aspect-[16/12] md:aspect-[16/9] hidden md:block"
+          ref={stageRef}
+          className="relative hidden md:grid grid-cols-12 gap-6 pt-16 pb-8"
         >
-          {/* SVG: connecting lines + traveling signal */}
+          {/* SVG circuit lines (positioned absolutely over the stage) */}
           <svg
             ref={svgRef}
             aria-hidden
-            className="absolute inset-0 w-full h-full pointer-events-none"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 w-full h-full overflow-visible z-0"
+            width={stageSize.w}
+            height={stageSize.h}
           >
             <defs>
               <linearGradient id="founders-edge" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.6" />
-                <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="hsl(var(--secondary))" stopOpacity="0.6" />
+                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.9" />
+                <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="1" />
+                <stop offset="100%" stopColor="hsl(var(--secondary))" stopOpacity="0.9" />
               </linearGradient>
+              <filter id="founders-glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
               <radialGradient id="founders-signal">
                 <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity="1" />
                 <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0" />
               </radialGradient>
             </defs>
 
-            {EDGES.map(([a, b], i) => {
-              const A = byKey(a);
-              const B = byKey(b);
-              return (
+            {points &&
+              EDGES.map(([a, b], i) => (
                 <line
                   key={i}
                   data-edge
-                  x1={A.x}
-                  y1={A.y}
-                  x2={B.x}
-                  y2={B.y}
+                  x1={points[a].x}
+                  y1={points[a].y}
+                  x2={points[b].x}
+                  y2={points[b].y}
                   stroke="url(#founders-edge)"
-                  strokeWidth="0.25"
-                  vectorEffect="non-scaling-stroke"
-                  style={reduced ? undefined : { strokeDasharray: 200, strokeDashoffset: 200 }}
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  filter="url(#founders-glow)"
+                  opacity="0.85"
                 />
-              );
-            })}
+              ))}
 
-            {/* Traveling signal around the perimeter */}
-            {!reduced && inView && (
+            {points && !reduced && inView && (
               <>
-                <circle r="2.4" fill="url(#founders-signal)">
+                <circle r="10" fill="url(#founders-signal)">
                   <animateMotion dur="6s" repeatCount="indefinite" path={perimeter} />
                 </circle>
-                <circle r="0.9" fill="hsl(var(--accent))">
+                <circle r="3.5" fill="hsl(var(--accent))">
                   <animateMotion dur="6s" repeatCount="indefinite" path={perimeter} />
                 </circle>
               </>
             )}
           </svg>
 
-          {/* Nodes / cards positioned over the SVG */}
-          {NODES.map((n, idx) => (
-            <FounderCard
-              key={n.key}
-              node={n}
-              t={t}
-              inView={inView}
-              reduced={!!reduced}
-              delay={0.4 + idx * 0.15}
-            />
+          {FOUNDERS.map((f, idx) => (
+            <motion.div
+              key={f.key}
+              initial={{ opacity: 0, y: 24 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.3 + idx * 0.18 }}
+              className={`relative z-10 col-span-12 ${f.col} ${f.offsetY}`}
+            >
+              <FounderCard
+                founder={f}
+                t={t}
+                reduced={!!reduced}
+                nodeRef={(el) => (nodeRefs.current[f.key] = el)}
+              />
+            </motion.div>
           ))}
         </div>
 
-        {/* Mobile: simple stacked list */}
+        {/* Mobile: stacked list */}
         <div className="md:hidden space-y-6">
-          {NODES.map((n, idx) => (
-            <motion.article
-              key={n.key}
+          {FOUNDERS.map((f, idx) => (
+            <motion.div
+              key={f.key}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="glass rounded-2xl p-6 flex items-center gap-5"
             >
-              <NodeCircle node={n} reduced />
-              <div className="min-w-0">
-                <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-accent mb-1">
-                  {t(`founders.items.${n.key}.role`)}
-                </p>
-                <h3 className="font-headline text-xl font-semibold mb-1">
-                  {t(`founders.items.${n.key}.name`)}
-                </h3>
-                <p className="text-sm text-muted-foreground font-body">
-                  {t(`founders.items.${n.key}.line`)}
-                </p>
-              </div>
-            </motion.article>
+              <FounderCard founder={f} t={t} reduced />
+            </motion.div>
           ))}
         </div>
       </div>
@@ -209,89 +238,76 @@ const Founders = () => {
   );
 };
 
-const NodeCircle = ({ node, reduced }: { node: Node; reduced: boolean }) => (
-  <div className="relative shrink-0 flex items-center justify-center w-20 h-20">
+const NodeCircle = ({
+  founder,
+  reduced,
+  innerRef,
+}: {
+  founder: Founder;
+  reduced: boolean;
+  innerRef?: (el: HTMLDivElement | null) => void;
+}) => (
+  <div
+    ref={innerRef}
+    className="relative flex items-center justify-center w-20 h-20"
+  >
     <span
       aria-hidden
-      className={`absolute inset-0 m-auto h-20 w-20 rounded-full blur-2xl opacity-50 ${
+      className={`absolute inset-0 m-auto h-20 w-20 rounded-full blur-2xl opacity-60 ${
         reduced ? "" : "group-hover:opacity-100 transition-opacity duration-500"
       }`}
-      style={{ background: node.accent }}
+      style={{ background: founder.accent }}
     />
     <span
       aria-hidden
-      className="absolute h-[72px] w-[72px] rounded-full border border-border/60 group-hover:border-foreground/40 transition-colors duration-300"
+      className="absolute h-[72px] w-[72px] rounded-full border border-border/70 group-hover:border-foreground/50 transition-colors duration-300"
     />
     <span
       className="relative h-14 w-14 rounded-full flex items-center justify-center font-mono text-lg font-semibold text-foreground"
       style={{
         background:
           "radial-gradient(circle at 30% 30%, hsl(var(--card)) 0%, hsl(var(--background)) 90%)",
-        boxShadow: `0 0 28px -4px ${node.accent}`,
+        boxShadow: `0 0 28px -4px ${founder.accent}`,
       }}
     >
-      {node.initial}
+      {founder.initial}
     </span>
   </div>
 );
 
 const FounderCard = ({
-  node,
+  founder,
   t,
-  inView,
   reduced,
-  delay,
+  nodeRef,
 }: {
-  node: Node;
+  founder: Founder;
   t: (k: string) => string;
-  inView: boolean;
   reduced: boolean;
-  delay: number;
+  nodeRef?: (el: HTMLDivElement | null) => void;
 }) => {
-  // Card placement: anchor card edge near the node, biased by align
-  const align = node.align;
-  const cardSide =
-    align === "left"
-      ? "left-0 md:left-[6%] -translate-y-1/2"
-      : align === "right"
-      ? "right-0 md:right-[6%] -translate-y-1/2"
-      : "left-1/2 -translate-x-1/2 translate-y-2";
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16, scale: 0.96 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.6, delay }}
-      className="absolute"
+    <article
+      className="group relative glass rounded-2xl pt-14 pb-6 px-6 text-center transition-transform duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
       style={{
-        left: `${node.x}%`,
-        top: `${node.y}%`,
-        transform: "translate(-50%, -50%)",
+        boxShadow: `0 12px 48px -20px ${founder.accent}`,
       }}
     >
-      {/* The node circle sits at the exact point */}
-      <div className="group relative">
-        <NodeCircle node={node} reduced={reduced} />
-
-        {/* Detail card floating beside the node */}
-        <div
-          className={`absolute top-1/2 ${cardSide} w-64 glass rounded-xl p-5 transition-all duration-300 group-hover:-translate-y-[calc(50%+4px)] motion-reduce:transition-none`}
-          style={{
-            boxShadow: `0 8px 40px -12px ${node.accent}`,
-          }}
-        >
-          <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-accent mb-1.5">
-            {t(`founders.items.${node.key}.role`)}
-          </p>
-          <h3 className="font-headline text-2xl font-bold mb-2 text-foreground">
-            {t(`founders.items.${node.key}.name`)}
-          </h3>
-          <p className="text-sm text-muted-foreground font-body leading-relaxed">
-            {t(`founders.items.${node.key}.line`)}
-          </p>
-        </div>
+      {/* Node anchored on the top edge, half outside the card */}
+      <div className="absolute left-1/2 -top-10 -translate-x-1/2">
+        <NodeCircle founder={founder} reduced={reduced} innerRef={nodeRef} />
       </div>
-    </motion.div>
+
+      <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-accent mb-1.5">
+        {t(`founders.items.${founder.key}.role`)}
+      </p>
+      <h3 className="font-headline text-2xl font-bold mb-2 text-foreground">
+        {t(`founders.items.${founder.key}.name`)}
+      </h3>
+      <p className="text-sm text-muted-foreground font-body leading-relaxed">
+        {t(`founders.items.${founder.key}.line`)}
+      </p>
+    </article>
   );
 };
 
