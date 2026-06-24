@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import SectionSignal from "@/components/SectionSignal";
 import {
   ExternalLink,
   Rocket,
