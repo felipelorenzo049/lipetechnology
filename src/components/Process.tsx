@@ -34,6 +34,7 @@ const Process = () => {
           animate={headInView ? { opacity: 1, y: 0 } : {}}
           className="mb-16 max-w-xl"
         >
+          <div className="mb-3"><SectionSignal width={160} /></div>
           <span className="font-mono text-xs text-accent tracking-[0.2em] uppercase">{t("process.label")}</span>
           <h2 className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-3 leading-[1.05]">
             {t("process.title")}{" "}
