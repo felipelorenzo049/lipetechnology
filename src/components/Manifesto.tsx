@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import SectionSignal from "@/components/SectionSignal";
 
 const Manifesto = () => {
   const { t } = useTranslation();
