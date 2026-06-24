@@ -7,7 +7,7 @@ import Founders from "@/components/Founders";
 import Services from "@/components/Services";
 import SectionCTA from "@/components/SectionCTA";
 import KPIs from "@/components/KPIs";
-import Portfolio from "@/components/Portfolio";
+import Pipe from "@/components/Pipe";
 import Process from "@/components/Process";
 import TechStack from "@/components/TechStack";
 import Testimonials from "@/components/Testimonials";
@@ -50,7 +50,7 @@ const Index = () => {
       <KPIs />
       <Services />
       <SectionCTA textKey="ctaSections.afterServices" highlightKey="ctaSections.afterServicesHighlight" />
-      <Portfolio preview />
+      <Pipe />
       <SectionCTA textKey="ctaSections.afterPortfolio" highlightKey="ctaSections.afterPortfolioHighlight" />
       <Process />
       <TechStack />
