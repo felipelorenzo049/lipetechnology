@@ -1,38 +1,45 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { Globe, MessageSquareText, Layers, TrendingUp, Wrench, ChevronDown, ArrowRight } from "lucide-react";
+import { useRef } from "react";
+import { Globe, MessageSquareText, Layers, TrendingUp, Wrench, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 
+type Accent = "primary" | "secondary" | "accent";
 type Service = {
   icon: typeof Globe;
   titleKey: string;
   shortKey: string;
   detailsKey: string;
-  span: string;
-  popular?: boolean;
-  accent: "primary" | "secondary" | "accent";
+  accent: Accent;
   code: string;
+  popular?: boolean;
 };
 
-const serviceKeys: Service[] = [
-  // Hero card — large
-  { icon: Globe, titleKey: "customWebsites", shortKey: "customWebsitesShort", detailsKey: "customWebsitesDetails", span: "md:col-span-3 md:row-span-2", popular: true, accent: "primary", code: "WEB·01" },
-  // Tall card
-  { icon: MessageSquareText, titleKey: "consultativeChatbots", shortKey: "consultativeChatbotsShort", detailsKey: "consultativeChatbotsDetails", span: "md:col-span-2 md:row-span-2", accent: "accent", code: "AI·02" },
-  // Small cards
-  { icon: Layers, titleKey: "saas", shortKey: "saasShort", detailsKey: "saasDetails", span: "md:col-span-2 md:row-span-1", accent: "secondary", code: "SAAS·03" },
-  { icon: TrendingUp, titleKey: "digitalMarketing", shortKey: "digitalMarketingShort", detailsKey: "digitalMarketingDetails", span: "md:col-span-1 md:row-span-1", accent: "accent", code: "MKT·04" },
-  { icon: Wrench, titleKey: "maintenance", shortKey: "maintenanceShort", detailsKey: "maintenanceDetails", span: "md:col-span-2 md:row-span-1", accent: "primary", code: "OPS·05" },
+const HERO: Service = {
+  icon: Globe,
+  titleKey: "customWebsites",
+  shortKey: "customWebsitesShort",
+  detailsKey: "customWebsitesDetails",
+  accent: "primary",
+  code: "WEB·01",
+  popular: true,
+};
+
+const REST: Service[] = [
+  { icon: MessageSquareText, titleKey: "consultativeChatbots", shortKey: "consultativeChatbotsShort", detailsKey: "consultativeChatbotsDetails", accent: "accent", code: "AI·02" },
+  { icon: Layers, titleKey: "saas", shortKey: "saasShort", detailsKey: "saasDetails", accent: "secondary", code: "SAAS·03" },
+  { icon: TrendingUp, titleKey: "digitalMarketing", shortKey: "digitalMarketingShort", detailsKey: "digitalMarketingDetails", accent: "accent", code: "MKT·04" },
+  { icon: Wrench, titleKey: "maintenance", shortKey: "maintenanceShort", detailsKey: "maintenanceDetails", accent: "primary", code: "OPS·05" },
 ];
 
-const ACCENT: Record<Service["accent"], { text: string; bg: string; glow: string; border: string; shadow: string }> = {
+const ACCENT: Record<Accent, { text: string; bg: string; glow: string; border: string; shadow: string; chipBorder: string }> = {
   primary: {
     text: "text-primary",
     bg: "bg-primary/10",
     glow: "drop-shadow-[0_0_12px_hsl(var(--primary)/0.55)]",
     border: "hover:border-primary/50",
     shadow: "hover:shadow-[0_0_40px_-10px_hsl(var(--primary)/0.45)]",
+    chipBorder: "border-primary/25",
   },
   secondary: {
     text: "text-secondary",
@@ -40,6 +47,7 @@ const ACCENT: Record<Service["accent"], { text: string; bg: string; glow: string
     glow: "drop-shadow-[0_0_12px_hsl(var(--secondary)/0.55)]",
     border: "hover:border-secondary/50",
     shadow: "hover:shadow-[0_0_40px_-10px_hsl(var(--secondary)/0.45)]",
+    chipBorder: "border-secondary/25",
   },
   accent: {
     text: "text-accent",
@@ -47,92 +55,166 @@ const ACCENT: Record<Service["accent"], { text: string; bg: string; glow: string
     glow: "drop-shadow-[0_0_12px_hsl(var(--accent)/0.6)]",
     border: "hover:border-accent/50",
     shadow: "hover:shadow-[0_0_40px_-10px_hsl(var(--accent)/0.5)]",
+    chipBorder: "border-accent/30",
   },
 };
 
-const ServiceCard = ({ service, index }: { service: Service; index: number }) => {
-  const { t } = useTranslation();
-  const [expanded, setExpanded] = useState(false);
+const CardShell = ({
+  children,
+  accent,
+  index,
+  className = "",
+}: {
+  children: React.ReactNode;
+  accent: Accent;
+  index: number;
+  className?: string;
+}) => {
+  const a = ACCENT[accent];
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
-  const details = t(`services.${service.detailsKey}`, { returnObjects: true }) as string[];
-  const a = ACCENT[service.accent];
-  const isHero = service.span.includes("col-span-3");
-
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className={`${service.span} group relative`}
+      className={`group relative ${className}`}
     >
-      {/* gradient border wrapper */}
       <div className={`relative h-full rounded-2xl p-[1px] bg-gradient-to-br from-border/80 via-border/30 to-border/10 ${a.border} transition-colors`}>
-        <div
-          className={`relative h-full rounded-2xl glass p-5 md:p-7 cursor-pointer overflow-hidden transition-all duration-300 ${a.shadow} hover:-translate-y-1`}
-          onClick={() => setExpanded(!expanded)}
-        >
-          {/* corner signal */}
+        <div className={`relative h-full rounded-2xl glass p-5 md:p-6 overflow-hidden transition-all duration-300 ${a.shadow} hover:-translate-y-1`}>
           <div className={`pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full ${a.bg} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+          {children}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
-          {service.popular && (
-            <Badge className="absolute top-4 right-4 bg-accent/15 text-accent border border-accent/40 text-[10px] font-mono tracking-[0.18em] uppercase rounded-md">
-              {t("services.popular")}
-            </Badge>
-          )}
+const MiniWireframe = ({ accent }: { accent: Accent }) => {
+  const a = ACCENT[accent];
+  return (
+    <div className="relative w-full h-full min-h-[200px] rounded-xl border border-border/50 bg-background/40 overflow-hidden">
+      {/* top bar */}
+      <div className="flex items-center gap-1.5 px-3 h-6 border-b border-border/40 bg-card/40">
+        <span className="w-1.5 h-1.5 rounded-full bg-destructive/60" />
+        <span className="w-1.5 h-1.5 rounded-full bg-accent/60" />
+        <span className="w-1.5 h-1.5 rounded-full bg-secondary/60" />
+        <span className="ml-2 font-mono text-[9px] text-muted-foreground/70 tracking-wider">lipetec.com/cliente</span>
+      </div>
+      {/* body */}
+      <div className="p-3 grid grid-cols-3 gap-2">
+        <div className="col-span-3 h-3 rounded bg-foreground/10" />
+        <div className="col-span-2 h-2 rounded bg-foreground/5" />
+        <div className="col-span-1 h-2 rounded bg-foreground/5" />
+        <div className={`col-span-2 h-16 rounded ${a.bg} relative overflow-hidden`}>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/20" />
+          <div className={`absolute left-3 bottom-3 w-10 h-2 rounded ${a.text}`} style={{ background: "currentColor" }} />
+        </div>
+        <div className="col-span-1 space-y-1.5">
+          <div className="h-3 rounded bg-foreground/10" />
+          <div className="h-3 rounded bg-foreground/10" />
+          <div className="h-3 rounded bg-foreground/10" />
+        </div>
+        <div className="col-span-3 grid grid-cols-3 gap-1.5 mt-1">
+          <div className="h-6 rounded border border-border/50 bg-card/60" />
+          <div className="h-6 rounded border border-border/50 bg-card/60" />
+          <div className="h-6 rounded border border-border/50 bg-card/60" />
+        </div>
+      </div>
+      {/* signal sweep */}
+      <div className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-accent/10 to-transparent group-hover:translate-x-[400%] transition-transform duration-[2200ms] ease-out" />
+    </div>
+  );
+};
 
+const HeroCard = ({ service }: { service: Service }) => {
+  const { t } = useTranslation();
+  const a = ACCENT[service.accent];
+  const details = t(`services.${service.detailsKey}`, { returnObjects: true }) as string[];
+
+  return (
+    <CardShell accent={service.accent} index={0} className="md:col-span-2">
+      <div className="grid md:grid-cols-[1.1fr_1fr] gap-6 md:gap-7 h-full">
+        {/* Copy column */}
+        <div className="flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <span className={`font-mono text-[10px] tracking-[0.22em] uppercase ${a.text} opacity-80`}>
               {service.code}
             </span>
-            {!service.popular && (
-              <ChevronDown
-                size={16}
-                className={`text-muted-foreground/60 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
-              />
+            {service.popular && (
+              <Badge className="bg-accent/15 text-accent border border-accent/40 text-[10px] font-mono tracking-[0.18em] uppercase rounded-md">
+                {t("services.popular")}
+              </Badge>
             )}
           </div>
 
-          <div className={`inline-flex p-3 rounded-xl ${a.bg} mb-4 transition-transform duration-300 group-hover:scale-110`}>
-            <service.icon size={isHero ? 28 : 22} className={`${a.text} ${a.glow}`} />
+          <div className={`inline-flex p-3 rounded-xl ${a.bg} mb-4 w-fit transition-transform duration-300 group-hover:scale-110`}>
+            <service.icon size={26} className={`${a.text} ${a.glow}`} />
           </div>
 
-          <h3 className={`font-headline font-semibold mb-2 ${isHero ? "text-2xl md:text-3xl" : "text-lg"}`}>
+          <h3 className="font-headline font-semibold text-2xl md:text-3xl leading-tight mb-2">
             {t(`services.${service.titleKey}`)}
           </h3>
-          <p className={`text-muted-foreground font-body leading-relaxed ${isHero ? "text-base" : "text-sm"}`}>
+          <p className="text-muted-foreground font-body text-sm md:text-base leading-relaxed mb-5">
             {t(`services.${service.shortKey}`)}
           </p>
 
-          {expanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              className="mt-4 overflow-hidden"
-            >
-              <div className="h-px bg-gradient-to-r from-border via-border/40 to-transparent mb-4" />
-              <ul className="space-y-2 mb-4">
-                {details.map((d) => (
-                  <li key={d} className="flex items-start gap-2 text-sm text-foreground/80 font-body">
-                    <div className={`w-1.5 h-1.5 rounded-full ${a.bg} ${a.text} mt-1.5 shrink-0`} style={{ background: "currentColor" }} />
-                    {d}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href="#contato"
-                onClick={(e) => e.stopPropagation()}
-                className={`inline-flex items-center gap-2 text-sm font-semibold ${a.text} font-body group/cta`}
-              >
-                {t("services.getQuote")}
-                <ArrowRight size={14} className="transition-transform group-hover/cta:translate-x-1" />
-              </a>
-            </motion.div>
-          )}
+          <ul className="grid sm:grid-cols-2 gap-x-4 gap-y-2 mt-auto">
+            {details.slice(0, 4).map((d) => (
+              <li key={d} className="flex items-start gap-2 text-sm text-foreground/85 font-body">
+                <Check size={14} className={`${a.text} mt-0.5 shrink-0`} />
+                <span className="leading-snug">{d}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Visual column */}
+        <div className="hidden md:block">
+          <MiniWireframe accent={service.accent} />
         </div>
       </div>
-    </motion.div>
+    </CardShell>
+  );
+};
+
+const CompactCard = ({ service, index }: { service: Service; index: number }) => {
+  const { t } = useTranslation();
+  const a = ACCENT[service.accent];
+  const details = t(`services.${service.detailsKey}`, { returnObjects: true }) as string[];
+
+  return (
+    <CardShell accent={service.accent} index={index}>
+      <div className="flex items-center justify-between mb-4">
+        <span className={`font-mono text-[10px] tracking-[0.22em] uppercase ${a.text} opacity-80`}>
+          {service.code}
+        </span>
+        <div className={`w-1.5 h-1.5 rounded-full ${a.text} animate-pulse`} style={{ background: "currentColor" }} />
+      </div>
+
+      <div className={`inline-flex p-2.5 rounded-xl ${a.bg} mb-3 transition-transform duration-300 group-hover:scale-110`}>
+        <service.icon size={20} className={`${a.text} ${a.glow}`} />
+      </div>
+
+      <h3 className="font-headline font-semibold text-lg leading-tight mb-1.5">
+        {t(`services.${service.titleKey}`)}
+      </h3>
+      <p className="text-muted-foreground font-body text-sm leading-relaxed mb-4 line-clamp-2">
+        {t(`services.${service.shortKey}`)}
+      </p>
+
+      <div className="flex flex-wrap gap-1.5">
+        {details.slice(0, 3).map((d) => (
+          <span
+            key={d}
+            className={`font-mono text-[10px] uppercase tracking-wider px-2 py-1 rounded-md border ${a.chipBorder} ${a.text} bg-background/30`}
+          >
+            {d.split(/[—:·,()]/)[0].trim().slice(0, 28)}
+          </span>
+        ))}
+      </div>
+    </CardShell>
   );
 };
 
@@ -157,9 +239,15 @@ const Services = () => {
           <p className="text-muted-foreground font-body mt-4">{t("services.subtitle")}</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 md:grid-rows-3 gap-4 md:gap-5 auto-rows-fr">
-          {serviceKeys.map((s, i) => (
-            <ServiceCard key={s.titleKey} service={s} index={i} />
+        {/* Hero card — full width */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mb-4 md:mb-5">
+          <HeroCard service={HERO} />
+        </div>
+
+        {/* Uniform compact grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+          {REST.map((s, i) => (
+            <CompactCard key={s.titleKey} service={s} index={i + 1} />
           ))}
         </div>
       </div>
