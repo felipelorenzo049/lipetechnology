@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { animate } from "animejs";
 import { ScrambleText } from "@/components/ScrambleText";
 import { MagneticButton } from "@/components/MagneticButton";
+import HeroCore from "@/components/HeroCore";
 
 const Hero = () => {
   const { t, i18n } = useTranslation();
