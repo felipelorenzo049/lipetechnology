@@ -151,6 +151,9 @@ const Pipe = () => {
     <section id="portfolio" ref={sectionRef} className="relative py-24 md:py-32">
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="text-center max-w-2xl mx-auto mb-14 md:mb-20">
+          <div className="flex justify-center mb-4">
+            <SectionSignal align="center" width={170} />
+          </div>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
