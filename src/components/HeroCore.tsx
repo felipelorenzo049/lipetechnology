@@ -225,7 +225,7 @@ const HeroCore = () => {
             <g
               key={i}
               ref={(el) => (ringRefs.current[i] = el)}
-              style={{ transformOrigin: "300px 300px" }}
+              style={{ transformBox: "fill-box", transformOrigin: "center" }}
             >
               <circle
                 cx="300"
