@@ -127,10 +127,10 @@ const Founders = () => {
             className="col-span-12 md:col-span-8"
           >
             <h2 className="font-headline font-extrabold leading-[0.92] tracking-tight">
-              <span className="block text-5xl sm:text-6xl md:text-8xl text-foreground">
+              <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-foreground">
                 {t("founders.title")}
               </span>
-              <span className="block text-5xl sm:text-6xl md:text-8xl gradient-text italic md:pl-[15%] mt-1">
+              <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl gradient-text italic md:pl-[15%] mt-1">
                 {t("founders.titleHighlight")}.
               </span>
             </h2>
