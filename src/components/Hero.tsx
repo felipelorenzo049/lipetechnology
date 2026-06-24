@@ -59,9 +59,9 @@ const Hero = () => {
       <motion.div
         aria-hidden
         style={{ y: reduced ? 0 : yMesh }}
-        className="absolute inset-0 gradient-mesh"
+        className="absolute inset-0 gradient-mesh opacity-60"
       />
-      <div className="absolute inset-0 grid-overlay opacity-20" />
+      <div className="absolute inset-0 grid-overlay opacity-[0.08]" />
 
       {/* Subtle film grain */}
       <div
@@ -100,19 +100,19 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex items-center justify-center gap-3 mb-8"
+          className="flex items-center justify-center gap-3 mb-10"
         >
-          <span className="h-px w-8 bg-accent/60" />
-          <span className="font-mono text-[10px] sm:text-xs text-accent tracking-[0.3em] uppercase">
+          <span className="h-px w-10 bg-accent/60" />
+          <span className="font-mono text-[10px] sm:text-xs text-accent tracking-[0.32em] uppercase">
             {t("hero.badge")}
           </span>
-          <span className="h-px w-8 bg-accent/60" />
+          <span className="h-px w-10 bg-accent/60" />
         </motion.div>
 
         <motion.div style={{ y: reduced ? 0 : yTitle }}>
           <h1
             ref={headlineRef}
-            className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[0.95] tracking-tight mb-8 opacity-0"
+            className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.92] tracking-[-0.035em] mb-8 opacity-0"
           >
             <ScrambleText
               trigger={i18n.language}
@@ -131,7 +131,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 30 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto mb-10 font-body"
+          className="text-base md:text-lg text-muted-foreground/90 max-w-xl mx-auto mb-12 font-body leading-relaxed"
         >
           {t("hero.subtitle")}
         </motion.p>
