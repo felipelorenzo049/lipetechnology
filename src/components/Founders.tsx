@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { animate, stagger } from "animejs";
+import SectionSignal from "@/components/SectionSignal";
 
 type FounderKey = "felipe" | "luigi" | "andre";
 
