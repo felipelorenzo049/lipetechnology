@@ -8,6 +8,8 @@ import Services from "@/components/Services";
 import SectionCTA from "@/components/SectionCTA";
 import KPIs from "@/components/KPIs";
 import Pipe from "@/components/Pipe";
+import HorseBidSpotlight from "@/components/HorseBidSpotlight";
+
 import Process from "@/components/Process";
 import TechStack from "@/components/TechStack";
 import Testimonials from "@/components/Testimonials";
@@ -53,7 +55,9 @@ const Index = () => {
       <Services />
       <SectionCTA textKey="ctaSections.afterServices" highlightKey="ctaSections.afterServicesHighlight" />
       <Pipe />
+      <HorseBidSpotlight />
       <SectionCTA textKey="ctaSections.afterPortfolio" highlightKey="ctaSections.afterPortfolioHighlight" />
+
       <Process />
       <TechStack />
       <Testimonials />

@@ -124,6 +124,31 @@
     }
   },
 
+  "horsebidSpotlight": {
+    "eyebrow": "PRODUTO EM DESTAQUE · BETA",
+    "title": "Horse Bid",
+    "tagline": "Leilões de cavalos ao vivo",
+    "description": "Plataforma de leilão de cavalos online com licitação em tempo real, transmissão ao vivo e pagamento integrado — o produto mais avançado do pipe do estúdio.",
+    "features": {
+      "realtime": "Licitação em tempo real",
+      "stream": "Transmissão ao vivo",
+      "payments": "Pagamento integrado",
+      "lots": "Gestão de lotes e catálogo"
+    },
+    "cta": "Conhecer",
+    "mock": {
+      "live": "AO VIVO",
+      "lotLabel": "LOTE #042",
+      "lotName": "Eclipse de Aurora",
+      "currentBid": "Lance atual",
+      "nextBid": "Dar lance",
+      "bidders": "licitantes online",
+      "timeLeft": "Tempo restante"
+    }
+  },
+
+
+
   "services": {
     "label": "Serviços",
     "title": "Tudo para",
