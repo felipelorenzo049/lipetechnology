@@ -77,6 +77,9 @@ const Hero = () => {
       <div className="absolute top-20 left-[10%] w-72 h-72 rounded-full bg-primary/5 blur-3xl animate-float" />
       <div className="absolute bottom-20 right-[15%] w-96 h-96 rounded-full bg-secondary/5 blur-3xl animate-float-slow" />
 
+      {/* Interactive circuit core behind the headline */}
+      <HeroCore />
+
       {/* Vertical "signal" line traveling down with scroll */}
       <div aria-hidden className="absolute left-1/2 -translate-x-1/2 bottom-0 w-px h-40 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/30 to-transparent" />
