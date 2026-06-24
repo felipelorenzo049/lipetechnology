@@ -37,7 +37,12 @@ const Index = () => {
       overlay
       overlayOpacity={0.75}
     >
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <ConnectedBackground className="h-full w-full" />
+      </div>
+      <div className="relative z-10">
       <Navbar />
+
       <Hero />
       <Manifesto />
       <KPIs />
