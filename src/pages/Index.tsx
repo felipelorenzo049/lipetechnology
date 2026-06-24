@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Manifesto from "@/components/Manifesto";
+import Founders from "@/components/Founders";
 import Services from "@/components/Services";
 import SectionCTA from "@/components/SectionCTA";
 import KPIs from "@/components/KPIs";
