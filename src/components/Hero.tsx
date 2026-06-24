@@ -59,9 +59,9 @@ const Hero = () => {
       <motion.div
         aria-hidden
         style={{ y: reduced ? 0 : yMesh }}
-        className="absolute inset-0 gradient-mesh"
+        className="absolute inset-0 gradient-mesh opacity-60"
       />
-      <div className="absolute inset-0 grid-overlay opacity-20" />
+      <div className="absolute inset-0 grid-overlay opacity-[0.08]" />
 
       {/* Subtle film grain */}
       <div
