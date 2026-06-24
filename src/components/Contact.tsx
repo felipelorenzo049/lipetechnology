@@ -114,6 +114,9 @@ const Contact = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           className="text-center mb-12"
         >
+          <div className="flex justify-center mb-3">
+            <SectionSignal align="center" width={170} />
+          </div>
           <span className="font-mono text-xs text-accent tracking-[0.2em] uppercase">
             {t("contact.label")}
           </span>
