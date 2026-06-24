@@ -24,21 +24,22 @@
     "pricing": "Plans"
   },
   "hero": {
-    "badge": "LIPE Technology",
-    "title1": "Technology that",
-    "titleHighlight": "amplifies",
+    "badge": "LIPE · VENTURE STUDIO",
+    "title1": "We build products that",
+    "titleHighlight": "amplify",
     "title2": "who you are",
-    "subtitle": "We create websites, chatbots and platforms for local businesses that want to grow without losing their essence",
-    "ctaProjects": "See our projects",
+    "subtitle": "A 3-founder studio — Felipe, Luigi and André — helping businesses grow while building our own products.",
+    "ctaProjects": "See the pipe",
     "ctaContact": "Talk to us"
   },
   "manifesto": {
-    "label": "Our Philosophy",
-    "quote1": "Most agencies build websites that look the same. We build technology that",
-    "quoteHighlight": "tells stories",
-    "description": "Your restaurant has years of tradition? We'll make the website honor that. Your shop is the heart of the neighborhood? Your website will be too. Technology shouldn't erase identity —",
-    "descriptionHighlight": "it should amplify it"
+    "label": "Our thesis",
+    "quote1": "Most agencies ship the same website in a new color. LIPE is a three-mind studio that helps businesses grow",
+    "quoteHighlight": "and builds its own products",
+    "description": "We treat clients like partners and every internal product like its own company. Technology shouldn't erase identity —",
+    "descriptionHighlight": "it amplifies who you are"
   },
+
   "services": {
     "label": "Services",
     "title": "Everything you need to",
