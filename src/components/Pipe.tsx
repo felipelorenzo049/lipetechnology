@@ -78,7 +78,7 @@ const STAGE_CLASSES: Record<
 };
 
 const CLIENTS = [
-  { key: "easyline", hasUrl: false, live: false, icon: Radio },
+  { key: "easyline", hasUrl: true, live: true, icon: Radio },
   { key: "winn", hasUrl: false, live: false, icon: Briefcase },
   { key: "milan", hasUrl: false, live: false, icon: Briefcase },
 ];
@@ -217,14 +217,14 @@ const Pipe = () => {
                 ? (t(`pipe.clients.${c.key}.url`) as string)
                 : undefined;
               const inner = (
-                <div className="group relative h-full rounded-xl border border-border/50 bg-card/30 backdrop-blur-sm p-5 transition-all hover:border-secondary/50 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0">
+                <div className={`group relative h-full rounded-xl border border-border/50 bg-card/30 backdrop-blur-sm p-5 transition-all ${c.key === "easyline" ? "hover:border-secondary/50 hover:-translate-y-0.5 cursor-pointer motion-reduce:hover:translate-y-0" : ""}`}>
                   {c.live && (
                     <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-secondary/40 bg-secondary/10 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-secondary">
                       <span className="relative flex h-1.5 w-1.5">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary opacity-70 motion-reduce:hidden" />
                         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary" />
                       </span>
-                      no ar
+                      {t("pipe.stages.live")}
                     </span>
                   )}
                   <div className="flex items-center gap-2 mb-3">
