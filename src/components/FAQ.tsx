@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import SectionSignal from "@/components/SectionSignal";
 
 const FAQ = () => {
   const { t, i18n } = useTranslation();
