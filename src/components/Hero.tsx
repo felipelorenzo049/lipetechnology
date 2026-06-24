@@ -108,7 +108,7 @@ const Hero = () => {
         <motion.div style={{ y: reduced ? 0 : yTitle }}>
           <h1
             ref={headlineRef}
-            className="font-headline text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-extrabold leading-[0.95] tracking-tight mb-8 opacity-0"
+            className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[0.95] tracking-tight mb-8 opacity-0"
           >
             <ScrambleText
               trigger={i18n.language}
