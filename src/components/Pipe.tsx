@@ -77,7 +77,7 @@ const STAGE_CLASSES: Record<
 };
 
 const CLIENTS = [
-  { key: "easyline", hasUrl: true, live: true, icon: Radio },
+  { key: "easyline", hasUrl: false, live: false, icon: Radio },
   { key: "winn", hasUrl: false, live: false, icon: Briefcase },
   { key: "milan", hasUrl: false, live: false, icon: Briefcase },
 ];
