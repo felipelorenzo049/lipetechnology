@@ -41,9 +41,11 @@
   },
   "founders": {
     "label": "THE 3 CORES",
+    "kicker": "EST. LIPE · VENTURE STUDIO",
     "title": "Three minds,",
     "titleHighlight": "one network",
     "subtitle": "The partners that power the circuit — each a node connecting product, business and technology.",
+    "intro": "We're not an agency. We're three partners who help businesses grow — and build our own products. Technology as an amplifier.",
     "items": {
       "felipe": {
         "name": "Felipe",

@@ -41,9 +41,11 @@
   },
   "founders": {
     "label": "OS 3 CORES",
+    "kicker": "EST. LIPE · VENTURE STUDIO",
     "title": "Três mentes,",
     "titleHighlight": "uma rede",
     "subtitle": "Os sócios que alimentam o circuito — cada um um nó que conecta produto, negócio e tecnologia.",
+    "intro": "Não somos uma agência. Somos três sócios que ajudam negócios a crescer — e constroem os próprios produtos. Tecnologia como amplificador.",
     "items": {
       "felipe": {
         "name": "Felipe",
