@@ -15,6 +15,8 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { GradientBackground } from "@/components/ui/gradient-background";
+import { ConnectedBackground } from "@/components/ui/connected-background";
+
 
 const Index = () => {
   const location = useLocation();
