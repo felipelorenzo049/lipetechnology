@@ -124,6 +124,31 @@
     }
   },
 
+  "horsebidSpotlight": {
+    "eyebrow": "FEATURED PRODUCT · BETA",
+    "title": "Horse Bid",
+    "tagline": "Live online horse auctions",
+    "description": "An online horse auction platform with real-time bidding, live video streaming and integrated payments — the most advanced product in the studio's pipe.",
+    "features": {
+      "realtime": "Real-time bidding",
+      "stream": "Live video streaming",
+      "payments": "Integrated payments",
+      "lots": "Lot & catalog management"
+    },
+    "cta": "See it live",
+    "mock": {
+      "live": "LIVE",
+      "lotLabel": "LOT #042",
+      "lotName": "Eclipse de Aurora",
+      "currentBid": "Current bid",
+      "nextBid": "Bid",
+      "bidders": "bidders online",
+      "timeLeft": "Time left"
+    }
+  },
+
+
+
   "services": {
     "label": "Services",
     "title": "Everything you need to",
