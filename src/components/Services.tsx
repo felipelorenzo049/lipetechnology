@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Globe, MessageSquareText, Layers, TrendingUp, Wrench, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
+import SectionSignal from "@/components/SectionSignal";
 
 type Accent = "primary" | "secondary" | "accent";
 type Service = {
