@@ -15,6 +15,8 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { GradientBackground } from "@/components/ui/gradient-background";
+import { ConnectedBackground } from "@/components/ui/connected-background";
+
 
 const Index = () => {
   const location = useLocation();
@@ -35,7 +37,12 @@ const Index = () => {
       overlay
       overlayOpacity={0.75}
     >
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <ConnectedBackground className="h-full w-full" />
+      </div>
+      <div className="relative z-10">
       <Navbar />
+
       <Hero />
       <Manifesto />
       <KPIs />
@@ -51,7 +58,9 @@ const Index = () => {
       <Contact />
       <Footer />
       <WhatsAppButton />
+      </div>
     </GradientBackground>
+
   );
 };
 
