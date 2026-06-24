@@ -186,7 +186,7 @@ const HeroCore = () => {
     >
       <div
         ref={tiltRef}
-        className="relative w-[min(92vw,720px)] aspect-square opacity-[0.55] md:opacity-60 transition-transform duration-300 ease-out will-change-transform"
+        className="relative w-[min(92vw,720px)] aspect-square opacity-[0.38] md:opacity-[0.45] transition-transform duration-300 ease-out will-change-transform"
         style={{ transformStyle: "preserve-3d" }}
       >
         <svg viewBox="0 0 600 600" className="absolute inset-0 w-full h-full">
