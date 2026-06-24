@@ -270,7 +270,7 @@ const HorseBidSpotlight = () => {
                           transition={{ duration: 0.35 }}
                           className="font-mono text-3xl font-bold gradient-text tabular-nums mt-1"
                         >
-                          € {bid.toLocaleString("de-DE")}
+                          R$ {bid.toLocaleString("pt-BR")}
                         </motion.p>
                       </div>
 
@@ -281,7 +281,7 @@ const HorseBidSpotlight = () => {
                           boxShadow: "0 8px 32px -10px hsl(var(--accent) / 0.6)",
                         }}
                       >
-                        {t("horsebidSpotlight.mock.nextBid")} · € {(bid + 500).toLocaleString("de-DE")}
+                        {t("horsebidSpotlight.mock.nextBid")} · R$ {(bid + 500).toLocaleString("pt-BR")}
                       </button>
 
                       <div className="space-y-2">
@@ -302,7 +302,7 @@ const HorseBidSpotlight = () => {
                               {b.name}
                             </span>
                             <span className="font-mono text-xs tabular-nums text-muted-foreground">
-                              € {b.amount.toLocaleString("de-DE")}
+                              R$ {b.amount.toLocaleString("pt-BR")}
                             </span>
                           </div>
                         ))}
