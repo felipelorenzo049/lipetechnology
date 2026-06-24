@@ -1,6 +1,7 @@
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import SectionSignal from "@/components/SectionSignal";
 
 const useCounter = (end: number, inView: boolean, enabled: boolean, duration = 1800) => {
   const [count, setCount] = useState(enabled ? 0 : end);
