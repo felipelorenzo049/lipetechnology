@@ -24,21 +24,22 @@
     "pricing": "Planos"
   },
   "hero": {
-    "badge": "LIPE Technology",
-    "title1": "Tecnologia que",
-    "titleHighlight": "amplifica",
+    "badge": "LIPE · VENTURE STUDIO",
+    "title1": "Construímos produtos que",
+    "titleHighlight": "amplificam",
     "title2": "quem você é",
-    "subtitle": "Sites, chatbots e plataformas para empresas que querem crescer sem perder a essência",
-    "ctaProjects": "Ver projetos",
-    "ctaContact": "Fale connosco"
+    "subtitle": "Um estúdio de 3 sócios — Felipe, Luigi e André — que ajuda negócios a crescer e cria os próprios produtos.",
+    "ctaProjects": "Ver o pipe",
+    "ctaContact": "Falar com a gente"
   },
   "manifesto": {
-    "label": "A nossa filosofia",
-    "quote1": "A maioria das agências faz sites iguais. Nós criamos tecnologia que",
-    "quoteHighlight": "conta histórias",
-    "description": "O seu restaurante tem tradição? O site vai honrar isso. A sua loja é o coração do bairro? O site será também. Tecnologia não apaga identidade —",
-    "descriptionHighlight": "deve ampliá-la"
+    "label": "A nossa tese",
+    "quote1": "A maioria das agências entrega o mesmo site com outra cor. A LIPE é um estúdio de três mentes que ajuda negócios a crescer",
+    "quoteHighlight": "e constrói os próprios produtos",
+    "description": "Trabalhamos com clientes como sócios e tratamos cada produto interno como uma empresa. Tecnologia não apaga identidade —",
+    "descriptionHighlight": "amplifica quem você é"
   },
+
   "services": {
     "label": "Serviços",
     "title": "Tudo para",
