@@ -17,8 +17,12 @@ const Hero = () => {
   };
 
   useEffect(() => {
+    if (!headlineRef.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!headlineRef.current || reduced) return;
+    if (reduced) {
+      headlineRef.current.style.opacity = "1";
+      return;
+    }
     animate(headlineRef.current, {
       opacity: [0, 1],
       translateY: [16, 0],
@@ -26,6 +30,7 @@ const Hero = () => {
       easing: "easeOutQuad",
     });
   }, [i18n.language]);
+
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
