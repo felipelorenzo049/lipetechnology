@@ -39,6 +39,29 @@
     "description": "Trabalhamos com clientes como sócios e tratamos cada produto interno como uma empresa. Tecnologia não apaga identidade —",
     "descriptionHighlight": "amplifica quem você é"
   },
+  "founders": {
+    "label": "OS 3 CORES",
+    "title": "Três mentes,",
+    "titleHighlight": "uma rede",
+    "subtitle": "Os sócios que alimentam o circuito — cada um um nó que conecta produto, negócio e tecnologia.",
+    "items": {
+      "felipe": {
+        "name": "Felipe",
+        "role": "Produto & Engenharia",
+        "line": "Transforma ideias em produtos que rodam."
+      },
+      "luigi": {
+        "name": "Luigi",
+        "role": "Sócio-fundador",
+        "line": "Conecta negócios e oportunidades."
+      },
+      "andre": {
+        "name": "André",
+        "role": "Sócio-fundador",
+        "line": "Faz a tecnologia virar resultado."
+      }
+    }
+  },
 
   "services": {
     "label": "Serviços",

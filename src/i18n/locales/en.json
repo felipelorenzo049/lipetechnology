@@ -39,6 +39,29 @@
     "description": "We treat clients like partners and every internal product like its own company. Technology shouldn't erase identity —",
     "descriptionHighlight": "it amplifies who you are"
   },
+  "founders": {
+    "label": "THE 3 CORES",
+    "title": "Three minds,",
+    "titleHighlight": "one network",
+    "subtitle": "The partners that power the circuit — each a node connecting product, business and technology.",
+    "items": {
+      "felipe": {
+        "name": "Felipe",
+        "role": "Product & Engineering",
+        "line": "Turns ideas into products that ship."
+      },
+      "luigi": {
+        "name": "Luigi",
+        "role": "Co-founder",
+        "line": "Connects businesses and opportunities."
+      },
+      "andre": {
+        "name": "André",
+        "role": "Co-founder",
+        "line": "Turns technology into real results."
+      }
+    }
+  },
 
   "services": {
     "label": "Services",
