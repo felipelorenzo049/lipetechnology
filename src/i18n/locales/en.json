@@ -47,18 +47,77 @@
     "items": {
       "felipe": {
         "name": "Felipe",
-        "role": "Product & Engineering",
+        "role": "Co-Founder",
         "line": "Turns ideas into products that ship."
       },
       "luigi": {
         "name": "Luigi",
-        "role": "Co-founder",
+        "role": "Co-Founder",
         "line": "Connects businesses and opportunities."
       },
       "andre": {
         "name": "André",
-        "role": "Co-founder",
+        "role": "Co-Founder",
         "line": "Turns technology into real results."
+      }
+    }
+  },
+  "pipe": {
+    "label": "THE PIPE",
+    "title": "Products moving through the",
+    "titleHighlight": "circuit",
+    "subtitle": "Each product is a node in a living circuit. Follow the signal from idea to live.",
+    "stages": {
+      "ideacao": "Ideation",
+      "dev": "In development",
+      "beta": "Beta",
+      "live": "Live"
+    },
+    "comingSoon": "coming soon",
+    "viewProject": "Open project",
+    "clientsLabel": "CLIENTS",
+    "clientsTitle": "Businesses we",
+    "clientsTitleHighlight": "helped grow",
+    "clientsSubtitle": "Real partners who trusted LIPE to build their digital presence.",
+    "products": {
+      "flowride": {
+        "name": "FlowRide",
+        "tagline": "Car sales platform",
+        "description": "Marketplace and back-office for dealerships to sell online, with stock, leads and financing management.",
+        "tech": ["React", "TypeScript", "Supabase", "Stripe"]
+      },
+      "festagate": {
+        "name": "Festa Gate",
+        "tagline": "Event entry via QR wristbands",
+        "description": "Entry control via QR wristbands, real-time validation and attendance analytics.",
+        "tech": ["React Native", "Node.js", "QR", "Realtime"]
+      },
+      "plateboutique": {
+        "name": "Plate Boutique",
+        "tagline": "Own site for local restaurants",
+        "description": "Platform for European local restaurants to own their site — menu, reservations and take away — amplifying local legacy with tech.",
+        "tech": ["React", "CMS", "Stripe", "Local SEO"]
+      },
+      "horsebid": {
+        "name": "Horse Bid",
+        "tagline": "Online horse auction",
+        "description": "Live auction platform for horses, with real-time bidding, video and integrated payments.",
+        "tech": ["React", "WebRTC", "Realtime", "Stripe"]
+      }
+    },
+    "clients": {
+      "easyline": {
+        "name": "EasyLine",
+        "tagline": "Queue management platform",
+        "url": "https://easylinetheway.com"
+      },
+      "winn": {
+        "name": "Winn",
+        "tagline": "Institutional website"
+      },
+      "milan": {
+        "name": "Milan",
+        "tagline": "Vehicle liquidation system"
       }
     }
   },

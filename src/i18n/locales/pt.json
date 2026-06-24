@@ -47,18 +47,77 @@
     "items": {
       "felipe": {
         "name": "Felipe",
-        "role": "Produto & Engenharia",
+        "role": "Sócio-Fundador",
         "line": "Transforma ideias em produtos que rodam."
       },
       "luigi": {
         "name": "Luigi",
-        "role": "Sócio-fundador",
+        "role": "Sócio-Fundador",
         "line": "Conecta negócios e oportunidades."
       },
       "andre": {
         "name": "André",
-        "role": "Sócio-fundador",
+        "role": "Sócio-Fundador",
         "line": "Faz a tecnologia virar resultado."
+      }
+    }
+  },
+  "pipe": {
+    "label": "O PIPE",
+    "title": "Produtos a percorrer o",
+    "titleHighlight": "circuito",
+    "subtitle": "Cada produto é um nó num circuito vivo. Acompanhe o sinal da ideação ao ar.",
+    "stages": {
+      "ideacao": "Ideação",
+      "dev": "Em desenvolvimento",
+      "beta": "Beta",
+      "live": "No ar"
+    },
+    "comingSoon": "em breve",
+    "viewProject": "Abrir projeto",
+    "clientsLabel": "CLIENTES",
+    "clientsTitle": "Negócios que",
+    "clientsTitleHighlight": "ajudámos a crescer",
+    "clientsSubtitle": "Parceiros reais que confiaram na LIPE para construir a sua presença digital.",
+    "products": {
+      "flowride": {
+        "name": "FlowRide",
+        "tagline": "Plataforma de venda de carros",
+        "description": "Marketplace e back-office para stands venderem online, com gestão de stock, leads e financiamento.",
+        "tech": ["React", "TypeScript", "Supabase", "Stripe"]
+      },
+      "festagate": {
+        "name": "Festa Gate",
+        "tagline": "Portaria de eventos por QR",
+        "description": "Controlo de entrada por pulseiras com QR, validação em tempo real e estatísticas de afluência.",
+        "tech": ["React Native", "Node.js", "QR", "Realtime"]
+      },
+      "plateboutique": {
+        "name": "Plate Boutique",
+        "tagline": "Site próprio para restaurantes locais",
+        "description": "Plataforma para restaurantes europeus terem o seu próprio site — menu, reservas e take away — amplificando o legado local com tecnologia.",
+        "tech": ["React", "CMS", "Stripe", "SEO local"]
+      },
+      "horsebid": {
+        "name": "Horse Bid",
+        "tagline": "Leilão de cavalos online",
+        "description": "Plataforma de leilões em direto para cavalos, com licitação em tempo real, vídeo e pagamento integrado.",
+        "tech": ["React", "WebRTC", "Realtime", "Stripe"]
+      }
+    },
+    "clients": {
+      "easyline": {
+        "name": "EasyLine",
+        "tagline": "Plataforma de gestão de filas",
+        "url": "https://easylinetheway.com"
+      },
+      "winn": {
+        "name": "Winn",
+        "tagline": "Website institucional"
+      },
+      "milan": {
+        "name": "Milan",
+        "tagline": "Sistema de liquidação de veículos"
       }
     }
   },
