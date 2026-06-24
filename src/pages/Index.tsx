@@ -58,7 +58,9 @@ const Index = () => {
       <Contact />
       <Footer />
       <WhatsAppButton />
+      </div>
     </GradientBackground>
+
   );
 };
 
