@@ -2,6 +2,7 @@ import { motion, useInView, useScroll, useTransform, useReducedMotion } from "fr
 import { useRef, useState } from "react";
 import { Search, Target, Hammer, Rocket, ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import SectionSignal from "@/components/SectionSignal";
 
 const stepKeys = [
   { icon: Search, titleKey: "discovery", shortKey: "discoveryShort", detailKey: "discoveryDetail", code: "P·01" },
