@@ -46,6 +46,7 @@ const Index = () => {
 
       <Hero />
       <Manifesto />
+      <Founders />
       <KPIs />
       <Services />
       <SectionCTA textKey="ctaSections.afterServices" highlightKey="ctaSections.afterServicesHighlight" />
