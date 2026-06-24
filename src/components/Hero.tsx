@@ -1,15 +1,31 @@
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, MessageCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { animate } from "animejs";
 import { SparklesCore } from "@/components/ui/sparkles";
+import { ScrambleText } from "@/components/ScrambleText";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Hero = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isMobile = useIsMobile();
+  const headlineRef = useRef<HTMLHeadingElement | null>(null);
+
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!headlineRef.current || reduced) return;
+    animate(headlineRef.current, {
+      opacity: [0, 1],
+      translateY: [16, 0],
+      duration: 700,
+      easing: "easeOutQuad",
+    });
+  }, [i18n.language]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -41,21 +57,26 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <span className="inline-block font-mono text-sm text-primary mb-6 tracking-wider uppercase">
+          <span className="inline-block font-mono text-xs sm:text-sm text-accent mb-6 tracking-[0.2em] uppercase">
             {t("hero.badge")}
           </span>
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15 }}
-          className="font-headline text-4xl sm:text-5xl md:text-7xl font-bold leading-tight mb-6"
+        <h1
+          ref={headlineRef}
+          className="font-headline text-4xl sm:text-5xl md:text-7xl font-bold leading-tight mb-6 opacity-0"
         >
-          {t("hero.title1")}{" "}
-          <span className="gradient-text">{t("hero.titleHighlight")}</span>{" "}
-          {t("hero.title2")}
-        </motion.h1>
+          <ScrambleText
+            trigger={i18n.language}
+            duration={1400}
+            stagger={22}
+            segments={[
+              { text: t("hero.title1") + " " },
+              { text: t("hero.titleHighlight"), className: "gradient-text" },
+              { text: " " + t("hero.title2") },
+            ]}
+          />
+        </h1>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}
