@@ -12,7 +12,6 @@ import HorseBidSpotlight from "@/components/HorseBidSpotlight";
 
 import Process from "@/components/Process";
 import TechStack from "@/components/TechStack";
-import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -20,6 +19,8 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { GradientBackground } from "@/components/ui/gradient-background";
 import { ConnectedBackground } from "@/components/ui/connected-background";
 import ScrollProgress from "@/components/ScrollProgress";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import Reveal from "@/components/Reveal";
 
 
 const Index = () => {
@@ -35,40 +36,39 @@ const Index = () => {
   }, [location.hash]);
 
   return (
-    <GradientBackground
-      className="min-h-screen text-foreground overflow-x-hidden"
-      animationDuration={12}
-      overlay
-      overlayOpacity={0.75}
-    >
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <ConnectedBackground className="h-full w-full" />
-      </div>
-      <div className="relative z-10">
-      <ScrollProgress />
-      <Navbar />
+    <SmoothScrollProvider>
+      <GradientBackground
+        className="min-h-screen text-foreground overflow-x-hidden"
+        animationDuration={12}
+        overlay
+        overlayOpacity={0.75}
+      >
+        <div className="pointer-events-none fixed inset-0 z-0">
+          <ConnectedBackground className="h-full w-full" />
+        </div>
+        <div className="relative z-10">
+          <ScrollProgress />
+          <Navbar />
 
-      <Hero />
-      <Manifesto />
-      <Founders />
-      <KPIs />
-      <Services />
-      <SectionCTA textKey="ctaSections.afterServices" highlightKey="ctaSections.afterServicesHighlight" />
-      <Pipe />
-      <HorseBidSpotlight />
-      <SectionCTA textKey="ctaSections.afterPortfolio" highlightKey="ctaSections.afterPortfolioHighlight" />
+          <Hero />
+          <Reveal><Manifesto /></Reveal>
+          <Reveal><Founders /></Reveal>
+          <Reveal><KPIs /></Reveal>
+          <Reveal><Services /></Reveal>
+          <Reveal><SectionCTA textKey="ctaSections.afterServices" highlightKey="ctaSections.afterServicesHighlight" /></Reveal>
+          <Reveal><Pipe /></Reveal>
+          <Reveal><HorseBidSpotlight /></Reveal>
+          <Reveal><SectionCTA textKey="ctaSections.afterPortfolio" highlightKey="ctaSections.afterPortfolioHighlight" /></Reveal>
 
-      <Process />
-      <TechStack />
-      <Testimonials />
-      <SectionCTA textKey="ctaSections.afterTestimonials" highlightKey="ctaSections.afterTestimonialsHighlight" />
-      <FAQ />
-      <Contact />
-      <Footer />
-      <WhatsAppButton />
-      </div>
-    </GradientBackground>
-
+          <Reveal><Process /></Reveal>
+          <Reveal><TechStack /></Reveal>
+          <Reveal><FAQ /></Reveal>
+          <Reveal><Contact /></Reveal>
+          <Reveal><Footer /></Reveal>
+          <WhatsAppButton />
+        </div>
+      </GradientBackground>
+    </SmoothScrollProvider>
   );
 };
 
