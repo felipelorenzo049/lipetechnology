@@ -86,9 +86,9 @@
 
   .gradient-mesh {
     background: 
-      radial-gradient(ellipse at 20% 50%, hsl(220 78% 57% / 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, hsl(168 55% 44% / 0.1) 0%, transparent 50%),
-      radial-gradient(ellipse at 40% 80%, hsl(220 78% 57% / 0.08) 0%, transparent 50%);
+      radial-gradient(ellipse at 20% 50%, hsl(var(--primary) / 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, hsl(var(--secondary) / 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 40% 80%, hsl(var(--accent) / 0.08) 0%, transparent 50%);
   }
 
   .glass {
@@ -103,21 +103,22 @@
   }
 
   .glow-primary {
-    box-shadow: 0 0 30px -5px hsl(220 78% 57% / 0.3);
+    box-shadow: 0 0 30px -5px hsl(var(--primary) / 0.3);
   }
 
   .glow-secondary {
-    box-shadow: 0 0 30px -5px hsl(168 55% 44% / 0.3);
+    box-shadow: 0 0 30px -5px hsl(var(--secondary) / 0.3);
   }
 
   .glow-accent {
-    box-shadow: 0 0 30px -5px hsl(20 100% 53% / 0.3);
+    box-shadow: 0 0 30px -5px hsl(var(--accent) / 0.35);
   }
 
   /* LIPE central glow */
   .lipe-glow {
-    text-shadow: 0 0 20px hsl(220 78% 57% / 0.4), 0 0 60px hsl(168 55% 44% / 0.2);
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.4), 0 0 60px hsl(var(--secondary) / 0.2);
   }
+
 
   /* Orbital logo hover pause + scale */
   .orbit-logo {
