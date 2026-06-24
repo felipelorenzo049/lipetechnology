@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { animate } from "animejs";
 import { ScrambleText } from "@/components/ScrambleText";
 import { MagneticButton } from "@/components/MagneticButton";
+import HeroCore from "@/components/HeroCore";
 
 const Hero = () => {
   const { t, i18n } = useTranslation();
@@ -75,6 +76,9 @@ const Hero = () => {
       {/* Soft floating glows */}
       <div className="absolute top-20 left-[10%] w-72 h-72 rounded-full bg-primary/5 blur-3xl animate-float" />
       <div className="absolute bottom-20 right-[15%] w-96 h-96 rounded-full bg-secondary/5 blur-3xl animate-float-slow" />
+
+      {/* Interactive circuit core behind the headline */}
+      <HeroCore />
 
       {/* Vertical "signal" line traveling down with scroll */}
       <div aria-hidden className="absolute left-1/2 -translate-x-1/2 bottom-0 w-px h-40 overflow-hidden pointer-events-none">
