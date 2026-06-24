@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar";
-import Portfolio from "@/components/Portfolio";
+import Pipe from "@/components/Pipe";
 import Footer from "@/components/Footer";
 import { GradientBackground } from "@/components/ui/gradient-background";
 
@@ -13,7 +13,7 @@ const PortfolioPage = () => {
     >
       <Navbar />
       <div className="pt-24">
-        <Portfolio />
+        <Pipe />
       </div>
       <Footer />
     </GradientBackground>
