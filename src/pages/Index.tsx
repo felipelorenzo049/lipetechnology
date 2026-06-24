@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { GradientBackground } from "@/components/ui/gradient-background";
 import { ConnectedBackground } from "@/components/ui/connected-background";
+import ScrollProgress from "@/components/ScrollProgress";
 
 
 const Index = () => {
@@ -42,6 +43,7 @@ const Index = () => {
         <ConnectedBackground className="h-full w-full" />
       </div>
       <div className="relative z-10">
+      <ScrollProgress />
       <Navbar />
 
       <Hero />
