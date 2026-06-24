@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import SectionSignal from "@/components/SectionSignal";
 
 const inputCls =
   "w-full px-4 py-3 rounded-lg bg-background/40 border border-border/60 text-foreground text-sm font-body placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition-colors backdrop-blur-sm";
@@ -113,6 +114,9 @@ const Contact = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           className="text-center mb-12"
         >
+          <div className="flex justify-center mb-3">
+            <SectionSignal align="center" width={170} />
+          </div>
           <span className="font-mono text-xs text-accent tracking-[0.2em] uppercase">
             {t("contact.label")}
           </span>

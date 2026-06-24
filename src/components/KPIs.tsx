@@ -1,6 +1,7 @@
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import SectionSignal from "@/components/SectionSignal";
 
 const useCounter = (end: number, inView: boolean, enabled: boolean, duration = 1800) => {
   const [count, setCount] = useState(enabled ? 0 : end);
@@ -41,6 +42,7 @@ const KPIs = () => {
   return (
     <section id="kpis" className="py-16 md:py-24">
       <div ref={ref} className="container mx-auto px-6 max-w-6xl">
+        <div className="mb-4 flex justify-center"><SectionSignal align="center" width={160} /></div>
         <div className="relative rounded-2xl glass border border-border/50 overflow-hidden">
           {/* gradient border accent */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />

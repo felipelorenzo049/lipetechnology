@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import SectionSignal from "@/components/SectionSignal";
 import {
   motion,
   useInView,
@@ -83,6 +84,7 @@ const HorseBidSpotlight = () => {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6 }}
             >
+              <div className="mb-3"><SectionSignal width={150} /></div>
               <div className="flex items-center gap-3 mb-5">
                 <span className="relative flex h-2 w-2">
                   <span

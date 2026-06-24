@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import SectionSignal from "@/components/SectionSignal";
 
 const Manifesto = () => {
   const { t } = useTranslation();
@@ -16,14 +17,18 @@ const Manifesto = () => {
       <div className="absolute right-0 top-1/3 w-px h-24 bg-gradient-to-b from-transparent via-secondary/40 to-transparent" />
 
       <div ref={ref} className="container mx-auto px-6 max-w-3xl text-center">
+        <div className="flex justify-center mb-4">
+          <SectionSignal align="center" width={160} />
+        </div>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.7 }}
           className="font-mono text-sm text-secondary tracking-wider uppercase mb-8"
         >
           {t("manifesto.label")}
         </motion.p>
+
 
         <motion.blockquote
           initial={{ opacity: 0, y: 30 }}

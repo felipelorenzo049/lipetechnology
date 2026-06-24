@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { animate, stagger } from "animejs";
+import SectionSignal from "@/components/SectionSignal";
 
 type FounderKey = "felipe" | "luigi" | "andre";
 
@@ -108,6 +109,7 @@ const Founders = () => {
             transition={{ duration: 0.6 }}
             className="col-span-12 md:col-span-4 md:pt-8"
           >
+            <div className="mb-3"><SectionSignal width={150} /></div>
             <div className="flex items-center gap-3 mb-5">
               <span className="h-px w-6 bg-accent/60" />
               <p className="font-mono text-[10px] sm:text-xs text-accent tracking-[0.3em] uppercase">

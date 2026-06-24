@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Globe, MessageSquareText, Layers, TrendingUp, Wrench, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
+import SectionSignal from "@/components/SectionSignal";
 
 type Accent = "primary" | "secondary" | "accent";
 type Service = {
@@ -231,6 +232,7 @@ const Services = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           className="mb-12 md:mb-16 max-w-2xl"
         >
+          <div className="mb-3"><SectionSignal width={160} /></div>
           <span className="font-mono text-xs text-accent tracking-[0.2em] uppercase">{t("services.label")}</span>
           <h2 className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-3 leading-[1.05]">
             {t("services.title")}{" "}
