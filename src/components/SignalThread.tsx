@@ -64,6 +64,9 @@ const SignalThread = () => {
       const t = Math.max(0, Math.min(1, scrollTop / max));
       const pt = path.getPointAtLength(t * length);
       pulse.setAttribute("transform", `translate(${pt.x} ${pt.y})`);
+      // Fade pulse near the very top so it doesn't clash with the navbar.
+      const fade = Math.min(1, Math.max(0, (t - 0.02) / 0.06));
+      pulse.setAttribute("opacity", String(0.95 * fade));
     };
     const onScroll = () => {
       if (raf) return;
