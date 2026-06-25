@@ -1,7 +1,6 @@
-import { useEffect, useRef } from "react";
-import { useReducedMotion } from "framer-motion";
-import { animate, createScope, type Scope } from "animejs";
-import { cn } from "@/lib/utils";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 
 type Props = {
   className?: string;
@@ -10,148 +9,90 @@ type Props = {
 };
 
 /**
- * Thin circuit accent: a horizontal line with 1-2 nodes and a small branch,
- * drawn on enter via stroke-dashoffset, with a cyan signal dot traveling.
- * reduced-motion: fully drawn, no traveling dot.
+ * SectionNode — a luminous node that "belongs" to the global SignalThread.
+ * Renders as an absolutely-positioned dot at the top-center of its nearest
+ * <section>, with a thin gradient connector dropping toward the eyebrow.
+ * The node lights up (scale + glow + draw connector) when the section enters
+ * the viewport, simulating the signal arriving from the thread.
+ *
+ * Backwards-compatible: keeps the SectionSignal name + ignores legacy props
+ * (width/align/className) so existing call sites work unchanged.
  */
-const SectionSignal = ({ className, width = 180, align = "left" }: Props) => {
-  const reduced = useReducedMotion();
-  const rootRef = useRef<HTMLDivElement>(null);
-  const scopeRef = useRef<Scope | null>(null);
+const SectionSignal = (_props: Props) => {
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  const [section, setSection] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    const el = rootRef.current;
-    if (!el) return;
+    const sec = anchorRef.current?.closest("section") as HTMLElement | null;
+    if (!sec) return;
+    const cs = getComputedStyle(sec);
+    if (cs.position === "static") sec.style.position = "relative";
+    setSection(sec);
+  }, []);
 
-    if (reduced) {
-      el.querySelectorAll<SVGPathElement>("[data-line]").forEach((p) => {
-        p.style.strokeDasharray = "none";
-        p.style.strokeDashoffset = "0";
-      });
-      return;
-    }
+  return (
+    <>
+      <span ref={anchorRef} aria-hidden className="hidden" />
+      {section ? createPortal(<NodeDot section={section} />, section) : null}
+    </>
+  );
+};
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          io.disconnect();
-          scopeRef.current = createScope({ root: el }).add(() => {
-            animate("[data-line]", {
-              strokeDashoffset: [
-                (_: Element, i: number) => (i === 0 ? 220 : 60),
-                0,
-              ],
-              duration: 900,
-              delay: (_: Element, i: number) => i * 150,
-              ease: "outCubic",
-            });
-            animate("[data-signal]", {
-              opacity: [0, 1, 1, 0],
-              translateX: [0, width - 20],
-              duration: 1800,
-              delay: 400,
-              loop: true,
-              ease: "inOutQuad",
-            });
-            animate("[data-node]", {
-              opacity: [0, 1],
-              scale: [0.6, 1],
-              duration: 500,
-              delay: (_: Element, i: number) => 500 + i * 120,
-              ease: "outBack",
-            });
-          });
-        });
-      },
-      { threshold: 0.2 },
-    );
-    io.observe(el);
-
-    return () => {
-      io.disconnect();
-      scopeRef.current?.revert();
-    };
-  }, [reduced, width]);
-
-  const h = 24;
-  const w = width;
-  // main line, branch up to a node
-  const mainPath = `M0 ${h / 2} L${w} ${h / 2}`;
-  const branchX = Math.round(w * 0.62);
-  const branchPath = `M${branchX} ${h / 2} L${branchX + 14} 4`;
+const NodeDot = ({ section }: { section: HTMLElement }) => {
+  const reduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { margin: "-15% 0px -60% 0px", once: true });
+  const on = reduced ? true : inView;
 
   return (
     <div
-      ref={rootRef}
+      ref={ref}
       aria-hidden
-      className={cn(
-        "pointer-events-none select-none",
-        align === "center" ? "mx-auto" : "",
-        className,
-      )}
-      style={{ width: w, height: h }}
+      className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-2 z-[1] flex flex-col items-center"
+      style={{ width: 2 }}
     >
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="overflow-visible">
-        <defs>
-          <linearGradient id="ss-line" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity="0.1" />
-            <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.2" />
-          </linearGradient>
-          <filter id="ss-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="1.5" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-        <path
-          data-line
-          d={mainPath}
-          stroke="url(#ss-line)"
-          strokeWidth="1"
-          fill="none"
-          style={{ strokeDasharray: 220, strokeDashoffset: 220 }}
-        />
-        <path
-          data-line
-          d={branchPath}
-          stroke="hsl(var(--accent))"
-          strokeOpacity="0.55"
-          strokeWidth="1"
-          fill="none"
-          style={{ strokeDasharray: 60, strokeDashoffset: 60 }}
-        />
-        <circle
-          data-node
-          cx={branchX + 14}
-          cy={4}
-          r={2}
-          fill="hsl(var(--accent))"
-          filter="url(#ss-glow)"
-          style={{ opacity: 0 }}
-        />
-        <circle
-          data-node
-          cx={w - 2}
-          cy={h / 2}
-          r={2.5}
-          fill="hsl(var(--primary))"
-          filter="url(#ss-glow)"
-          style={{ opacity: 0 }}
-        />
-        <circle
-          data-signal
-          cx={0}
-          cy={h / 2}
-          r={2.5}
-          fill="hsl(var(--accent))"
-          filter="url(#ss-glow)"
-          style={{ opacity: 0 }}
-        />
-      </svg>
+      {/* Outer halo */}
+      <motion.span
+        initial={false}
+        animate={{
+          opacity: on ? 1 : 0,
+          scale: on ? 1 : 0.4,
+        }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute -top-1.5 h-5 w-5 rounded-full -translate-x-1/2 left-1/2 blur-[6px]"
+        style={{
+          background:
+            "radial-gradient(circle, hsl(var(--accent) / 0.9) 0%, hsl(var(--primary) / 0.5) 45%, transparent 70%)",
+        }}
+      />
+      {/* Core dot */}
+      <motion.span
+        initial={false}
+        animate={{
+          opacity: on ? 1 : 0.25,
+          scale: on ? 1 : 0.6,
+        }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: on ? 0.05 : 0 }}
+        className="block h-1.5 w-1.5 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, hsl(var(--accent)) 0%, hsl(var(--primary)) 100%)",
+          boxShadow:
+            "0 0 8px hsl(var(--accent) / 0.9), 0 0 18px hsl(var(--primary) / 0.45)",
+        }}
+      />
+      {/* Connector down toward eyebrow */}
+      <motion.span
+        initial={false}
+        animate={{ scaleY: on ? 1 : 0, opacity: on ? 1 : 0 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: on ? 0.15 : 0 }}
+        className="mt-1 w-px origin-top"
+        style={{
+          height: 56,
+          background:
+            "linear-gradient(to bottom, hsl(var(--accent) / 0.9), hsl(var(--primary) / 0.5) 60%, transparent)",
+        }}
+      />
     </div>
   );
 };
