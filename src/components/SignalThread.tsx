@@ -109,10 +109,11 @@ const SignalThread = () => {
       >
         <defs>
           <linearGradient id="signal-thread-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#3B7DE8" stopOpacity="0.0" />
-            <stop offset="8%" stopColor="#3B7DE8" stopOpacity="0.9" />
-            <stop offset="50%" stopColor="#2BB8A0" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.9" />
+            <stop offset="0%" stopColor="#3B7DE8" stopOpacity="0" />
+            <stop offset="14%" stopColor="#3B7DE8" stopOpacity="0" />
+            <stop offset="22%" stopColor="#3B7DE8" stopOpacity="0.85" />
+            <stop offset="55%" stopColor="#2BB8A0" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.85" />
           </linearGradient>
           <filter id="signal-thread-glow" x="-200%" y="-200%" width="500%" height="500%">
             <feGaussianBlur stdDeviation="6" result="b" />
