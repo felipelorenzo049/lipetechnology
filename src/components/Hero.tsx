@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { animate } from "animejs";
 import { ScrambleText } from "@/components/ScrambleText";
 import { MagneticButton } from "@/components/MagneticButton";
-import HeroCore from "@/components/HeroCore";
 
 const Hero = () => {
   const { t, i18n } = useTranslation();
@@ -18,17 +17,12 @@ const Hero = () => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Scroll-linked parallax tied to the hero section
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const yMesh = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const yTitle = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
   const yContent = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
-  const signalY = useTransform(scrollYProgress, [0, 1], ["-40%", "120%"]);
 
   useEffect(() => {
     if (!headlineRef.current) return;
@@ -38,7 +32,6 @@ const Hero = () => {
       setRevealed(true);
       return;
     }
-    // Mask/clip-path reveal
     headlineRef.current.style.clipPath = "inset(0 100% 0 0)";
     animate(headlineRef.current, {
       opacity: [0, 1],
@@ -55,52 +48,27 @@ const Hero = () => {
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-24 md:pt-32 md:pb-20"
     >
-      {/* Parallax mesh layer */}
-      <motion.div
-        aria-hidden
-        style={{ y: reduced ? 0 : yMesh }}
-        className="absolute inset-0 gradient-mesh opacity-60"
-      />
-      <div className="absolute inset-0 grid-overlay opacity-[0.08]" />
-
-      {/* Subtle film grain */}
+      {/* Single soft bloom behind the headline — the only glow in the hero */}
       <div
         aria-hidden
-        className="absolute inset-0 opacity-[0.04] mix-blend-overlay pointer-events-none"
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(90vw,760px)] h-[min(90vw,760px)] rounded-full"
         style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+          background:
+            "radial-gradient(circle at center, hsl(var(--primary) / 0.18) 0%, hsl(var(--secondary) / 0.12) 35%, transparent 70%)",
+          filter: "blur(20px)",
         }}
       />
 
-      {/* Soft floating glows */}
-      <div className="absolute top-20 left-[10%] w-72 h-72 rounded-full bg-primary/5 blur-3xl animate-float" />
-      <div className="absolute bottom-20 right-[15%] w-96 h-96 rounded-full bg-secondary/5 blur-3xl animate-float-slow" />
-
-      {/* Interactive circuit core behind the headline */}
-      <HeroCore />
-
-      {/* Vertical "signal" line traveling down with scroll */}
-      <div aria-hidden className="absolute left-1/2 -translate-x-1/2 bottom-0 w-px h-40 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/30 to-transparent" />
-        {!reduced && (
-          <motion.div
-            style={{ y: signalY }}
-            className="absolute left-1/2 -translate-x-1/2 w-[3px] h-16 rounded-full bg-accent shadow-[0_0_24px_hsl(var(--accent)/0.9)]"
-          />
-        )}
-      </div>
-
       {/* Content */}
       <motion.div
-        style={{ opacity: reduced ? 1 : opacity, scale: reduced ? 1 : scale, y: reduced ? 0 : yContent }}
-        className="relative z-10 container mx-auto px-6 text-center max-w-5xl"
+        style={{ opacity: reduced ? 1 : opacity, y: reduced ? 0 : yContent }}
+        className="relative z-10 container mx-auto px-6 text-center max-w-4xl"
       >
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex items-center justify-center gap-3 mb-10"
+          className="flex items-center justify-center gap-3 mb-12"
         >
           <span className="h-px w-10 bg-accent/60" />
           <span className="font-mono text-[10px] sm:text-xs text-accent tracking-[0.32em] uppercase">
@@ -109,36 +77,34 @@ const Hero = () => {
           <span className="h-px w-10 bg-accent/60" />
         </motion.div>
 
-        <motion.div style={{ y: reduced ? 0 : yTitle }}>
-          <h1
-            ref={headlineRef}
-            className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.92] tracking-[-0.035em] mb-8 opacity-0"
-          >
-            <ScrambleText
-              trigger={i18n.language}
-              duration={1400}
-              stagger={22}
-              segments={[
-                { text: t("hero.title1") + " " },
-                { text: t("hero.titleHighlight"), className: "gradient-text italic" },
-                { text: " " + t("hero.title2") },
-              ]}
-            />
-          </h1>
-        </motion.div>
+        <h1
+          ref={headlineRef}
+          className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.92] tracking-[-0.035em] mb-10 opacity-0"
+        >
+          <ScrambleText
+            trigger={i18n.language}
+            duration={1400}
+            stagger={22}
+            segments={[
+              { text: t("hero.title1") + " " },
+              { text: t("hero.titleHighlight"), className: "gradient-text italic" },
+              { text: " " + t("hero.title2") },
+            ]}
+          />
+        </h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 30 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 20 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-base md:text-lg text-muted-foreground/90 max-w-xl mx-auto mb-12 font-body leading-relaxed"
+          className="text-base md:text-lg text-muted-foreground/90 max-w-xl mx-auto mb-14 font-body leading-relaxed"
         >
           {t("hero.subtitle")}
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 30 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 20 }}
           transition={{ duration: 0.8, delay: 0.55 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
@@ -158,9 +124,6 @@ const Hero = () => {
           </MagneticButton>
         </motion.div>
       </motion.div>
-
-      {/* Bottom fade to background */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent to-background z-[2] pointer-events-none" />
 
       {/* Scroll indicator */}
       <motion.div
