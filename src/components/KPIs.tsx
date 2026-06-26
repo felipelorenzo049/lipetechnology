@@ -1,7 +1,10 @@
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useInView, useReducedMotion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import SectionSignal from "@/components/SectionSignal";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const useCounter = (end: number, inView: boolean, enabled: boolean, duration = 1800) => {
   const [count, setCount] = useState(enabled ? 0 : end);
@@ -29,8 +32,27 @@ const useCounter = (end: number, inView: boolean, enabled: boolean, duration = 1
 const KPIs = () => {
   const { t } = useTranslation();
   const ref = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const reduced = useReducedMotion();
+
+  // The telemetry panel "boots up" as it scrolls into view: the panel rises,
+  // its gradient borders draw, the header lights up, then the cells stagger in
+  // while their counters tick to target.
+  useEffect(() => {
+    if (reduced || !sectionRef.current) return;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: "top 78%", once: true },
+        defaults: { ease: "power3.out" },
+      });
+      tl.from("[data-kpi='panel']", { opacity: 0, y: 26, scale: 0.985, duration: 0.6, clearProps: "transform,opacity" }, 0)
+        .from("[data-kpi='border']", { scaleX: 0, transformOrigin: "center", duration: 0.6, stagger: 0.12 }, 0.1)
+        .from("[data-kpi='header']", { opacity: 0, y: -8, duration: 0.4 }, 0.28)
+        .from("[data-kpi='cell']", { opacity: 0, y: 14, duration: 0.5, stagger: 0.1, clearProps: "transform,opacity" }, 0.38);
+    }, sectionRef);
+    return () => ctx.revert();
+  }, [reduced]);
 
   const kpis = [
     { value: 4, suffix: "", labelKey: "kpis.projects", code: "PRJ" },
@@ -40,16 +62,15 @@ const KPIs = () => {
   ];
 
   return (
-    <section id="kpis" className="py-16 md:py-24">
+    <section id="kpis" ref={sectionRef} className="py-16 md:py-24">
       <div ref={ref} className="container mx-auto px-6 max-w-6xl">
-        <div className="mb-4 flex justify-center"><SectionSignal align="center" width={160} /></div>
-        <div className="relative rounded-2xl glass border border-border/50 overflow-hidden">
+        <div data-kpi="panel" className="relative rounded-2xl glass border border-border/50 overflow-hidden">
           {/* gradient border accent */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          <div data-kpi="border" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
+          <div data-kpi="border" className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
           {/* telemetry header */}
-          <div className="flex items-center justify-between px-5 md:px-8 py-3 border-b border-border/40">
+          <div data-kpi="header" className="flex items-center justify-between px-5 md:px-8 py-3 border-b border-border/40">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_hsl(var(--accent))] animate-pulse" />
               <span className="font-mono text-[10px] md:text-xs tracking-[0.18em] uppercase text-muted-foreground">
@@ -87,12 +108,7 @@ const KPIItem = ({
   const display = kpi.isDecimal ? (count / 10).toFixed(1) : count;
 
   return (
-    <motion.div
-      initial={reduced ? false : { opacity: 0, y: 12 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="relative p-6 md:p-8 group"
-    >
+    <div data-kpi="cell" className="relative p-6 md:p-8 group">
       <div className="flex items-center justify-between mb-3">
         <span className="font-mono text-[10px] tracking-[0.2em] text-accent/80">{kpi.code}</span>
         <span className="font-mono text-[10px] text-muted-foreground/60">
@@ -109,7 +125,7 @@ const KPIItem = ({
       <p className="font-mono text-[11px] md:text-xs uppercase tracking-[0.14em] text-muted-foreground mt-3">
         {t(kpi.labelKey)}
       </p>
-    </motion.div>
+    </div>
   );
 };
 
