@@ -17,10 +17,10 @@ const SmoothScrollProvider = ({ children }: { children: React.ReactNode }) => {
       smoothWheel: true,
     });
 
-    lenis.on("scroll", () => {
-      ScrollTrigger.update();
-      window.dispatchEvent(new Event("scroll"));
-    });
+    // Canonical Lenis + GSAP wiring. No synthetic scroll dispatch — that caused
+    // an emit feedback loop (stack overflow). Lenis scrolls the real page, so
+    // native 'scroll' events still fire for SignalThread / framer-motion.
+    lenis.on("scroll", ScrollTrigger.update);
 
     const tick = (time: number) => {
       lenis.raf(time * 1000);
