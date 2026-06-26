@@ -227,7 +227,8 @@ const Pipe = () => {
 
 /* ------------------------------- Desktop ------------------------------- */
 
-type ColGeom = { cx: number; stage: Stage; dots: { x: number; y: number }[] };
+type PipeNode = { dotY: number; cardBottom: number };
+type ColGeom = { cx: number; stage: Stage; nodes: PipeNode[] };
 
 const DesktopPipe = ({
   grouped,
@@ -264,14 +265,23 @@ const DesktopPipe = ({
           cx = pr.left - sr.left + pr.width / 2;
           pillBottomMax = Math.max(pillBottomMax, pr.bottom - sr.top);
         }
-        const dots = Array.from(
+        const dotEls = Array.from(
           col.querySelectorAll<HTMLElement>("[data-pipe-dot]"),
-        ).map((d) => {
-          const r = d.getBoundingClientRect();
-          return { x: r.left - sr.left + r.width / 2, y: r.top - sr.top + r.height / 2 };
+        );
+        const nodes: PipeNode[] = dotEls.map((d) => {
+          const dr = d.getBoundingClientRect();
+          const dotY = dr.top - sr.top + dr.height / 2;
+          const card = d.parentElement?.nextElementSibling as HTMLElement | null;
+          const cardBottom = card
+            ? card.getBoundingClientRect().bottom - sr.top
+            : dotY;
+          return { dotY, cardBottom };
         });
-        if (!pill && dots[0]) cx = dots[0].x;
-        return { cx, stage: STAGES[i], dots };
+        if (!pill && dotEls[0]) {
+          const dr = dotEls[0].getBoundingClientRect();
+          cx = dr.left - sr.left + dr.width / 2;
+        }
+        return { cx, stage: STAGES[i], nodes };
       });
 
       setGeom({ railY: Math.round(pillBottomMax + 26), cols });
@@ -337,16 +347,26 @@ const DesktopPipe = ({
     geom && geom.cols.length
       ? `M ${geom.cols[0].cx.toFixed(1)} ${geom.railY} L ${lastCx.toFixed(1)} ${geom.railY}`
       : "";
+
+  // Drops are drawn as segments that live only in the gaps — rail → first dot,
+  // then each card's bottom → the next dot — so the line never crosses a card.
   const drops = geom
     ? geom.cols.flatMap((c) => {
-        if (!c.dots.length) return [];
-        const lastY = Math.max(...c.dots.map((d) => d.y));
-        return [
+        if (!c.nodes.length) return [];
+        const cx = c.cx.toFixed(1);
+        const segs: { d: string; stage: Stage }[] = [
           {
-            d: `M ${c.cx.toFixed(1)} ${geom.railY} L ${c.cx.toFixed(1)} ${lastY.toFixed(1)}`,
+            d: `M ${cx} ${geom.railY} L ${cx} ${c.nodes[0].dotY.toFixed(1)}`,
             stage: c.stage,
           },
         ];
+        for (let i = 1; i < c.nodes.length; i++) {
+          segs.push({
+            d: `M ${cx} ${c.nodes[i - 1].cardBottom.toFixed(1)} L ${cx} ${c.nodes[i].dotY.toFixed(1)}`,
+            stage: c.stage,
+          });
+        }
+        return segs;
       })
     : [];
 
