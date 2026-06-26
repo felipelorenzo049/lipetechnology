@@ -96,11 +96,12 @@ const FRAG = `
 
     // vignette
     vec2 vv = (uv - 0.5) * vec2(aspect, 1.0);
-    float vig = smoothstep(1.15, 0.25, length(vv));
-    col *= mix(0.45, 1.0, vig);
+    float vig = smoothstep(1.15, 0.20, length(vv));
+    col *= mix(0.40, 1.0, vig);
 
     // keep it premium-dark
-    col = mix(base, col, 0.95);
+    col = mix(base, col, 0.82);
+    col *= 0.74;
 
     gl_FragColor = vec4(col, 1.0);
   }
