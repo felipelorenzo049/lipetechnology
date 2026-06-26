@@ -81,20 +81,11 @@ const SignalThread = () => {
     };
   }, [reduced, pageHeight]);
 
-  // Build a gentle S-curve path that spans the page height.
+  // Straight vertical thread — guarantees centered nodes sit exactly on it.
   const W = 200;
   const H = Math.max(pageHeight, 1200);
-  // Curve oscillates between ~40% and ~60% horizontally.
   const cx = W / 2;
-  const amp = 36;
-  const segments = Math.max(4, Math.round(H / 700));
-  let d = `M ${cx} 0`;
-  for (let i = 1; i <= segments; i++) {
-    const y = (H / segments) * i;
-    const cpy = y - H / segments / 2;
-    const cpx = cx + (i % 2 === 0 ? amp : -amp);
-    d += ` Q ${cpx} ${cpy}, ${cx} ${y}`;
-  }
+  const d = `M ${cx} 0 L ${cx} ${H}`;
 
   return (
     <div
@@ -113,11 +104,12 @@ const SignalThread = () => {
         <defs>
           <linearGradient id="signal-thread-grad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#3B7DE8" stopOpacity="0" />
-            <stop offset="14%" stopColor="#3B7DE8" stopOpacity="0" />
-            <stop offset="22%" stopColor="#3B7DE8" stopOpacity="0.85" />
-            <stop offset="55%" stopColor="#2BB8A0" stopOpacity="0.85" />
+            <stop offset="4%" stopColor="#3B7DE8" stopOpacity="0.5" />
+            <stop offset="30%" stopColor="#3B7DE8" stopOpacity="0.85" />
+            <stop offset="60%" stopColor="#2BB8A0" stopOpacity="0.85" />
             <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.85" />
           </linearGradient>
+
           <filter id="signal-thread-glow" x="-200%" y="-200%" width="500%" height="500%">
             <feGaussianBlur stdDeviation="6" result="b" />
             <feMerge>
