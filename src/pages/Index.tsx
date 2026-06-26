@@ -16,11 +16,12 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { GradientBackground } from "@/components/ui/gradient-background";
 import ScrollProgress from "@/components/ScrollProgress";
 import SignalThread from "@/components/SignalThread";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Reveal from "@/components/Reveal";
+import AuroraField from "@/components/AuroraField";
+import AtmosphereOverlay from "@/components/AtmosphereOverlay";
 
 
 const Index = () => {
@@ -37,35 +38,31 @@ const Index = () => {
 
   return (
     <SmoothScrollProvider>
-      <GradientBackground
-        className="min-h-screen text-foreground overflow-x-hidden"
-        animationDuration={12}
-        overlay
-        overlayOpacity={0.75}
-      >
-        <div className="relative z-10">
-          <SignalThread />
-          <ScrollProgress />
-          <Navbar />
+      <AuroraField />
+      <AtmosphereOverlay />
 
-          <Hero />
-          <Reveal><Manifesto /></Reveal>
-          <Reveal><Founders /></Reveal>
-          <Reveal><KPIs /></Reveal>
-          <Reveal><Services /></Reveal>
-          <Reveal><SectionCTA textKey="ctaSections.afterServices" highlightKey="ctaSections.afterServicesHighlight" /></Reveal>
-          <Reveal><Pipe /></Reveal>
-          <HorseBidSpotlight />
-          <Reveal><SectionCTA textKey="ctaSections.afterPortfolio" highlightKey="ctaSections.afterPortfolioHighlight" /></Reveal>
+      <div className="relative z-10 min-h-screen text-foreground overflow-x-hidden">
+        <SignalThread />
+        <ScrollProgress />
+        <Navbar />
 
-          <Reveal><Process /></Reveal>
-          <Reveal><TechStack /></Reveal>
-          <Reveal><FAQ /></Reveal>
-          <Reveal><Contact /></Reveal>
-          <Reveal><Footer /></Reveal>
-          <WhatsAppButton />
-        </div>
-      </GradientBackground>
+        <Hero />
+        <Reveal><Manifesto /></Reveal>
+        <Reveal><Founders /></Reveal>
+        <Reveal><KPIs /></Reveal>
+        <Reveal><Services /></Reveal>
+        <Reveal><SectionCTA textKey="ctaSections.afterServices" highlightKey="ctaSections.afterServicesHighlight" /></Reveal>
+        <Reveal><Pipe /></Reveal>
+        <HorseBidSpotlight />
+        <Reveal><SectionCTA textKey="ctaSections.afterPortfolio" highlightKey="ctaSections.afterPortfolioHighlight" /></Reveal>
+
+        <Reveal><Process /></Reveal>
+        <Reveal><TechStack /></Reveal>
+        <Reveal><FAQ /></Reveal>
+        <Reveal><Contact /></Reveal>
+        <Reveal><Footer /></Reveal>
+        <WhatsAppButton />
+      </div>
     </SmoothScrollProvider>
   );
 };
