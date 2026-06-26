@@ -55,7 +55,7 @@ const Index = () => {
           <Reveal><Services /></Reveal>
           <Reveal><SectionCTA textKey="ctaSections.afterServices" highlightKey="ctaSections.afterServicesHighlight" /></Reveal>
           <Reveal><Pipe /></Reveal>
-          <Reveal><HorseBidSpotlight /></Reveal>
+          <HorseBidSpotlight />
           <Reveal><SectionCTA textKey="ctaSections.afterPortfolio" highlightKey="ctaSections.afterPortfolioHighlight" /></Reveal>
 
           <Reveal><Process /></Reveal>

@@ -8,7 +8,11 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Radio, Video, CreditCard, Layers, ArrowUpRight } from "lucide-react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const FEATURE_ITEMS = [
   { key: "realtime", Icon: Radio },
@@ -29,11 +33,33 @@ const HorseBidSpotlight = () => {
     offset: ["start end", "end start"],
   });
 
-  // Parallax + tilt on mockup (disabled when reduced motion)
   const rawY = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const rawRotate = useTransform(scrollYProgress, [0, 1], [4, -4]);
   const y = reduced ? 0 : rawY;
   const rotate = reduced ? 0 : rawRotate;
+
+  // Mockup "builds itself" on enter
+  useEffect(() => {
+    if (reduced) return;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: "top 70%", once: true },
+        defaults: { ease: "power3.out" },
+      });
+      tl.from("[data-hb='glow']", { opacity: 0, duration: 0.6 }, 0)
+        .from("[data-hb='frame']", { opacity: 0, y: 40, scale: 0.96, duration: 0.7 }, 0)
+        .from("[data-hb='chrome']", { opacity: 0, y: -10, duration: 0.4 }, "-=0.35")
+        .from("[data-hb='video']", { opacity: 0, scale: 0.94, duration: 0.6 }, "-=0.15")
+        .from("[data-hb='live']", { opacity: 0, scale: 0.5, duration: 0.45, ease: "back.out(2)" }, "-=0.25")
+        .from("[data-hb='bidders']", { opacity: 0, x: 12, duration: 0.4 }, "-=0.3")
+        .from("[data-hb='time']", { opacity: 0, y: 10, duration: 0.4 }, "-=0.3")
+        .from("[data-hb='lot']", { opacity: 0, y: 10, duration: 0.4 }, "-=0.3")
+        .from("[data-hb='bid']", { opacity: 0, x: 24, duration: 0.5 }, "-=0.35")
+        .from("[data-hb='nextbid']", { opacity: 0, y: 12, duration: 0.4 }, "-=0.3")
+        .from("[data-hb='rows'] > *", { opacity: 0, x: 16, duration: 0.4, stagger: 0.1 }, "-=0.25");
+    }, sectionRef);
+    return () => ctx.revert();
+  }, [reduced]);
 
   // Animated bid counter
   const [bid, setBid] = useState(48200);
@@ -68,7 +94,6 @@ const HorseBidSpotlight = () => {
       id="horsebid"
       className="relative py-24 md:py-36 overflow-hidden"
     >
-      {/* Faint signal line linking section to circuit */}
       <div
         aria-hidden
         className="absolute left-1/2 -top-12 h-24 w-px bg-gradient-to-b from-transparent via-accent/50 to-accent/0"
@@ -76,7 +101,6 @@ const HorseBidSpotlight = () => {
 
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="grid grid-cols-12 gap-8 md:gap-12 items-center">
-          {/* Copy column */}
           <div className="col-span-12 lg:col-span-5 order-2 lg:order-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -145,19 +169,14 @@ const HorseBidSpotlight = () => {
             </motion.div>
           </div>
 
-          {/* Mockup column */}
           <div className="col-span-12 lg:col-span-7 order-1 lg:order-2">
             <motion.div
               ref={mockRef}
               style={{ y, rotate }}
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.7 }}
               className="relative will-change-transform"
             >
-              {/* Ambient glow */}
               <div
+                data-hb="glow"
                 aria-hidden
                 className="absolute -inset-10 rounded-[2rem] blur-3xl opacity-40 pointer-events-none"
                 style={{
@@ -166,10 +185,8 @@ const HorseBidSpotlight = () => {
                 }}
               />
 
-              {/* Browser frame */}
-              <div className="relative glass rounded-2xl overflow-hidden border border-border/60 shadow-2xl">
-                {/* Browser chrome */}
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-border/60 bg-background/40">
+              <div data-hb="frame" className="relative glass rounded-2xl overflow-hidden border border-border/60 shadow-2xl">
+                <div data-hb="chrome" className="flex items-center gap-2 px-4 py-3 border-b border-border/60 bg-background/40">
                   <span className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
                   <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
                   <span className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
@@ -180,13 +197,10 @@ const HorseBidSpotlight = () => {
                   </div>
                 </div>
 
-                {/* App body */}
                 <div className="p-5 md:p-7 bg-gradient-to-br from-background/60 to-card/40">
                   <div className="grid grid-cols-5 gap-4">
-                    {/* Video + lot */}
                     <div className="col-span-5 md:col-span-3">
-                      <div className="relative aspect-video rounded-xl overflow-hidden border border-border/50 bg-gradient-to-br from-primary/15 via-background to-accent/10">
-                        {/* Faux video scanlines */}
+                      <div data-hb="video" className="relative aspect-video rounded-xl overflow-hidden border border-border/50 bg-gradient-to-br from-primary/15 via-background to-accent/10">
                         <div
                           aria-hidden
                           className="absolute inset-0 opacity-20"
@@ -195,7 +209,6 @@ const HorseBidSpotlight = () => {
                               "repeating-linear-gradient(0deg, hsl(var(--foreground) / 0.06) 0 1px, transparent 1px 3px)",
                           }}
                         />
-                        {/* Horse silhouette via emoji-free shape */}
                         <div className="absolute inset-0 flex items-end justify-center pb-6">
                           <div
                             className="h-2/3 w-2/3 rounded-full blur-2xl opacity-40"
@@ -203,8 +216,7 @@ const HorseBidSpotlight = () => {
                           />
                         </div>
 
-                        {/* LIVE badge */}
-                        <div className="absolute top-3 left-3 flex items-center gap-2 rounded-full bg-background/70 backdrop-blur px-3 py-1 border border-accent/40">
+                        <div data-hb="live" className="absolute top-3 left-3 flex items-center gap-2 rounded-full bg-background/70 backdrop-blur px-3 py-1 border border-accent/40">
                           <span className="relative flex h-2 w-2">
                             <span
                               className={`absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 ${
@@ -218,8 +230,7 @@ const HorseBidSpotlight = () => {
                           </span>
                         </div>
 
-                        {/* Bidders avatars */}
-                        <div className="absolute top-3 right-3 flex items-center gap-2">
+                        <div data-hb="bidders" className="absolute top-3 right-3 flex items-center gap-2">
                           <div className="flex -space-x-2">
                             {["hsl(var(--primary))", "hsl(var(--accent))", "hsl(var(--secondary))"].map(
                               (c, i) => (
@@ -236,8 +247,7 @@ const HorseBidSpotlight = () => {
                           </span>
                         </div>
 
-                        {/* Time left */}
-                        <div className="absolute bottom-3 left-3 rounded-md bg-background/70 backdrop-blur px-3 py-1.5 border border-border/50">
+                        <div data-hb="time" className="absolute bottom-3 left-3 rounded-md bg-background/70 backdrop-blur px-3 py-1.5 border border-border/50">
                           <p className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
                             {t("horsebidSpotlight.mock.timeLeft")}
                           </p>
@@ -247,7 +257,7 @@ const HorseBidSpotlight = () => {
                         </div>
                       </div>
 
-                      <div className="mt-4 flex items-center justify-between">
+                      <div data-hb="lot" className="mt-4 flex items-center justify-between">
                         <div>
                           <p className="font-mono text-[10px] tracking-widest text-muted-foreground">
                             {t("horsebidSpotlight.mock.lotLabel")}
@@ -259,9 +269,8 @@ const HorseBidSpotlight = () => {
                       </div>
                     </div>
 
-                    {/* Bid panel */}
                     <div className="col-span-5 md:col-span-2 flex flex-col gap-4">
-                      <div className="rounded-xl border border-accent/30 bg-gradient-to-br from-accent/10 to-primary/5 p-4">
+                      <div data-hb="bid" className="rounded-xl border border-accent/30 bg-gradient-to-br from-accent/10 to-primary/5 p-4">
                         <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                           {t("horsebidSpotlight.mock.currentBid")}
                         </p>
@@ -277,6 +286,7 @@ const HorseBidSpotlight = () => {
                       </div>
 
                       <button
+                        data-hb="nextbid"
                         type="button"
                         className="rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-3 font-mono text-sm font-semibold text-primary-foreground transition-transform duration-200 hover:scale-[1.02] motion-reduce:transition-none motion-reduce:hover:scale-100"
                         style={{
@@ -286,7 +296,7 @@ const HorseBidSpotlight = () => {
                         {t("horsebidSpotlight.mock.nextBid")} · R$ {(bid + 500).toLocaleString("pt-BR")}
                       </button>
 
-                      <div className="space-y-2">
+                      <div data-hb="rows" className="space-y-2">
                         {[
                           { name: "M. R.", amount: bid - 500, c: "hsl(var(--accent))" },
                           { name: "J. S.", amount: bid - 1200, c: "hsl(var(--primary))" },
