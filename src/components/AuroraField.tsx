@@ -66,6 +66,7 @@ const FRAG = `
     float t = uTime * 0.035;
     float scr = uScroll;
     p.y += scr * 0.35;
+    p *= 0.72;
 
     // domain-warped flow
     vec2 q = vec2(fbm(p*1.1 + vec2(0.0, t)),
