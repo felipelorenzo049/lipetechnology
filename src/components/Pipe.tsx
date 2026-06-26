@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import SectionSignal from "@/components/SectionSignal";
@@ -92,53 +92,11 @@ const Pipe = () => {
   const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: "-80px" });
-
-  const lineRefs = useRef<(SVGPathElement | null)[]>([]);
-  const nodesRef = useRef<HTMLDivElement>(null);
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
     setReduced(prefersReducedMotion());
   }, []);
-
-  useEffect(() => {
-    if (!inView) return;
-    const paths = lineRefs.current.filter(Boolean) as SVGPathElement[];
-
-    if (reduced) {
-      paths.forEach((p) => {
-        p.style.strokeDasharray = "none";
-        p.style.strokeDashoffset = "0";
-      });
-      return;
-    }
-
-    paths.forEach((p) => {
-      const len = p.getTotalLength();
-      p.style.strokeDasharray = `${len}`;
-      p.style.strokeDashoffset = `${len}`;
-    });
-
-    animate(paths, {
-      strokeDashoffset: 0,
-      duration: 1400,
-      delay: stagger(100),
-      ease: "outQuad",
-    });
-
-    if (nodesRef.current) {
-      const nodes = nodesRef.current.querySelectorAll<HTMLElement>(
-        "[data-pipe-node]",
-      );
-      animate(nodes, {
-        opacity: [0, 1],
-        translateY: [16, 0],
-        duration: 600,
-        delay: stagger(70, { start: 350 }),
-        ease: "outQuad",
-      });
-    }
-  }, [inView, reduced]);
 
   const grouped: Record<Stage, Product[]> = {
     ideacao: [],
@@ -185,12 +143,7 @@ const Pipe = () => {
         {isMobile ? (
           <MobilePipe grouped={grouped} />
         ) : (
-          <DesktopPipe
-            grouped={grouped}
-            lineRefs={lineRefs}
-            nodesRef={nodesRef}
-            reduced={reduced}
-          />
+          <DesktopPipe grouped={grouped} reduced={reduced} />
         )}
 
         {/* Clients rail */}
@@ -274,51 +227,137 @@ const Pipe = () => {
 
 /* ------------------------------- Desktop ------------------------------- */
 
+type ColGeom = { cx: number; stage: Stage; dots: { x: number; y: number }[] };
+
 const DesktopPipe = ({
   grouped,
-  lineRefs,
-  nodesRef,
   reduced,
 }: {
   grouped: Record<Stage, Product[]>;
-  lineRefs: React.MutableRefObject<(SVGPathElement | null)[]>;
-  nodesRef: React.RefObject<HTMLDivElement>;
   reduced: boolean;
 }) => {
   const { t } = useTranslation();
+  const stageRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(stageRef, { once: true, margin: "-80px" });
+  const pathRefs = useRef<(SVGPathElement | null)[]>([]);
 
-  const colX = [12.5, 37.5, 62.5, 87.5];
-  const headerY = 60;
-  const nodeStartY = 150;
-  const nodeGap = 230;
+  const [size, setSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
+  const [geom, setGeom] = useState<{ railY: number; cols: ColGeom[] } | null>(null);
 
-  const mainPath = `M ${colX[0]} ${headerY} L ${colX[3]} ${headerY}`;
+  // Measure real node positions so the circuit always lands on the cards.
+  useLayoutEffect(() => {
+    const measure = () => {
+      const stage = stageRef.current;
+      if (!stage) return;
+      const sr = stage.getBoundingClientRect();
+      setSize({ w: sr.width, h: sr.height });
 
-  const drops: { d: string; stage: Stage }[] = [];
-  STAGES.forEach((stage, i) => {
-    const nodes = grouped[stage];
-    nodes.forEach((_, ni) => {
-      const y = nodeStartY + ni * nodeGap;
-      drops.push({
-        d: `M ${colX[i]} ${headerY} L ${colX[i]} ${y}`,
-        stage,
+      const colEls = Array.from(
+        stage.querySelectorAll<HTMLElement>("[data-pipe-col]"),
+      );
+      let pillBottomMax = 0;
+      const cols: ColGeom[] = colEls.map((col, i) => {
+        const pill = col.querySelector<HTMLElement>("[data-pipe-pill]");
+        let cx = 0;
+        if (pill) {
+          const pr = pill.getBoundingClientRect();
+          cx = pr.left - sr.left + pr.width / 2;
+          pillBottomMax = Math.max(pillBottomMax, pr.bottom - sr.top);
+        }
+        const dots = Array.from(
+          col.querySelectorAll<HTMLElement>("[data-pipe-dot]"),
+        ).map((d) => {
+          const r = d.getBoundingClientRect();
+          return { x: r.left - sr.left + r.width / 2, y: r.top - sr.top + r.height / 2 };
+        });
+        if (!pill && dots[0]) cx = dots[0].x;
+        return { cx, stage: STAGES[i], dots };
       });
-    });
-  });
 
-  const totalHeight =
-    nodeStartY +
-    Math.max(0, Math.max(...STAGES.map((s) => grouped[s].length)) - 1) *
-      nodeGap +
-    80;
+      setGeom({ railY: Math.round(pillBottomMax + 26), cols });
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (stageRef.current) ro.observe(stageRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  // Draw the circuit + reveal the nodes when the section enters view.
+  useEffect(() => {
+    if (!geom) return;
+    const paths = pathRefs.current.filter(Boolean) as SVGPathElement[];
+    const nodes = stageRef.current?.querySelectorAll<HTMLElement>(
+      "[data-pipe-node]",
+    );
+
+    if (reduced) {
+      paths.forEach((p) => {
+        p.style.strokeDasharray = "none";
+        p.style.strokeDashoffset = "0";
+      });
+      nodes?.forEach((n) => {
+        n.style.opacity = "1";
+      });
+      return;
+    }
+
+    paths.forEach((p) => {
+      const len = p.getTotalLength();
+      p.style.strokeDasharray = `${len}`;
+      p.style.strokeDashoffset = `${len}`;
+    });
+
+    if (!inView) return;
+
+    animate(paths, {
+      strokeDashoffset: 0,
+      duration: 1300,
+      delay: stagger(110),
+      ease: "outQuad",
+    });
+
+    if (nodes) {
+      animate(nodes, {
+        opacity: [0, 1],
+        translateY: [16, 0],
+        duration: 600,
+        delay: stagger(70, { start: 300 }),
+        ease: "outQuad",
+      });
+    }
+  }, [geom, inView, reduced]);
+
+  const lastCx = geom && geom.cols.length ? geom.cols[geom.cols.length - 1].cx : 0;
+  const rail =
+    geom && geom.cols.length
+      ? `M ${geom.cols[0].cx.toFixed(1)} ${geom.railY} L ${lastCx.toFixed(1)} ${geom.railY}`
+      : "";
+  const drops = geom
+    ? geom.cols.flatMap((c) => {
+        if (!c.dots.length) return [];
+        const lastY = Math.max(...c.dots.map((d) => d.y));
+        return [
+          {
+            d: `M ${c.cx.toFixed(1)} ${geom.railY} L ${c.cx.toFixed(1)} ${lastY.toFixed(1)}`,
+            stage: c.stage,
+          },
+        ];
+      })
+    : [];
 
   return (
-    <div className="relative" style={{ minHeight: totalHeight + 40 }}>
+    <div ref={stageRef} className="relative">
       <svg
         aria-hidden
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        viewBox={`0 0 100 ${totalHeight}`}
-        preserveAspectRatio="none"
+        className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible"
+        width={size.w}
+        height={size.h}
+        viewBox={`0 0 ${size.w} ${size.h}`}
       >
         <defs>
           <linearGradient id="pipe-grad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -327,7 +366,7 @@ const DesktopPipe = ({
             <stop offset="100%" stopColor="hsl(var(--secondary))" stopOpacity="0.9" />
           </linearGradient>
           <filter id="pipe-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="0.6" result="blur" />
+            <feGaussianBlur stdDeviation="2" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
@@ -335,46 +374,45 @@ const DesktopPipe = ({
           </filter>
         </defs>
 
-        <path
-          ref={(el) => (lineRefs.current[0] = el)}
-          d={mainPath}
-          stroke="url(#pipe-grad)"
-          strokeWidth="0.4"
-          fill="none"
-          vectorEffect="non-scaling-stroke"
-          filter="url(#pipe-glow)"
-        />
-
-        {drops.map((drop, i) => (
-          <path
-            key={i}
-            ref={(el) => (lineRefs.current[i + 1] = el)}
-            d={drop.d}
-            stroke={STAGE_COLOR[drop.stage]}
-            strokeOpacity="0.6"
-            strokeWidth="0.3"
-            fill="none"
-            vectorEffect="non-scaling-stroke"
-            strokeDasharray="0.8 0.6"
-          />
-        ))}
-
-        {!reduced && (
-          <circle r="1.2" fill="hsl(var(--accent))" filter="url(#pipe-glow)">
-            <animateMotion
-              dur="5s"
-              repeatCount="indefinite"
-              path={mainPath}
-              rotate="auto"
+        {geom && (
+          <>
+            <path
+              ref={(el) => (pathRefs.current[0] = el)}
+              d={rail}
+              stroke="url(#pipe-grad)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              fill="none"
+              filter="url(#pipe-glow)"
             />
-          </circle>
+
+            {drops.map((dr, i) => (
+              <path
+                key={i}
+                ref={(el) => (pathRefs.current[i + 1] = el)}
+                d={dr.d}
+                stroke={STAGE_COLOR[dr.stage]}
+                strokeOpacity="0.55"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                fill="none"
+              />
+            ))}
+
+            {!reduced && rail && (
+              <circle r="4" fill="hsl(var(--accent))" filter="url(#pipe-glow)">
+                <animateMotion dur="5s" repeatCount="indefinite" path={rail} />
+              </circle>
+            )}
+          </>
         )}
       </svg>
 
-      <div ref={nodesRef} className="relative grid grid-cols-4 gap-3">
+      <div className="relative grid grid-cols-4 gap-3">
         {STAGES.map((stage) => (
-          <div key={stage} className="flex flex-col items-center">
+          <div key={stage} data-pipe-col className="flex flex-col items-center">
             <div
+              data-pipe-pill
               data-pipe-node
               className="opacity-0 mt-3 mb-10 inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border border-border/60"
             >
@@ -444,7 +482,7 @@ const ProductNode = ({ product }: { product: Product }) => {
       className="opacity-0 group relative w-full max-w-[240px]"
     >
       <div className="flex justify-center mb-3">
-        <span className="relative flex h-3 w-3">
+        <span data-pipe-dot className="relative flex h-3 w-3">
           <span
             className={`absolute inline-flex h-full w-full rounded-full opacity-60 group-hover:opacity-100 blur-[3px] transition-opacity ${sc.dot}`}
           />
