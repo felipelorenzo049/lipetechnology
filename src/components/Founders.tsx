@@ -1,8 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { motion, useInView, useReducedMotion } from "framer-motion";
-import { animate, stagger } from "animejs";
+import { motion, useReducedMotion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionSignal from "@/components/SectionSignal";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type FounderKey = "felipe" | "luigi" | "andre";
 
@@ -39,10 +42,10 @@ const Founders = () => {
     andre: null,
   });
   const svgRef = useRef<SVGSVGElement>(null);
-  const inView = useInView(stageRef, { once: true, margin: "-80px" });
 
   const [points, setPoints] = useState<Record<FounderKey, { x: number; y: number }> | null>(null);
   const [stageSize, setStageSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
+  const [lit, setLit] = useState(false);
 
   // Measure node positions relative to the stage container.
   useLayoutEffect(() => {
@@ -70,27 +73,48 @@ const Founders = () => {
     };
   }, []);
 
-  // Animate the edge line draw when in view.
+  // Reduced motion: render the circuit fully drawn, no choreography, no signal.
   useEffect(() => {
-    if (!points || !svgRef.current) return;
-    const lines = svgRef.current.querySelectorAll<SVGLineElement>("line[data-edge]");
-    lines.forEach((el) => {
-      const length = (el as any).getTotalLength?.() ?? 800;
-      el.style.strokeDasharray = `${length}`;
-      el.style.strokeDashoffset = reduced || inView ? "0" : `${length}`;
+    if (!reduced || !points) return;
+    const lines = svgRef.current?.querySelectorAll<SVGLineElement>("line[data-edge]");
+    lines?.forEach((el) => {
+      el.style.strokeDasharray = "none";
+      el.style.strokeDashoffset = "0";
     });
-    if (reduced || !inView) return;
-    lines.forEach((el) => {
-      const length = (el as any).getTotalLength?.() ?? 800;
-      el.style.strokeDashoffset = `${length}`;
-    });
-    animate(Array.from(lines) as any, {
-      strokeDashoffset: 0,
-      duration: 1400,
-      delay: stagger(180),
-      easing: "easeOutQuad",
-    });
-  }, [points, inView, reduced]);
+  }, [reduced, points]);
+
+  // The studio "assembles itself" on scroll: cards rise, nodes pop in, the
+  // edges draw between them, the bodies fade in, then the signal starts
+  // traveling the closed circuit.
+  useEffect(() => {
+    if (reduced || !points) return;
+    const ctx = gsap.context(() => {
+      const lines = gsap.utils.toArray<SVGLineElement>("line[data-edge]", stageRef.current);
+      lines.forEach((el) => {
+        const length = el.getTotalLength?.() ?? 800;
+        el.style.strokeDasharray = `${length}`;
+        el.style.strokeDashoffset = `${length}`;
+      });
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: stageRef.current, start: "top 75%", once: true },
+        defaults: { ease: "power3.out" },
+        onComplete: () => {
+          lines.forEach((el) => {
+            el.style.strokeDasharray = "none";
+            el.style.strokeDashoffset = "0";
+          });
+          setLit(true);
+        },
+      });
+
+      tl.from("[data-founder-card]", { opacity: 0, y: 28, duration: 0.6, stagger: 0.12, clearProps: "transform,opacity" }, 0)
+        .from("[data-founder-node]", { opacity: 0, scale: 0.3, duration: 0.5, ease: "back.out(2)", stagger: 0.14, clearProps: "transform,opacity" }, 0.15)
+        .to(lines, { strokeDashoffset: 0, duration: 1.2, ease: "power2.out", stagger: 0.18 }, 0.5)
+        .from("[data-founder-body]", { opacity: 0, y: 12, duration: 0.5, stagger: 0.1, clearProps: "transform,opacity" }, 0.7);
+    }, stageRef);
+    return () => ctx.revert();
+  }, [reduced, points]);
 
   // Build perimeter path for the traveling signal.
   const perimeter = points
@@ -191,7 +215,7 @@ const Founders = () => {
                 />
               ))}
 
-            {points && !reduced && inView && (
+            {points && !reduced && lit && (
               <>
                 <circle r="10" fill="url(#founders-signal)">
                   <animateMotion dur="6s" repeatCount="indefinite" path={perimeter} />
@@ -203,12 +227,9 @@ const Founders = () => {
             )}
           </svg>
 
-          {FOUNDERS.map((f, idx) => (
-            <motion.div
+          {FOUNDERS.map((f) => (
+            <div
               key={f.key}
-              initial={{ opacity: 0, y: 24 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 + idx * 0.18 }}
               className={`relative z-10 col-span-12 ${f.col} ${f.offsetY}`}
             >
               <FounderCard
@@ -217,7 +238,7 @@ const Founders = () => {
                 reduced={!!reduced}
                 nodeRef={(el) => (nodeRefs.current[f.key] = el)}
               />
-            </motion.div>
+            </div>
           ))}
         </div>
 
@@ -290,25 +311,32 @@ const FounderCard = ({
 }) => {
   return (
     <article
+      data-founder-card
       className="group relative glass rounded-2xl pt-14 pb-6 px-6 text-center transition-transform duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
       style={{
         boxShadow: `0 12px 48px -20px ${founder.accent}`,
       }}
     >
-      {/* Node anchored on the top edge, half outside the card */}
+      {/* Node anchored on the top edge, half outside the card. Outer wrapper
+          owns the -translate-x-1/2 positioning; inner wrapper is what GSAP
+          scales, so the pop animation never clobbers the centering transform. */}
       <div className="absolute left-1/2 -top-10 -translate-x-1/2">
-        <NodeCircle founder={founder} reduced={reduced} innerRef={nodeRef} />
+        <div data-founder-node className="will-change-transform">
+          <NodeCircle founder={founder} reduced={reduced} innerRef={nodeRef} />
+        </div>
       </div>
 
-      <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-accent mb-1.5">
-        {t(`founders.items.${founder.key}.role`)}
-      </p>
-      <h3 className="font-headline text-2xl font-bold mb-2 text-foreground">
-        {t(`founders.items.${founder.key}.name`)}
-      </h3>
-      <p className="text-sm text-muted-foreground font-body leading-relaxed">
-        {t(`founders.items.${founder.key}.line`)}
-      </p>
+      <div data-founder-body>
+        <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-accent mb-1.5">
+          {t(`founders.items.${founder.key}.role`)}
+        </p>
+        <h3 className="font-headline text-2xl font-bold mb-2 text-foreground">
+          {t(`founders.items.${founder.key}.name`)}
+        </h3>
+        <p className="text-sm text-muted-foreground font-body leading-relaxed">
+          {t(`founders.items.${founder.key}.line`)}
+        </p>
+      </div>
     </article>
   );
 };
