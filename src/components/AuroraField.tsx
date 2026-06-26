@@ -84,12 +84,12 @@ const FRAG = `
     vec3 cyan = vec3(0.102, 0.925, 1.000);
 
     vec3 col = base;
-    col = mix(col, blue, smoothstep(0.35, 0.70, v) * 0.75);
-    col = mix(col, teal, smoothstep(0.55, 0.86, v) * 0.55);
-    col += cyan * smoothstep(0.78, 1.0, v) * ridge * 0.45;
+    col = mix(col, blue, smoothstep(0.40, 0.80, v) * 0.50);
+    col = mix(col, teal, smoothstep(0.60, 0.92, v) * 0.32);
+    col += cyan * smoothstep(0.86, 1.0, v) * ridge * 0.16;
 
     // depth shading: lows sink to base
-    col *= 0.35 + 0.85 * v;
+    col *= 0.45 + 0.55 * v;
 
     // per-section mood drift with scroll
     col *= 0.90 + 0.12 * sin(scr * 6.2831 * 1.5 + 1.0);
