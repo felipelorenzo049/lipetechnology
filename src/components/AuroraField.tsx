@@ -1,3 +1,4 @@
+/// <reference types="@react-three/fiber" />
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useReducedMotion } from "framer-motion";
