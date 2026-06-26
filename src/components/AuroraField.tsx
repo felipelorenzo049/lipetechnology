@@ -157,17 +157,18 @@ const AuroraPlane = ({ reduced }: { reduced: boolean }) => {
     if (!reduced) m.uniforms.uTime.value = state.clock.elapsedTime;
   });
 
+  const props: any = {
+    ref: matRef,
+    vertexShader: VERT,
+    fragmentShader: FRAG,
+    uniforms,
+    depthTest: false,
+    depthWrite: false,
+  };
   return (
     <mesh frustumCulled={false}>
       <planeGeometry args={[2, 2]} />
-      <shaderMaterial
-        ref={matRef}
-        vertexShader={VERT}
-        fragmentShader={FRAG}
-        uniforms={uniforms}
-        depthTest={false}
-        depthWrite={false}
-      />
+      <shaderMaterial {...props} />
     </mesh>
   );
 };
