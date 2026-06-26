@@ -38,45 +38,21 @@ const Hero = () => {
         .from("[data-hero='cta'] > *", { opacity: 0, y: 18, duration: 0.6, stagger: 0.08 }, "-=0.4")
         .from("[data-hero='scroll']", { opacity: 0, duration: 0.6 }, "-=0.2");
 
-      // Signature scroll scene. Desktop pins the hero and plays a held
-      // cinematic beat (headline swells, bloom blooms, content lifts away,
-      // the "ignite" line descends as the signal hands off to the page).
-      // Touch / small screens keep a light, non-pinned exit.
-      const mm = gsap.matchMedia();
-
-      mm.add("(min-width: 768px) and (hover: hover) and (pointer: fine)", () => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: root,
-            start: "top top",
-            end: "+=120%",
-            pin: true,
-            pinSpacing: true,
-            scrub: 0.5,
-          },
+      // Scroll-out scene (no pin — keeps the scroll honest, no dead-zone
+      // spacer). The headline swells slightly and the content lifts + fades
+      // late as the hero scrolls away, while the bloom recedes and the
+      // "ignite" line descends to hand the signal off to the page below.
+      gsap
+        .timeline({
+          scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.5 },
           defaults: { ease: "none" },
-        });
-        tl.to("[data-hero='eyebrow']", { opacity: 0, y: -18, duration: 0.18 }, 0)
-          .to("[data-hero='headline']", { scale: 1.06, duration: 0.55 }, 0)
-          .to(bloomRef.current, { scale: 1.22, opacity: 0.7, duration: 0.55 }, 0)
-          .to("[data-hero='subhead']", { opacity: 0, y: -14, duration: 0.25 }, 0.12)
-          .to("[data-hero='cta']", { opacity: 0, y: -14, duration: 0.25 }, 0.18)
-          .to("[data-hero='scroll']", { opacity: 0, duration: 0.15 }, 0)
-          .to("[data-hero='content']", { yPercent: -14, opacity: 0, duration: 0.4, ease: "power2.in" }, 0.58)
-          .to(bloomRef.current, { scale: 0.5, opacity: 0.18, duration: 0.4 }, 0.58)
-          .to("[data-hero='ignite']", { scaleY: 1, opacity: 1, duration: 0.5, ease: "power1.out" }, 0.5);
-      });
-
-      mm.add("(max-width: 767px), (pointer: coarse)", () => {
-        const tl = gsap.timeline({
-          scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.4 },
-          defaults: { ease: "none" },
-        });
-        tl.to("[data-hero='content']", { yPercent: -8, duration: 1 }, 0)
-          .to("[data-hero='content']", { opacity: 0, duration: 0.32, ease: "power2.in" }, 0.68)
-          .to(bloomRef.current, { scale: 0.8, opacity: 0.45, yPercent: -6, duration: 1 }, 0)
-          .to("[data-hero='ignite']", { scaleY: 1, opacity: 1, duration: 0.7, ease: "power1.out" }, 0.15);
-      });
+        })
+        .to("[data-hero='headline']", { scale: 1.05, duration: 1 }, 0)
+        .to("[data-hero='content']", { yPercent: -10, duration: 1 }, 0)
+        .to("[data-hero='eyebrow']", { opacity: 0, duration: 0.3 }, 0.08)
+        .to("[data-hero='content']", { opacity: 0, duration: 0.3, ease: "power2.in" }, 0.7)
+        .to(bloomRef.current, { scale: 0.85, opacity: 0.4, yPercent: -6, duration: 1 }, 0)
+        .to("[data-hero='ignite']", { scaleY: 1, opacity: 1, duration: 0.7, ease: "power1.out" }, 0.15);
 
       const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
       if (fine.matches && parallaxRef.current) {
