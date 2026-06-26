@@ -38,13 +38,19 @@ const Hero = () => {
         .from("[data-hero='cta'] > *", { opacity: 0, y: 18, duration: 0.6, stagger: 0.08 }, "-=0.4")
         .from("[data-hero='scroll']", { opacity: 0, duration: 0.6 }, "-=0.2");
 
+      // Scroll-out: content stays fully present and drifts up gently (depth),
+      // fading only in the last third of the exit so it never ghosts while
+      // still on screen. The bloom recedes and the "ignite" line descends as
+      // the signal hands off to the page below.
       gsap
         .timeline({
-          scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.6 },
+          scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.4 },
+          defaults: { ease: "none" },
         })
-        .to("[data-hero='content']", { y: -90, opacity: 0, ease: "none" }, 0)
-        .to(bloomRef.current, { scale: 0.4, opacity: 0.85, ease: "none" }, 0)
-        .to("[data-hero='ignite']", { scaleY: 1, opacity: 1, ease: "none" }, 0);
+        .to("[data-hero='content']", { yPercent: -8, duration: 1 }, 0)
+        .to("[data-hero='content']", { opacity: 0, duration: 0.32, ease: "power2.in" }, 0.68)
+        .to(bloomRef.current, { scale: 0.8, opacity: 0.45, yPercent: -6, duration: 1 }, 0)
+        .to("[data-hero='ignite']", { scaleY: 1, opacity: 1, duration: 0.7, ease: "power1.out" }, 0.15);
 
       const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
       if (fine.matches && parallaxRef.current) {
