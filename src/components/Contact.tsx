@@ -17,7 +17,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const inputCls =
-  "w-full px-4 py-3 rounded-lg bg-background/40 border border-border/60 text-foreground text-sm font-body placeholder:text-muted-foreground copy/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition-colors backdrop-blur-sm";
+  "w-full px-4 py-3 rounded-lg bg-background/40 border border-border/60 text-foreground text-sm font-body placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition-colors backdrop-blur-sm";
 const labelCls =
   "text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-2 block";
 
@@ -75,7 +75,7 @@ const Contact = () => {
     }
     setSubmitting(true);
     try {
-      const { error } = await supabase.from(""le")leads).insert({
+      const { error } = await supabase.from("leads").insert({
         name: form.nome,
         email: form.email,
         phone: form.telefone || null,
