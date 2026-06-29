@@ -74,7 +74,7 @@ const CardShell = ({
   node?: string;
   className?: string;
 }) => {
-  const a = ACCESG[accent];
+  const a = ACCENT[accent];
   return (
     <div data-svc={node} className={`group relative ${className}`}>
       <div className={`relative h-full rounded-2xl p-[1px] bg-gradient-to-br from-border/80 via-border/30 to-border/10 ${a.border} transition-colors`}>
