@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrambleText } from "@/components/ScrambleText";
 import { MagneticButton } from "@/components/MagneticButton";
+import SignalCore from "@/components/SignalCore";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -88,6 +90,8 @@ const Hero = () => {
           filter: "blur(20px)",
         }}
       />
+
+      <SignalCore />
 
       <div data-hero="content" className="relative z-10 w-full">
         <div ref={parallaxRef} className="container mx-auto px-6 text-center max-w-4xl">
