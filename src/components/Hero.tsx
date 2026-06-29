@@ -91,6 +91,8 @@ const Hero = () => {
         }}
       />
 
+      <SignalCore />
+
       <div data-hero="content" className="relative z-10 w-full">
         <div ref={parallaxRef} className="container mx-auto px-6 text-center max-w-4xl">
           <div className="flex items-center justify-center gap-3 mb-12">
