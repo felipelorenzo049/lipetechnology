@@ -1,9 +1,12 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { useReducedMotion } from "framer-motion";
 import { Globe, MessageSquareText, Layers, TrendingUp, Wrench, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
-import SectionSignal from "@/components/SectionSignal";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type Accent = "primary" | "secondary" | "accent";
 type Service = {
@@ -63,32 +66,24 @@ const ACCENT: Record<Accent, { text: string; bg: string; glow: string; border: s
 const CardShell = ({
   children,
   accent,
-  index,
+  node = "card",
   className = "",
 }: {
   children: React.ReactNode;
   accent: Accent;
-  index: number;
+  node?: string;
   className?: string;
 }) => {
   const a = ACCENT[accent];
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className={`group relative ${className}`}
-    >
+    <div data-svc={node} className={`group relative ${className}`}>
       <div className={`relative h-full rounded-2xl p-[1px] bg-gradient-to-br from-border/80 via-border/30 to-border/10 ${a.border} transition-colors`}>
         <div className={`relative h-full rounded-2xl glass p-5 md:p-6 overflow-hidden transition-all duration-300 ${a.shadow} hover:-translate-y-1`}>
           <div className={`pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full ${a.bg} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
           {children}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -135,7 +130,7 @@ const HeroCard = ({ service }: { service: Service }) => {
   const details = t(`services.${service.detailsKey}`, { returnObjects: true }) as string[];
 
   return (
-    <CardShell accent={service.accent} index={0} className="md:col-span-2">
+    <CardShell accent={service.accent} node="hero" className="md:col-span-2">
       <div className="grid md:grid-cols-[1.1fr_1fr] gap-6 md:gap-7 h-full">
         {/* Copy column */}
         <div className="flex flex-col">
@@ -180,13 +175,13 @@ const HeroCard = ({ service }: { service: Service }) => {
   );
 };
 
-const CompactCard = ({ service, index }: { service: Service; index: number }) => {
+const CompactCard = ({ service }: { service: Service }) => {
   const { t } = useTranslation();
   const a = ACCENT[service.accent];
   const details = t(`services.${service.detailsKey}`, { returnObjects: true }) as string[];
 
   return (
-    <CardShell accent={service.accent} index={index}>
+    <CardShell accent={service.accent}>
       <div className="flex items-center justify-between mb-4">
         <span className={`font-mono text-[10px] tracking-[0.22em] uppercase ${a.text} opacity-80`}>
           {service.code}
@@ -221,25 +216,36 @@ const CompactCard = ({ service, index }: { service: Service; index: number }) =>
 
 const Services = () => {
   const { t } = useTranslation();
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+
+  // The section assembles as it scrolls into view: the heading rises, the
+  // signature service card draws in, then the compact service cards stagger up.
+  useEffect(() => {
+    if (reduced || !sectionRef.current) return;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: "top 75%", once: true },
+        defaults: { ease: "power3.out" },
+      });
+      tl.from("[data-svc='head'] > *", { opacity: 0, y: 20, duration: 0.55, stagger: 0.08 }, 0)
+        .from("[data-svc='hero']", { opacity: 0, y: 28, scale: 0.985, duration: 0.6, clearProps: "transform,opacity" }, 0.2)
+        .from("[data-svc='card']", { opacity: 0, y: 22, duration: 0.5, stagger: 0.1, clearProps: "transform,opacity" }, 0.34);
+    }, sectionRef);
+    return () => ctx.revert();
+  }, [reduced]);
 
   return (
-    <section id="servicos" className="py-24 md:py-32">
-      <div ref={ref} className="container mx-auto px-6 max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          className="mb-12 md:mb-16 max-w-2xl"
-        >
-          <div className="mb-3"><SectionSignal width={160} /></div>
+    <section id="servicos" ref={sectionRef} className="py-24 md:py-32">
+      <div className="container mx-auto px-6 max-w-6xl">
+        <div data-svc="head" className="mb-12 md:mb-16 max-w-2xl">
           <span className="font-mono text-xs text-accent tracking-[0.2em] uppercase">{t("services.label")}</span>
           <h2 className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-3 leading-[1.05]">
             {t("services.title")}{" "}
             <span className="gradient-text">{t("services.titleHighlight")}</span>
           </h2>
           <p className="text-muted-foreground font-body mt-4">{t("services.subtitle")}</p>
-        </motion.div>
+        </div>
 
         {/* Hero card — full width */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mb-4 md:mb-5">
@@ -248,8 +254,8 @@ const Services = () => {
 
         {/* Uniform compact grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
-          {REST.map((s, i) => (
-            <CompactCard key={s.titleKey} service={s} index={i + 1} />
+          {REST.map((s) => (
+            <CompactCard key={s.titleKey} service={s} />
           ))}
         </div>
       </div>
