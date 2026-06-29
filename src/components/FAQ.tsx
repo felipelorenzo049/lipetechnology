@@ -1,29 +1,39 @@
-import { motion, useInView, AnimatePresence, useReducedMotion } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import SectionSignal from "@/components/SectionSignal";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const FAQ = () => {
   const { t, i18n } = useTranslation();
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const faqs = t("faq.items", { returnObjects: true, lng: i18n.language }) as Array<{ q: string; a: string }>;
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
+  // The section assembles on scroll-in: the heading rises, then the FAQ cards
+  // stagger up. Accordion open/close stays on framer.
+  useEffect(() => {
+    if (reduced || !sectionRef.current) return;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: "top 75%", once: true },
+        defaults: { ease: "power3.out" },
+      });
+      tl.from("[data-faq='head'] > *", { opacity: 0, y: 18, duration: 0.55, stagger: 0.08 }, 0)
+        .from("[data-faq='card']", { opacity: 0, y: 18, duration: 0.5, stagger: 0.08, clearProps: "transform,opacity" }, 0.15);
+    }, sectionRef);
+    return () => ctx.revert();
+  }, [reduced]);
+
   return (
-    <section className="py-24 md:py-32">
-      <div ref={ref} className="container mx-auto px-6 max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          className="text-center mb-14"
-        >
-          <div className="flex justify-center mb-3">
-            <SectionSignal align="center" width={160} />
-          </div>
+    <section ref={sectionRef} className="py-24 md:py-32">
+      <div className="container mx-auto px-6 max-w-3xl">
+        <div data-faq="head" className="text-center mb-14">
           <span className="font-mono text-xs text-accent tracking-[0.2em] uppercase">
             {t("faq.label")}
           </span>
@@ -31,17 +41,15 @@ const FAQ = () => {
             {t("faq.title")}{" "}
             <span className="gradient-text">{t("faq.titleHighlight")}</span>
           </h2>
-        </motion.div>
+        </div>
 
         <div className="space-y-3">
           {faqs.map((faq, i) => {
             const open = openIdx === i;
             return (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, y: 16 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.1 + i * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                data-faq="card"
                 className={cn(
                   "relative rounded-xl border backdrop-blur-sm transition-colors duration-300 overflow-hidden",
                   open
@@ -102,7 +110,7 @@ const FAQ = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </div>
             );
           })}
         </div>
