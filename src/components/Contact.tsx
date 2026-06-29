@@ -1,5 +1,5 @@
-import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import { Send, MessageCircle, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import SectionSignal from "@/components/SectionSignal";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const inputCls =
   "w-full px-4 py-3 rounded-lg bg-background/40 border border-border/60 text-foreground text-sm font-body placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition-colors backdrop-blur-sm";
@@ -27,8 +30,8 @@ const whatsappMessages: Record<string, string> = {
 
 const Contact = () => {
   const { t, i18n } = useTranslation();
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
   const { toast } = useToast();
   const budgetOptions = t("contact.budgetOptions", { returnObjects: true }) as string[];
   const [form, setForm] = useState({
@@ -45,6 +48,24 @@ const Contact = () => {
   const waUrl = `https://wa.me/5511940575960?text=${encodeURIComponent(
     whatsappMessages[lang] || whatsappMessages.en,
   )}`;
+
+  // The section assembles on scroll-in: the signal circuit traces itself, its
+  // nodes light up, the heading rises and the form panel slides in.
+  useEffect(() => {
+    if (reduced || !sectionRef.current) return;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: "top 75%", once: true },
+        defaults: { ease: "power3.out" },
+      });
+      tl.from("[data-c='trace']", { strokeDashoffset: 1, duration: 1.1, ease: "power2.inOut" }, 0)
+        .from("[data-c='dot']", { opacity: 0, duration: 0.4, stagger: 0.08 }, 0.6)
+        .from("[data-c='head'] > *", { opacity: 0, y: 18, duration: 0.55, stagger: 0.08 }, 0.15)
+        .from("[data-c='rail']", { scaleX: 0, transformOrigin: "center", duration: 0.6 }, 0.4)
+        .from("[data-c='form']", { opacity: 0, y: 28, duration: 0.6, clearProps: "transform,opacity" }, 0.45);
+    }, sectionRef);
+    return () => ctx.revert();
+  }, [reduced]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,7 +96,7 @@ const Contact = () => {
   const update = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
 
   return (
-    <section id="contato" className="relative py-24 md:py-32 overflow-hidden">
+    <section id="contato" ref={sectionRef} className="relative py-24 md:py-32 overflow-hidden">
       {/* Decorative signal circuit */}
       <svg
         aria-hidden
@@ -91,32 +112,31 @@ const Contact = () => {
           </linearGradient>
         </defs>
         <path
+          data-c="trace"
+          pathLength={1}
+          style={{ strokeDasharray: 1 }}
           d="M0 120 L300 120 L360 60 L900 60 L960 120 L1200 120"
           stroke="url(#sig)"
           strokeWidth="1"
           fill="none"
         />
         <path
+          data-c="trace"
+          pathLength={1}
+          style={{ strokeDasharray: 1 }}
           d="M0 700 L240 700 L300 760 L900 760 L960 700 L1200 700"
           stroke="url(#sig)"
           strokeWidth="1"
           fill="none"
         />
-        <circle cx="360" cy="60" r="2.5" fill="hsl(var(--accent))" />
-        <circle cx="900" cy="60" r="2.5" fill="hsl(var(--accent))" />
-        <circle cx="300" cy="760" r="2.5" fill="hsl(var(--accent))" />
-        <circle cx="900" cy="760" r="2.5" fill="hsl(var(--accent))" />
+        <circle data-c="dot" cx="360" cy="60" r="2.5" fill="hsl(var(--accent))" />
+        <circle data-c="dot" cx="900" cy="60" r="2.5" fill="hsl(var(--accent))" />
+        <circle data-c="dot" cx="300" cy="760" r="2.5" fill="hsl(var(--accent))" />
+        <circle data-c="dot" cx="900" cy="760" r="2.5" fill="hsl(var(--accent))" />
       </svg>
 
-      <div ref={ref} className="relative container mx-auto px-6 max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          className="text-center mb-12"
-        >
-          <div className="flex justify-center mb-3">
-            <SectionSignal align="center" width={170} />
-          </div>
+      <div className="relative container mx-auto px-6 max-w-3xl">
+        <div data-c="head" className="text-center mb-12">
           <span className="font-mono text-xs text-accent tracking-[0.2em] uppercase">
             {t("contact.label")}
           </span>
@@ -124,17 +144,15 @@ const Contact = () => {
             {t("contact.title")}{" "}
             <span className="gradient-text">{t("contact.titleHighlight")}</span>
           </h2>
-        </motion.div>
+        </div>
 
-        <motion.form
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.2 }}
+        <form
+          data-c="form"
           onSubmit={handleSubmit}
           className="relative rounded-2xl border border-border/60 bg-card/40 backdrop-blur-xl p-6 sm:p-8 space-y-5 shadow-[0_30px_80px_-30px_hsl(var(--primary)/0.3)]"
         >
           {/* Top accent rail */}
-          <span className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
+          <span data-c="rail" className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
@@ -224,7 +242,7 @@ const Contact = () => {
               WhatsApp
             </a>
           </div>
-        </motion.form>
+        </form>
       </div>
     </section>
   );
