@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrambleText } from "@/components/ScrambleText";
 import { MagneticButton } from "@/components/MagneticButton";
+import SignalCore from "@/components/SignalCore";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
