@@ -5,14 +5,14 @@ import { useReducedMotion } from "framer-motion";
  * SignalThread — a vertical "signal" wire behind the whole page. A dim base
  * wire runs the full height (the uncharged future); a bright "charged" segment
  * fills from the top down to the current scroll position — the signal travels
- * DOWN with you — with a luminous pulse riding its leading edge. Pin-free,
- * scroll-linked via rAF, transform/opacity/stroke only.
+ * DOWN with you — with a round luminous pulse (DOM, not SVG-stretched) riding
+ * its leading edge. Pin-free, scroll-linked via rAF.
  */
 const SignalThread = () => {
   const reduced = useReducedMotion();
-  const pathRef = useRef<SVGPathElement | null>(null); // geometry source
-  const chargeRef = useRef<SVGPathElement | null>(null); // bright charged overlay
-  const pulseRef = useRef<SVGCircleElement | null>(null);
+  const pathRef = useRef<SVGPathElement | null>(null);
+  const chargeRef = useRef<SVGPathElement | null>(null);
+  const pulseRef = useRef<HTMLDivElement | null>(null);
   const [pageHeight, setPageHeight] = useState(0);
 
   // Track total document height so the SVG spans the page.
@@ -40,7 +40,7 @@ const SignalThread = () => {
 
     if (reduced) {
       charge.style.strokeDashoffset = "0";
-      if (pulse) pulse.setAttribute("opacity", "0");
+      if (pulse) pulse.style.opacity = "0";
       return;
     }
 
@@ -52,10 +52,9 @@ const SignalThread = () => {
       const t = Math.max(0, Math.min(1, scrollTop / max));
       charge.style.strokeDashoffset = `${length * (1 - t)}`;
       if (pulse) {
-        const pt = path.getPointAtLength(t * length);
-        pulse.setAttribute("transform", `translate(${pt.x} ${pt.y})`);
+        pulse.style.transform = `translate(-50%, ${t * length}px)`;
         const fade = Math.min(1, Math.max(0, (t - 0.01) / 0.05));
-        pulse.setAttribute("opacity", String(0.95 * fade));
+        pulse.style.opacity = String(fade);
       }
     };
     const onScroll = () => {
@@ -101,14 +100,6 @@ const SignalThread = () => {
             <stop offset="45%" stopColor="#2BB8A0" stopOpacity="0.9" />
             <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.95" />
           </linearGradient>
-
-          <filter id="signal-thread-glow" x="-300%" y="-300%" width="700%" height="700%">
-            <feGaussianBlur stdDeviation="6" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
         </defs>
 
         {/* Dim base wire (uncharged), full height */}
@@ -132,11 +123,18 @@ const SignalThread = () => {
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"
         />
-        {/* Pulse at the charged edge */}
-        <g filter="url(#signal-thread-glow)">
-          <circle ref={pulseRef} r="5" fill="hsl(var(--accent))" opacity={0} />
-        </g>
       </svg>
+
+      {/* Round luminous pulse (DOM — immune to the SVG horizontal stretch) */}
+      <div
+        ref={pulseRef}
+        className="absolute left-1/2 top-0 h-2.5 w-2.5 rounded-full bg-accent"
+        style={{
+          opacity: 0,
+          boxShadow: "0 0 14px 3px hsl(var(--accent) / 0.7)",
+          willChange: "transform",
+        }}
+      />
     </div>
   );
 };
