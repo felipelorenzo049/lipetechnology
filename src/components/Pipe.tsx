@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { animate, stagger } from "animejs";
 import { useIsMobile } from "@/hooks/use-mobile";
+import ScrollAperture from "@/components/ScrollAperture";
 
 type Stage = "ideacao" | "dev" | "beta" | "live";
 
@@ -143,7 +144,9 @@ const Pipe = () => {
         {isMobile ? (
           <MobilePipe grouped={grouped} />
         ) : (
-          <DesktopPipe grouped={grouped} reduced={reduced} />
+          <ScrollAperture>
+            <DesktopPipe grouped={grouped} reduced={reduced} />
+          </ScrollAperture>
         )}
 
         {/* Clients rail */}
