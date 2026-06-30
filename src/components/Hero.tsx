@@ -77,7 +77,7 @@ const Hero = () => {
   return (
     <section
       ref={rootRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-24 md:pt-32 md:pb-20"
+      className="relative min-h-screen flex items-center justify-center pt-28 pb-24 md:pt-32 md:pb-20"
     >
       <div
         ref={bloomRef}
