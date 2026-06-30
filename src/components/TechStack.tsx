@@ -2,7 +2,7 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef, useState } from "react";
 import { Star, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { cn } from "@/lib/utils";
+
 import SectionSignal from "@/components/SectionSignal";
 
 // --- Inline SVG Logos (concise) ---
