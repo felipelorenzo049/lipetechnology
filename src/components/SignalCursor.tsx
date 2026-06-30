@@ -3,8 +3,8 @@ import { gsap } from "gsap";
 
 /**
  * SignalCursor — custom dual cursor (dot + trailing ring) for the marketing
- * surface. Uses the "signal" cyan accent. Follows the pointer with
- * gsap.quickTo, grows + fills over interactive targets, shrinks on press.
+ * surface. Uses the "signal" cyan accent. Movement is an rAF lerp written to
+ * the CSS `translate` property; hover scale/colour are gsap on `transform`.
  *
  * Disabled on coarse/touch pointers and prefers-reduced-motion (native cursor
  * left untouched). Text fields keep their caret.
@@ -32,24 +32,36 @@ export const SignalCursor = () => {
       'input,textarea,select,[contenteditable="true"]{cursor:auto !important;}';
     document.head.appendChild(style);
 
-    const dotX = gsap.quickTo(dot, "x", { duration: 0.12, ease: "power3" });
-    const dotY = gsap.quickTo(dot, "y", { duration: 0.12, ease: "power3" });
-    const ringX = gsap.quickTo(ring, "x", { duration: 0.5, ease: "power3" });
-    const ringY = gsap.quickTo(ring, "y", { duration: 0.5, ease: "power3" });
+    let mx = window.innerWidth / 2;
+    let my = window.innerHeight / 2;
+    let dx = mx;
+    let dy = my;
+    let rx = mx;
+    let ry = my;
+    let raf = 0;
+
+    const render = () => {
+      dx += (mx - dx) * 0.35;
+      dy += (my - dy) * 0.35;
+      rx += (mx - rx) * 0.16;
+      ry += (my - ry) * 0.16;
+      dot.style.translate = `${dx}px ${dy}px`;
+      ring.style.translate = `${rx}px ${ry}px`;
+      raf = requestAnimationFrame(render);
+    };
+    raf = requestAnimationFrame(render);
 
     let shown = false;
     const reveal = () => {
       if (shown) return;
       shown = true;
-      gsap.to([dot, ring], { autoAlpha: 1, duration: 0.3, overwrite: true });
+      gsap.to([dot, ring], { autoAlpha: 1, duration: 0.3, overwrite: "auto" });
     };
 
     const onMove = (e: PointerEvent) => {
       reveal();
-      dotX(e.clientX);
-      dotY(e.clientY);
-      ringX(e.clientX);
-      ringY(e.clientY);
+      mx = e.clientX;
+      my = e.clientY;
     };
 
     const hover = (active: boolean) => {
@@ -77,7 +89,7 @@ export const SignalCursor = () => {
     const onUp = () => gsap.to(ring, { scale: 1, duration: 0.3, overwrite: "auto" });
     const onLeave = () => {
       shown = false;
-      gsap.to([dot, ring], { autoAlpha: 0, duration: 0.25, overwrite: true });
+      gsap.to([dot, ring], { autoAlpha: 0, duration: 0.25, overwrite: "auto" });
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -88,38 +100,26 @@ export const SignalCursor = () => {
     document.addEventListener("mouseleave", onLeave);
 
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerover", onOver);
       window.removeEventListener("pointerout", onOut);
-      window.removeEventListener("pointerdown", onDown);
-      window.removeEventListener("pointerup", onUp);
-      document.removeEventListener("mouseleave", onLeave);
-      style.remove();
-    };
-  }, []);
-
-  return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-[9999] hidden md:block">
-      <div
-        ref={ringRef}
-        className="fixed left-0 top-0 -ml-5 -mt-5 h-10 w-10 rounded-full border opacity-0"
-        style={{
-          borderColor: "rgba(26,236,255,0.35)",
-          mixBlendMode: "screen",
-          willChange: "transform",
-        }}
-      />
-      <div
-        ref={dotRef}
-        className="fixed left-0 top-0 -ml-[3px] -mt-[3px] h-1.5 w-1.5 rounded-full opacity-0"
-        style={{
-          backgroundColor: "#1AECFF",
-          boxShadow: "0 0 12px rgba(26,236,255,0.85)",
-          willChange: "transform",
-        }}
-      />
-    </div>
-  );
+      window.removeEventListener("color: "rgba(26,236,255,0.35)",
+        mixBlendMode: "screen",
+        willChange: "translate, transform",
+      }}
+    />
+    <div
+      ref={dotRef}
+      className="fixed left-0 top-0 -ml-[3px] -mt-[3px] h-1.5 w-1.5 rounded-full opacity-0"
+      style={{
+        backgroundColor: "#1AECFF",
+        boxShadow: "0 0 12px rgba(26,236,255,0.85)",
+        willChange: "translate, transform",
+      }}
+    />
+  </div>
+);
 };
 
 export default SignalCursor;
