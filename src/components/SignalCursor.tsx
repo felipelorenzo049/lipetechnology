@@ -104,22 +104,35 @@ export const SignalCursor = () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerover", onOver);
       window.removeEventListener("pointerout", onOut);
-      window.removeEventListener("color: "rgba(26,236,255,0.35)",
-        mixBlendMode: "screen",
-        willChange: "translate, transform",
-      }}
-    />
-    <div
-      ref={dotRef}
-      className="fixed left-0 top-0 -ml-[3px] -mt-[3px] h-1.5 w-1.5 rounded-full opacity-0"
-      style={{
-        backgroundColor: "#1AECFF",
-        boxShadow: "0 0 12px rgba(26,236,255,0.85)",
-        willChange: "translate, transform",
-      }}
-    />
-  </div>
-);
+      window.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("pointerup", onUp);
+      document.removeEventListener("mouseleave", onLeave);
+      style.remove();
+    };
+  }, []);
+
+  return (
+    <div aria-hidden className="pointer-events-none fixed inset-0 z-[9999] hidden md:block">
+      <div
+        ref={ringRef}
+        className="fixed left-0 top-0 -ml-5 -mt-5 h-10 w-10 rounded-full border opacity-0"
+        style={{
+          borderColor: "rgba(26,236,255,0.35)",
+          mixBlendMode: "screen",
+          willChange: "translate, transform",
+        }}
+      />
+      <div
+        ref={dotRef}
+        className="fixed left-0 top-0 -ml-[3px] -mt-[3px] h-1.5 w-1.5 rounded-full opacity-0"
+        style={{
+          backgroundColor: "#1AECFF",
+          boxShadow: "0 0 12px rgba(26,236,255,0.85)",
+          willChange: "translate, transform",
+        }}
+      />
+    </div>
+  );
 };
 
 export default SignalCursor;
