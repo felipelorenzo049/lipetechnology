@@ -175,6 +175,76 @@ const HeroCard = ({ service }: { service: Service }) => {
   );
 };
 
+const ServiceVisual = ({ serviceKey }: { serviceKey: string }) => {
+  const wrap = "mt-4 rounded-lg border border-border/40 bg-background/30 p-2.5 overflow-hidden";
+  switch (serviceKey) {
+    case "consultativeChatbots":
+      return (
+        <div className={`${wrap} space-y-1.5`} aria-hidden>
+          <div className="h-2.5 w-2/3 rounded-md bg-foreground/[0.12]" />
+          <div className="h-2.5 w-1/2 rounded-md bg-accent/35 ml-auto" />
+          <div className="h-2.5 w-3/5 rounded-md bg-foreground/[0.12]" />
+          <div className="flex items-center gap-1 pt-0.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent/70 animate-pulse" />
+            <span className="h-1.5 w-1.5 rounded-full bg-accent/70 animate-pulse [animation-delay:150ms]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-accent/70 animate-pulse [animation-delay:300ms]" />
+          </div>
+        </div>
+      );
+    case "saas":
+      return (
+        <div className={`${wrap} flex gap-2 items-end`} aria-hidden>
+          <div className="w-1/4 space-y-1 self-stretch pt-0.5">
+            <div className="h-1.5 rounded bg-foreground/15" />
+            <div className="h-1.5 rounded bg-foreground/10" />
+            <div className="h-1.5 rounded bg-foreground/10" />
+          </div>
+          <div className="flex-1 flex items-end gap-1 h-10">
+            <div className="flex-1 rounded-sm bg-secondary/40" style={{ height: "40%" }} />
+            <div className="flex-1 rounded-sm bg-secondary/60" style={{ height: "70%" }} />
+            <div className="flex-1 rounded-sm bg-secondary/50" style={{ height: "52%" }} />
+            <div className="flex-1 rounded-sm bg-secondary/80" style={{ height: "95%" }} />
+          </div>
+        </div>
+      );
+    case "digitalMarketing":
+      return (
+        <div className={wrap} aria-hidden>
+          <svg viewBox="0 0 100 40" className="w-full h-12" preserveAspectRatio="none">
+            <polyline
+              points="2,34 22,29 42,31 62,18 82,12 98,4"
+              fill="none"
+              stroke="hsl(var(--accent))"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <circle cx="98" cy="4" r="3" fill="hsl(var(--accent))" />
+          </svg>
+        </div>
+      );
+    case "maintenance":
+      return (
+        <div className={wrap} aria-hidden>
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="font-mono text-[9px] tracking-wider text-secondary">UPTIME</span>
+            <span className="font-mono text-[9px] text-foreground/80">99.9%</span>
+          </div>
+          <div className="flex gap-0.5">
+            {Array.from({ length: 22 }).map((_, i) => (
+              <span
+                key={i}
+                className={`h-3.5 flex-1 rounded-[1px] ${i === 6 || i === 17 ? "bg-secondary/35" : "bg-secondary/70"}`}
+              />
+            ))}
+          </div>
+        </div>
+      );
+    default:
+      return null;
+  }
+};
+
 const CompactCard = ({ service }: { service: Service }) => {
   const { t } = useTranslation();
   const a = ACCENT[service.accent];
