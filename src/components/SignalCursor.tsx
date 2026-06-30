@@ -34,18 +34,16 @@ export const SignalCursor = () => {
 
     let mx = window.innerWidth / 2;
     let my = window.innerHeight / 2;
-    let dx = mx;
-    let dy = my;
     let rx = mx;
     let ry = my;
     let raf = 0;
 
     const render = () => {
-      dx += (mx - dx) * 0.35;
-      dy += (my - dy) * 0.35;
-      rx += (mx - rx) * 0.16;
-      ry += (my - ry) * 0.16;
-      dot.style.translate = `${dx}px ${dy}px`;
+      // Dot pins exactly to the pointer (no smoothing) so it never lags; only
+      // the ring trails behind.
+      rx += (mx - rx) * 0.2;
+      ry += (my - ry) * 0.2;
+      dot.style.translate = `${mx}px ${my}px`;
       ring.style.translate = `${rx}px ${ry}px`;
       raf = requestAnimationFrame(render);
     };
@@ -73,7 +71,7 @@ export const SignalCursor = () => {
         ease: "power3",
         overwrite: "auto",
       });
-      gsap.to(dot, { scale: active ? 0 : 1, duration: 0.25, ease: "power3", overwrite: "auto" });
+      
     };
 
     const onOver = (e: PointerEvent) => {
