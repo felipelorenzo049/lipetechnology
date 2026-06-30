@@ -4,13 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { useReducedMotion } from "framer-motion";
 
-const COUNT = 1600;
+const COUNT = 2800;
 
 const VERT = `
   uniform float uTime;
   uniform float uHead;
   uniform float uRadius;
-  uniform float uAmp;
+  uniform float uStream;
   uniform vec3  uFreq;
   uniform vec3  uPhase;
   uniform float uPixelRatio;
@@ -20,19 +20,23 @@ const VERT = `
   void main() {
     vT = aT;
     float theta = aT * 6.2831853 * 3.0;
-    float breathe = 0.97 + 0.03 * sin(uTime * 0.6);
+    float breathe = 0.97 + 0.03 * sin(uTime * 0.5);
     vec3 p = vec3(
       sin(uFreq.x * theta + uPhase.x),
       sin(uFreq.y * theta + uPhase.y),
       sin(uFreq.z * theta + uPhase.z)
     );
-    p *= uRadius * uAmp * breathe;
+    p *= uRadius * breathe;
+    float s = uStream;
+    p.x *= (1.0 - s);
+    p.z *= (1.0 - s);
+    p.y = mix(p.y, -1.15 - aT * 4.5, s);
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     float d = abs(aT - uHead);
     d = min(d, 1.0 - d);
     float head = smoothstep(0.05, 0.0, d);
     vHead = head;
-    float size = 2.2 + head * 6.0;
+    float size = 2.4 + head * 6.0;
     gl_PointSize = size * uPixelRatio * (4.0 / -mv.z);
     gl_Position = projectionMatrix * mv;
   }
@@ -52,7 +56,7 @@ const FRAG = `
     vec3 col = mix(blue, teal, smoothstep(0.0, 0.5, vT));
     col = mix(col, cyan, smoothstep(0.5, 1.0, vT));
     col = mix(col, vec3(0.86, 0.98, 1.0), vHead * 0.85);
-    float intensity = 0.3 + 0.85 * vHead;
+    float intensity = 0.5 + 0.7 * vHead;
     gl_FragColor = vec4(col * intensity, a * uOpacity);
   }
 `;
@@ -73,7 +77,7 @@ function Filament({ reduced }: { reduced: boolean }) {
         uTime: { value: 0 },
         uHead: { value: 0 },
         uRadius: { value: 1.15 },
-        uAmp: { value: 1 },
+        uStream: { value: 0 },
         uFreq: { value: new THREE.Vector3(3, 2, 4) },
         uPhase: { value: new THREE.Vector3(0, 1.2, 0.5) },
         uPixelRatio: { value: Math.min(typeof window !== "undefined" ? window.devicePixelRatio : 1, 1.25) },
@@ -111,23 +115,23 @@ function Filament({ reduced }: { reduced: boolean }) {
     const t = state.clock.elapsedTime;
     if (!reduced) {
       u.uTime.value = t;
-      u.uHead.value = (t * 0.12) % 1.0;
+      u.uHead.value = (t * 0.09) % 1.0;
       const ph = u.uPhase.value as THREE.Vector3;
-      ph.x = t * 0.05 + mouse.current.x * 0.6;
-      ph.y = 1.2 + t * 0.037 + mouse.current.y * 0.6;
-      ph.z = 0.5 + t * 0.043;
+      ph.x = t * 0.025 + mouse.current.x * 0.6;
+      ph.y = 1.2 + t * 0.018 + mouse.current.y * 0.6;
+      ph.z = 0.5 + t * 0.021;
     }
     const k = Math.min(1, delta * 3);
     mouse.current.x += (target.current.x - mouse.current.x) * k;
     mouse.current.y += (target.current.y - mouse.current.y) * k;
-    const k2 = Math.min(1, delta * 2);
-    points.rotation.y += (mouse.current.x * 0.5 - points.rotation.y) * k2;
-    points.rotation.x += (-mouse.current.y * 0.35 - points.rotation.x) * k2;
-    points.rotation.z = t * 0.03;
     const prog = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.9)));
-    u.uAmp.value = 1 - prog * 0.85;
-    u.uOpacity.value = 1 - prog;
-    points.position.y = -prog * 2.2;
+    const sp = 1 - prog;
+    const k2 = Math.min(1, delta * 2);
+    points.rotation.y += (mouse.current.x * 0.5 * sp - points.rotation.y) * k2;
+    points.rotation.x += (-mouse.current.y * 0.35 * sp - points.rotation.x) * k2;
+    points.rotation.z = t * 0.02 * sp;
+    u.uStream.value = prog;
+    u.uOpacity.value = 1 - Math.min(1, Math.max(0, (prog - 0.5) / 0.5));
   });
 
   const primitiveProps: any = { object: points };
@@ -155,7 +159,7 @@ const SignalCoreFallback = () => (
           <stop offset="100%" stopColor="#3CECFF" />
         </linearGradient>
       </defs>
-      <path d={FALLBACK_PATH} fill="none" stroke="url(#signalcore-grad)" strokeWidth="0.012" strokeLinecap="round" />
+      <path d={FALLBACK_PATH} fill="none" stroke="url(#signalcore-grad)" strokeWidth="0.014" strokeLinecap="round" />
     </svg>
   </div>
 );
