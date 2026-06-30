@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Index from "./pages/Index";
+import SignalCursor from "./components/SignalCursor";
 
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
