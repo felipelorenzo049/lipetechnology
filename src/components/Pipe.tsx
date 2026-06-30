@@ -635,6 +635,7 @@ const ProductNode = ({ product }: { product: Product }) => {
               </span>
             ))}
         </div>
+        <ProductPreview productKey={key} />
 
         {/* Hover reveal: full description */}
         <div className="relative grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-300 motion-reduce:duration-0">
