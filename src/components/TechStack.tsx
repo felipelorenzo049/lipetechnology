@@ -1,6 +1,6 @@
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
-import { Star, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import SectionSignal from "@/components/SectionSignal";
@@ -252,11 +252,27 @@ const comparisonData: Record<string, { diy: number; agency: number; lipe: number
   continuousSupport: { diy: 1, agency: 3, lipe: 5 },
 };
 
-const Stars = ({ count }: { count: number }) => (
-  <div className="flex gap-0.5">
-    {Array.from({ length: 5 }).map((_, i) => (
-      <Star key={i} size={14} className={i < count ? "fill-accent text-accent" : "text-muted-foreground/30"} />
-    ))}
+const Meter = ({ score, highlight = false }: { score: number; highlight?: boolean }) => (
+  <div className="flex items-center gap-2">
+    <div className="relative h-1.5 flex-1 rounded-full bg-border/40 overflow-hidden">
+      <div
+        className={
+          highlight
+            ? "absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary via-accent to-secondary shadow-[0_0_10px_hsl(var(--accent)/0.5)]"
+            : "absolute inset-y-0 left-0 rounded-full bg-muted-foreground/40"
+        }
+        style={{ width: `${(score / 5) * 100}%` }}
+      />
+    </div>
+    <span
+      className={
+        highlight
+          ? "font-mono text-[10px] tabular-nums text-accent"
+          : "font-mono text-[10px] tabular-nums text-muted-foreground/70"
+      }
+    >
+      {score}
+    </span>
   </div>
 );
 
@@ -345,10 +361,10 @@ const TechStack = () => {
                 const row = comparisonData[key];
                 return (
                   <tr key={key} className="border-b border-border/30 transition-colors hover:bg-primary/[0.03]">
-                    <td className="py-3.5 px-5 text-sm font-body font-medium">{t(`techstack.${key}`)}</td>
-                    <td className="py-3.5 px-4 text-center bg-primary/5 border-l border-primary/10"><div className="flex justify-center"><Stars count={row.lipe} /></div></td>
-                    <td className="py-3.5 px-4 text-center"><div className="flex justify-center"><Stars count={row.diy} /></div></td>
-                    <td className="py-3.5 px-4 text-center"><div className="flex justify-center"><Stars count={row.agency} /></div></td>
+                    <td className="py-3.5 px-5 text-sm font-body font-medium whitespace-nowrap">{t(`techstack.${key}`)}</td>
+                    <td className="py-3.5 px-4 bg-primary/5 border-l border-primary/10 min-w-[120px]"><Meter score={row.lipe} highlight /></td>
+                    <td className="py-3.5 px-4 min-w-[120px]"><Meter score={row.diy} /></td>
+                    <td className="py-3.5 px-4 min-w-[120px]"><Meter score={row.agency} /></td>
                   </tr>
                 );
               })}
