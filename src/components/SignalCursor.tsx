@@ -71,7 +71,7 @@ export const SignalCursor = () => {
         ease: "power3",
         overwrite: "auto",
       });
-      gsap.to(dot, { scale: active ? 0 : 1, duration: 0.25, ease: "power3", overwrite: "auto" });
+      
     };
 
     const onOver = (e: PointerEvent) => {
