@@ -144,7 +144,9 @@ const Pipe = () => {
         {isMobile ? (
           <MobilePipe grouped={grouped} />
         ) : (
-          <DesktopPipe grouped={grouped} reduced={reduced} />
+          <ScrollAperture>
+            <DesktopPipe grouped={grouped} reduced={reduced} />
+          </ScrollAperture>
         )}
 
         {/* Clients rail */}
