@@ -41,7 +41,7 @@ const Index = () => {
       <AuroraField />
       <AtmosphereOverlay />
 
-      <div className="relative z-10 min-h-screen text-foreground overflow-x-hidden">
+      <div className="relative z-10 min-h-screen text-foreground overflow-x-clip">
         <SignalThread />
         <ScrollProgress />
         <Navbar />
