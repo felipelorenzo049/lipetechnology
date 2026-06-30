@@ -747,6 +747,7 @@ const MobileProductCard = ({ product }: { product: Product }) => {
             </span>
           ))}
       </div>
+      <ProductPreview productKey={key} />
     </div>
   );
 };
