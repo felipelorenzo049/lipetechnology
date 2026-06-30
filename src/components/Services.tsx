@@ -280,6 +280,7 @@ const CompactCard = ({ service }: { service: Service }) => {
           </span>
         ))}
       </div>
+      <ServiceVisual serviceKey={service.titleKey} />
     </CardShell>
   );
 };
