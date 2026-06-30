@@ -17,7 +17,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollProgress from "@/components/ScrollProgress";
-import SignalThread from "@/components/SignalThread";
+
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Reveal from "@/components/Reveal";
 import AuroraField from "@/components/AuroraField";
@@ -42,7 +42,7 @@ const Index = () => {
       <AtmosphereOverlay />
 
       <div className="relative z-10 min-h-screen text-foreground overflow-x-clip">
-        <SignalThread />
+        
         <ScrollProgress />
         <Navbar />
 
