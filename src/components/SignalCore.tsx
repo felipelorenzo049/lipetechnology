@@ -36,7 +36,7 @@ const VERT = `
     d = min(d, 1.0 - d);
     float head = smoothstep(0.05, 0.0, d);
     vHead = head;
-    float size = 2.4 + head * 6.0;
+    float size = 2.2 + head * 6.0;
     gl_PointSize = size * uPixelRatio * (4.0 / -mv.z);
     gl_Position = projectionMatrix * mv;
   }
@@ -76,9 +76,9 @@ function Filament({ reduced }: { reduced: boolean }) {
       uniforms: {
         uTime: { value: 0 },
         uHead: { value: 0 },
-        uRadius: { value: 1.15 },
+        uRadius: { value: 0.6 },
         uStream: { value: 0 },
-        uFreq: { value: new THREE.Vector3(3, 2, 4) },
+        uFreq: { value: new THREE.Vector3(3, 4, 5) },
         uPhase: { value: new THREE.Vector3(0, 1.2, 0.5) },
         uPixelRatio: { value: Math.min(typeof window !== "undefined" ? window.devicePixelRatio : 1, 1.25) },
         uOpacity: { value: 1 },
