@@ -28,7 +28,7 @@ const Hero = () => {
     if (reduced) return;
 
     const ctx = gsap.context(() => {
-      gsap.set("[data-hero='ignite']", { xPercent: -50, scaleY: 0, opacity: 0, transformOrigin: "top center" });
+      
 
       gsap
         .timeline({ defaults: { ease: "power3.out" } })
@@ -42,8 +42,8 @@ const Hero = () => {
 
       // Scroll-out scene (no pin — keeps the scroll honest, no dead-zone
       // spacer). The headline swells slightly and the content lifts + fades
-      // late as the hero scrolls away, while the bloom recedes and the
-      // "ignite" line descends to hand the signal off to the page below.
+      // late as the hero scrolls away while the bloom recedes.
+
       gsap
         .timeline({
           scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.5 },
@@ -53,8 +53,7 @@ const Hero = () => {
         .to("[data-hero='content']", { yPercent: -10, duration: 1 }, 0)
         .to("[data-hero='eyebrow']", { opacity: 0, duration: 0.3 }, 0.08)
         .to("[data-hero='content']", { opacity: 0, duration: 0.3, ease: "power2.in" }, 0.7)
-        .to(bloomRef.current, { scale: 0.85, opacity: 0.4, yPercent: -6, duration: 1 }, 0)
-        .to("[data-hero='ignite']", { scaleY: 1, opacity: 1, duration: 0.7, ease: "power1.out" }, 0.15);
+        .to(bloomRef.current, { scale: 0.85, opacity: 0.4, yPercent: -6, duration: 1 }, 0);
 
       const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
       if (fine.matches && parallaxRef.current) {
@@ -148,12 +147,6 @@ const Hero = () => {
         </div>
       </div>
 
-      <div
-        data-hero="ignite"
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 left-1/2 w-px h-28"
-        style={{ background: "linear-gradient(to bottom, hsl(var(--accent)), transparent)", opacity: 0 }}
-      />
 
       <div data-hero="scroll" className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
         <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
