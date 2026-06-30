@@ -1,5 +1,5 @@
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Star, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
