@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import SectionSignal from "@/components/SectionSignal";
+import SplitText from "@/components/SplitText";
 
 // --- Inline SVG Logos (concise) ---
 const ReactLogo = () => (
@@ -300,10 +301,12 @@ const TechStack = () => {
           <span className="font-mono text-xs text-accent tracking-[0.2em] uppercase">
             {t("techstack.techLabel")}
           </span>
-          <h2 className="font-headline text-3xl md:text-5xl font-bold mt-3 mb-4">
-            {t("techstack.techTitle")}{" "}
-            <span className="gradient-text">{t("techstack.techHighlight")}</span>
-          </h2>
+          <SplitText
+            as="h2"
+            className="font-headline text-3xl md:text-5xl font-bold mt-3 mb-4"
+            text={t("techstack.techTitle")}
+            highlight={t("techstack.techHighlight")}
+          />
           <p className="text-muted-foreground font-body text-base leading-relaxed">
             {t("techstack.techSubtitle")}
           </p>

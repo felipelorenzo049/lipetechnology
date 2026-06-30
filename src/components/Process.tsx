@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { Search, Target, Hammer, Rocket, ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import SectionSignal from "@/components/SectionSignal";
+import SplitText from "@/components/SplitText";
 
 const stepKeys = [
   { icon: Search, titleKey: "discovery", shortKey: "discoveryShort", detailKey: "discoveryDetail", code: "P·01" },
@@ -36,10 +37,12 @@ const Process = () => {
         >
           <div className="mb-3"><SectionSignal width={160} /></div>
           <span className="font-mono text-xs text-accent tracking-[0.2em] uppercase">{t("process.label")}</span>
-          <h2 className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-3 leading-[1.05]">
-            {t("process.title")}{" "}
-            <span className="gradient-text">{t("process.titleHighlight")}</span>
-          </h2>
+          <SplitText
+            as="h2"
+            className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-3 leading-[1.05]"
+            text={t("process.title")}
+            highlight={t("process.titleHighlight")}
+          />
         </motion.div>
 
         <div ref={trackRef} className="relative">
