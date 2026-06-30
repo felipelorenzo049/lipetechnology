@@ -491,6 +491,66 @@ const StageProgress = ({ stage }: { stage: Stage }) => {
   );
 };
 
+const ProductPreview = ({ productKey }: { productKey: string }) => {
+  const box = "mt-3 rounded-lg border border-border/40 bg-background/40 p-2 overflow-hidden";
+  switch (productKey) {
+    case "flowride":
+      return (
+        <div className={`${box} flex gap-2 items-center`} aria-hidden>
+          <div className="h-9 w-12 shrink-0 rounded bg-gradient-to-br from-primary/30 to-secondary/20" />
+          <div className="flex-1 space-y-1">
+            <div className="h-1.5 w-full rounded bg-foreground/[0.12]" />
+            <div className="h-1.5 w-2/3 rounded bg-foreground/[0.08]" />
+            <div className="font-mono text-[8px] text-primary">€ 18.900</div>
+          </div>
+        </div>
+      );
+    case "plateboutique":
+      return (
+        <div className={`${box} space-y-1.5`} aria-hidden>
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="flex items-center justify-between gap-2">
+              <div className="h-1.5 rounded bg-foreground/[0.12]" style={{ width: `${60 - i * 8}%` }} />
+              <div className="h-1.5 w-5 rounded bg-secondary/40" />
+            </div>
+          ))}
+        </div>
+      );
+    case "horsebid":
+      return (
+        <div className={box} aria-hidden>
+          <div className="flex items-center justify-between">
+            <span className="font-mono text-[8px] uppercase tracking-wider text-muted-foreground">lance atual</span>
+            <span className="inline-flex items-center gap-1 font-mono text-[8px] text-accent">
+              <span className="h-1 w-1 rounded-full bg-accent animate-pulse" />
+              live
+            </span>
+          </div>
+          <div className="mt-0.5 font-mono text-sm font-semibold text-foreground">R$ 54.000</div>
+        </div>
+      );
+    case "festagate":
+      return (
+        <div className={`${box} flex items-center gap-2`} aria-hidden>
+          <div className="grid grid-cols-3 gap-0.5">
+            {Array.from({ length: 9 }).map((_, i) => (
+              <span
+                key={i}
+                className={`h-1.5 w-1.5 rounded-[1px] ${[0, 2, 4, 6, 8].includes(i) ? "bg-foreground/70" : "bg-foreground/[0.15]"}`}
+              />
+            ))}
+          </div>
+          <span className="inline-flex items-center gap-1 font-mono text-[8px] uppercase tracking-wider text-secondary">
+            <span className="h-1.5 w-1.5 rounded-full bg-secondary" />
+            válido
+          </span>
+        </div>
+      );
+    default:
+      return null;
+  }
+};
+
 const ProductNode = ({ product }: { product: Product }) => {
   const { t } = useTranslation();
   const { key, stage, icon: Icon } = product;
