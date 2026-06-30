@@ -132,12 +132,26 @@ function nodePosition(i: number, total: number, radius: number) {
   return { x: Math.cos(angle) * radius, y: Math.sin(angle) * radius };
 }
 
+const TECH_COLOR: Record<string, string> = {
+  react: "#61DAFB",
+  next: "#E5E7EB",
+  ts: "#3178C6",
+  tw: "#38BDF8",
+  framer: "#A78BFA",
+  node: "#6CC24A",
+  supa: "#3ECF8E",
+  stripe: "#635BFF",
+  openai: "#10A37F",
+  n8n: "#EA4B71",
+  lovable: "#FF6699",
+  vercel: "#E5E7EB",
+  figma: "#F24E1E",
+};
+
 const ClusterCard = ({ cluster, delay }: { cluster: Cluster; delay: number }) => {
-  const [hovered, setHovered] = useState<string | null>(null);
   const reduced = useReducedMotion();
-  const active = hovered !== null;
-  const radius = 78;
-  const size = 220;
+  const radius = 82;
+  const size = 232;
 
   return (
     <motion.div
@@ -145,29 +159,21 @@ const ClusterCard = ({ cluster, delay }: { cluster: Cluster; delay: number }) =>
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      className="relative group"
-      onMouseLeave={() => setHovered(null)}
+      className="group relative"
     >
       <div
-        className={cn(
-          "relative mx-auto rounded-2xl border transition-colors duration-300",
-          "border-border/40 bg-card/30 backdrop-blur-sm",
-          active && "border-accent/40 bg-card/50",
-        )}
+        className="relative mx-auto rounded-2xl border border-border/40 bg-card/30 backdrop-blur-sm transition-colors duration-300 group-hover:border-accent/40 group-hover:bg-card/50"
         style={{ width: size, height: size }}
       >
-        {/* Connection lines SVG */}
+        {/* Connection lines — always visible */}
         <svg
           viewBox={`-${size / 2} -${size / 2} ${size} ${size}`}
-          className={cn(
-            "absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-300",
-            active ? "opacity-100" : "opacity-0",
-          )}
+          className="absolute inset-0 w-full h-full pointer-events-none"
         >
           <defs>
             <linearGradient id={`grad-${cluster.id}`} x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity="0.7" />
-              <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.2" />
+              <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.15" />
             </linearGradient>
           </defs>
           {cluster.nodes.map((_, i) => {
@@ -182,6 +188,7 @@ const ClusterCard = ({ cluster, delay }: { cluster: Cluster; delay: number }) =>
                 stroke={`url(#grad-${cluster.id})`}
                 strokeWidth={1}
                 strokeDasharray="3 3"
+                className="opacity-45 group-hover:opacity-90 transition-opacity"
               />
             );
           })}
@@ -189,69 +196,47 @@ const ClusterCard = ({ cluster, delay }: { cluster: Cluster; delay: number }) =>
 
         {/* Center label */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div
-            className={cn(
-              "rounded-full px-3 py-1.5 border text-[10px] font-mono uppercase tracking-widest transition-colors",
-              active
-                ? "border-accent/60 bg-accent/10 text-accent"
-                : "border-border/50 bg-background/60 text-muted-foreground",
-            )}
-          >
+          <div className="rounded-full px-3 py-1.5 border border-accent/40 bg-accent/10 text-[10px] font-mono uppercase tracking-widest text-accent">
             {cluster.label}
           </div>
         </div>
 
-        {/* Nodes */}
+        {/* Nodes: brand-colored logo + always-on name */}
         {cluster.nodes.map((node, i) => {
           const p = nodePosition(i, cluster.nodes.length, radius);
-          const isHover = hovered === node.id;
+          const color = TECH_COLOR[node.id] || "hsl(var(--foreground))";
           return (
-            <motion.button
+            <div
               key={node.id}
-              type="button"
-              onMouseEnter={() => setHovered(node.id)}
-              onFocus={() => setHovered(node.id)}
-              animate={
-                reduced
-                  ? undefined
-                  : { y: [0, -3, 0] }
-              }
-              transition={
-                reduced
-                  ? undefined
-                  : { duration: 4 + i * 0.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }
-              }
-              className={cn(
-                "absolute flex items-center justify-center w-11 h-11 rounded-xl border bg-card/80 backdrop-blur-sm",
-                "transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60",
-                isHover
-                  ? "border-accent/70 text-accent scale-110 shadow-[0_0_24px_-4px_hsl(var(--accent)/0.6)]"
-                  : active
-                  ? "border-border/40 text-foreground/90"
-                  : "border-border/40 text-muted-foreground hover:text-foreground",
-              )}
+              className="absolute"
               style={{
-                left: `calc(50% + ${p.x}px - 22px)`,
-                top: `calc(50% + ${p.y}px - 22px)`,
+                left: `calc(50% + ${p.x}px)`,
+                top: `calc(50% + ${p.y}px)`,
+                transform: "translate(-50%, -50%)",
               }}
-              aria-label={node.name}
             >
-              <node.Logo />
-            </motion.button>
+              <motion.div
+                animate={reduced ? undefined : { y: [0, -3, 0] }}
+                transition={
+                  reduced
+                    ? undefined
+                    : { duration: 4 + i * 0.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }
+                }
+                className="flex flex-col items-center gap-1"
+              >
+                <div
+                  className="flex items-center justify-center w-10 h-10 rounded-xl border border-border/50 bg-background/70 backdrop-blur-sm shadow-[0_2px_10px_-2px_rgba(0,0,0,0.5)] transition-transform duration-300 hover:scale-110"
+                  style={{ color }}
+                >
+                  <node.Logo />
+                </div>
+                <span className="font-mono text-[8px] uppercase tracking-wide text-muted-foreground whitespace-nowrap">
+                  {node.name}
+                </span>
+              </motion.div>
+            </div>
           );
         })}
-      </div>
-
-      {/* Hovered node name */}
-      <div className="mt-3 h-5 text-center font-mono text-xs uppercase tracking-wider">
-        <span
-          className={cn(
-            "transition-colors",
-            hovered ? "text-accent" : "text-muted-foreground/60",
-          )}
-        >
-          {hovered ? cluster.nodes.find((n) => n.id === hovered)?.name : cluster.label}
-        </span>
       </div>
     </motion.div>
   );
